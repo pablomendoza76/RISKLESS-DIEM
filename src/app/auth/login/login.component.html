@@ -1,0 +1,44 @@
+<div class="login-page">
+
+  <!-- Fondo -->
+  <div class="bg-image"></div>
+  <div class="bg-white"></div>
+
+  <!-- Tarjeta -->
+  <div class="login-card">
+
+    <div class="card-image"></div>
+
+    <div class="card-form">
+      <div class="form-wrapper">
+        <h1>Hola Usuario</h1>
+        <p class="subtitle">Bienvenido a Riskless</p>
+
+        <form (ngSubmit)="login()">
+          <input
+            type="email"
+            placeholder="Email"
+            [(ngModel)]="email"
+            name="email"
+            required
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            [(ngModel)]="password"
+            name="password"
+            required
+          />
+
+          <button type="submit" [disabled]="loading">
+            {{ loading ? 'Logging in…' : 'Login' }}
+          </button>
+
+          <p class="error" *ngIf="error">{{ error }}</p>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,231 @@
+-- =========================
+-- EXTENSION
+-- =========================
+create extension if not exists "pgcrypto";
+
+-- =========================
+-- ROLES
+-- =========================
+create table roles (
+  id uuid primary key default gen_random_uuid(),
+  nombre text unique not null,
+  permisos text[],
+  created_at timestamp default now()
+);
+
+insert into roles (nombre, permisos) values
+('Administrador', array['crear','editar','eliminar','ver']),
+('Gerente', array['crear','editar','ver']),
+('Asesor', array['ver']);
+
+-- =========================
+-- USUARIOS (PERFIL)
+-- =========================
+create table usuarios (
+  id uuid primary key references auth.users(id) on delete cascade,
+  nombre text,
+  apellido text,
+  correo text unique,
+  rol_id uuid references roles(id),
+  created_at timestamp default now()
+);
+
+-- =========================
+-- AUTH USERS (LOGIN REAL)
+-- SOLO DESARROLLO
+-- =========================
+insert into auth.users (id,email,encrypted_password,email_confirmed_at,role)
+values
+(gen_random_uuid(),'admin@demo.com',crypt('admin123', gen_salt('bf')),now(),'authenticated'),
+(gen_random_uuid(),'gerente@demo.com',crypt('gerente123', gen_salt('bf')),now(),'authenticated'),
+(gen_random_uuid(),'asesor@demo.com',crypt('asesor123', gen_salt('bf')),now(),'authenticated');
+
+-- =========================
+-- PERFIL USUARIOS
+-- =========================
+insert into usuarios (id,nombre,apellido,correo,rol_id)
+select u.id,'Admin','Principal',u.email,r.id
+from auth.users u join roles r on r.nombre='Administrador'
+where u.email='admin@demo.com';
+
+insert into usuarios (id,nombre,apellido,correo,rol_id)
+select u.id,'Carlos','Gerente',u.email,r.id
+from auth.users u join roles r on r.nombre='Gerente'
+where u.email='gerente@demo.com';
+
+insert into usuarios (id,nombre,apellido,correo,rol_id)
+select u.id,'Ana','Asesora',u.email,r.id
+from auth.users u join roles r on r.nombre='Asesor'
+where u.email='asesor@demo.com';
+
+-- =========================
+-- ASEGURADOS
+-- =========================
+create table asegurados (
+  id uuid primary key default gen_random_uuid(),
+  nombre text,
+  apellido text,
+  cedula text unique,
+  correo text,
+  created_at timestamp default now()
+);
+
+insert into asegurados values
+(gen_random_uuid(),'Juan','Pérez','1101234567','juan@mail.com',now());
+
+-- =========================
+-- BIENES
+-- =========================
+create table bienes (
+  id uuid primary key default gen_random_uuid(),
+  tipo text,
+  num_serie text,
+  anio_fabricacion int,
+  antiguedad int,
+  created_at timestamp default now()
+);
+
+insert into bienes values
+(gen_random_uuid(),'Vehículo','ABC-123',2020,4,now());
+
+-- =========================
+-- POLIZAS
+-- =========================
+create table polizas (
+  id uuid primary key default gen_random_uuid(),
+  num_poliza text unique,
+  aseguradora text,
+  valor_asegurado numeric,
+  estado text,
+  fecha_inicio date,
+  fecha_fin date,
+  created_at timestamp default now()
+);
+
+insert into polizas values
+(gen_random_uuid(),'POL-001','Seguros Loja',15000,'Activa','2025-01-01','2026-01-01',now());
+
+-- =========================
+-- CLAUSULAS
+-- =========================
+create table clausulas (
+  id uuid primary key default gen_random_uuid(),
+  titulo text,
+  descripcion text
+);
+
+insert into clausulas values
+(gen_random_uuid(),'Cobertura Total','Cubre daños materiales');
+
+-- =========================
+-- POLIZA_CLAUSULA
+-- =========================
+create table poliza_clausula (
+  id uuid primary key default gen_random_uuid(),
+  poliza_id uuid references polizas(id),
+  clausula_id uuid references clausulas(id)
+);
+
+insert into poliza_clausula
+select gen_random_uuid(), p.id, c.id
+from polizas p, clausulas c
+limit 1;
+
+-- =========================
+-- SINIESTROS
+-- =========================
+create table siniestros (
+  id uuid primary key default gen_random_uuid(),
+  poliza_id uuid references polizas(id),
+  asegurado_id uuid references asegurados(id),
+  bien_id uuid references bienes(id),
+  fecha_siniestro date,
+  monto_danio numeric,
+  estado text,
+  created_at timestamp default now()
+);
+
+insert into siniestros
+select gen_random_uuid(), p.id, a.id, b.id, '2025-02-10', 3000, 'En proceso', now()
+from polizas p, asegurados a, bienes b
+limit 1;
+
+-- =========================
+-- PEDIDOS
+-- =========================
+create table pedidos (
+  id uuid primary key default gen_random_uuid(),
+  usuario_id uuid references usuarios(id),
+  poliza_id uuid references polizas(id),
+  siniestro_id uuid references siniestros(id),
+  estado text,
+  created_at timestamp default now()
+);
+
+insert into pedidos
+select gen_random_uuid(), u.id, p.id, s.id, 'Abierto', now()
+from usuarios u, polizas p, siniestros s
+limit 1;
+
+-- =========================
+-- DOCUMENTOS
+-- =========================
+create table documentos (
+  id uuid primary key default gen_random_uuid(),
+  entidad text,
+  entidad_id uuid,
+  nombre_archivo text,
+  ruta_storage text,
+  tipo_documento text,
+  subido_por uuid references usuarios(id),
+  created_at timestamp default now()
+);
+
+insert into documentos
+select gen_random_uuid(),'siniestro',s.id,'informe.pdf',
+'documentos/siniestros/informe.pdf','Informe Técnico',u.id,now()
+from siniestros s, usuarios u
+limit 1;
+
+-- =========================
+-- RLS (DESARROLLO)
+-- =========================
+alter table roles enable row level security;
+alter table usuarios enable row level security;
+alter table asegurados enable row level security;
+alter table bienes enable row level security;
+alter table polizas enable row level security;
+alter table clausulas enable row level security;
+alter table poliza_clausula enable row level security;
+alter table siniestros enable row level security;
+alter table pedidos enable row level security;
+alter table documentos enable row level security;
+
+create policy "Acceso autenticado" on roles for all using (auth.role() = 'authenticated');
+create policy "Acceso autenticado" on usuarios for all using (auth.role() = 'authenticated');
+create policy "Acceso autenticado" on asegurados for all using (auth.role() = 'authenticated');
+create policy "Acceso autenticado" on bienes for all using (auth.role() = 'authenticated');
+create policy "Acceso autenticado" on polizas for all using (auth.role() = 'authenticated');
+create policy "Acceso autenticado" on clausulas for all using (auth.role() = 'authenticated');
+create policy "Acceso autenticado" on poliza_clausula for all using (auth.role() = 'authenticated');
+create policy "Acceso autenticado" on siniestros for all using (auth.role() = 'authenticated');
+create policy "Acceso autenticado" on pedidos for all using (auth.role() = 'authenticated');
+create policy "Acceso autenticado" on documentos for all using (auth.role() = 'authenticated');
+
+
+alter table usuarios
+add column if not exists activo boolean not null default true;
+
+alter table usuarios
+add column if not exists contrasena text;
+update usuarios
+set contrasena = 'admin123'
+where correo = 'admin@demo.com';
+
+update usuarios
+set contrasena = 'gerente123'
+where correo = 'gerente@demo.com';
+
+update usuarios
+set contrasena = 'asesor123'99
+where correo = 'asesor@demo.com';

@@ -1,0 +1,117 @@
+@use '../../styles/colores' as *;
+@use '../../styles/tipografia' as *;
+
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  background: $color-azul-celeste;
+  border-radius: 0 40px 40px 0;
+  display: flex;
+  flex-direction: column;
+  color: $texto-claro;
+}
+
+/* ================= HEADER ================= */
+.sidebar-header {
+  padding: 2rem;
+  text-align: center;
+  font-family: $font-poppins;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+/* ================= MENU ================= */
+.sidebar-menu {
+  flex: 1;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ITEM PRINCIPAL */
+.menu-main {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.25s;
+  font-family: $font-work-sans;
+
+  .icon {
+    font-size: 20px;
+  }
+
+  .label {
+    flex: 1;
+    font-size: 0.95rem;
+  }
+
+  .arrow {
+    font-size: 18px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  &.active {
+    background: $fondo-claro;
+    color: $color-azul-oscuro;
+
+    mat-icon {
+      color: $color-azul-oscuro;
+    }
+  }
+}
+
+/* ================= SUBMENU ================= */
+.submenu {
+  margin-left: 2.8rem;
+  margin-top: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-family: $font-work-sans;
+  color: $texto-claro;
+  text-decoration: none;
+  transition: 0.2s;
+
+  mat-icon {
+    font-size: 18px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  &.active {
+    background: rgba(255, 255, 255, 0.35);
+    color: $color-azul-oscuro;
+  }
+}
+
+/* ================= FOOTER ================= */
+.sidebar-footer {
+  padding: 1.2rem;
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.75rem;
+  opacity: 0.85;
+}

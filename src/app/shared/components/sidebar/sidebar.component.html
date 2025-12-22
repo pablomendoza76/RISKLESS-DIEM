@@ -1,0 +1,53 @@
+<aside class="sidebar">
+
+  <!-- HEADER -->
+  <div class="sidebar-header">
+    {{ title }}
+  </div>
+
+  <!-- MENU -->
+  <nav class="sidebar-menu">
+
+    <div
+      class="menu-item"
+      *ngFor="let item of items; let i = index"
+    >
+      <!-- ITEM PRINCIPAL -->
+      <div
+        class="menu-main"
+        [class.active]="activeIndex === i"
+        (click)="item.children ? toggle(i) : null"
+        [routerLink]="!item.children ? item.route : null"
+      >
+        <mat-icon class="icon">{{ item.icon }}</mat-icon>
+        <span class="label">{{ item.label }}</span>
+
+        <mat-icon class="arrow" *ngIf="item.children">
+          {{ activeIndex === i ? 'expand_less' : 'expand_more' }}
+        </mat-icon>
+      </div>
+
+      <!-- SUBMENU -->
+      <div class="submenu" *ngIf="item.children && activeIndex === i">
+        <a
+          class="submenu-item"
+          *ngFor="let child of item.children"
+          [routerLink]="child.route"
+          routerLinkActive="active"
+        >
+          <mat-icon>{{ child.icon }}</mat-icon>
+          <span>{{ child.label }}</span>
+        </a>
+      </div>
+    </div>
+
+  </nav>
+
+  <!-- FOOTER -->
+  <div class="sidebar-footer">
+    <span>Facebook</span>
+    <span>Twitter</span>
+    <span>Google</span>
+  </div>
+
+</aside>

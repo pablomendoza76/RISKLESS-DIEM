@@ -1,0 +1,230 @@
+/* =======================
+   VARIABLES RISKLESS
+======================= */
+:host {
+  --login-image: url('/img/fondo.webp');
+
+  /* Diagonal controlada */
+  --cut-top: 62%;
+  --cut-bottom: 47%;
+
+  /* Marca */
+  --azul-oscuro: #062140;
+  --azul-celeste: #3891F4;
+  --dorado: #C6AF6B;
+
+  /* UI */
+  --radius: 36px;
+  --texto-principal: #2b2b2b;
+  --texto-secundario: #5a5a5a;
+  --gris-200: #eeeeee;
+  --gris-300: #e0e0e0;
+}
+
+/* =======================
+   CONTENEDOR GENERAL
+======================= */
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--gris-100);
+}
+
+/* =======================
+   FONDO
+======================= */
+.bg-image {
+  position: absolute;
+  inset: 0;
+  background: var(--login-image) center / cover no-repeat;
+}
+
+/* Overlay azul profesional (NO plano) */
+.bg-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 33, 64, 0.55),
+    rgba(6, 33, 64, 0.75)
+  );
+}
+
+/* Fondo blanco diagonal */
+.bg-white {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+
+  clip-path: polygon(
+    var(--cut-top) 0%,
+    100% 0%,
+    100% 100%,
+    var(--cut-bottom) 100%
+  );
+}
+
+/* =======================
+   TARJETA
+======================= */
+.login-card {
+  position: relative;
+  width: min(1100px, 92vw);
+  height: min(640px, 90vh);
+  display: grid;
+
+  /* 🔥 CLAVE */
+  grid-template-columns: minmax(600px, 1fr) minmax(460px, 520px);
+
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #ffffff;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.18),
+    0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =======================
+   IMAGEN IZQUIERDA
+======================= */
+.card-image {
+  position: relative;
+  background-image: var(--login-image);
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  /* Encadre correcto */
+  background-position: 65% center;
+
+  /* CORTE LIMPIO (NADA DE 120%) */
+  clip-path: polygon(
+    0% 0%,
+    var(--cut-top) 0%,
+    var(--cut-bottom) 100%,
+    0% 100%
+  );
+}
+
+/* Overlay azul consistente con fondo */
+.card-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 33, 64, 0.45),
+    rgba(6, 33, 64, 0.65)
+  );
+}
+
+/* =======================
+   FORMULARIO
+======================= */
+.card-form {
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3.2rem;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 420px;
+
+  h1 {
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--texto-principal);
+    margin-bottom: 0.3rem;
+  }
+
+  p {
+    color: var(--texto-secundario);
+    margin-bottom: 2.2rem;
+    font-size: 14px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+
+    input {
+      height: 48px;
+      padding: 0 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--gris-300);
+      font-size: 14px;
+      color: var(--texto-principal);
+      background: #fff;
+
+      &:focus {
+        outline: none;
+        border-color: var(--azul-celeste);
+        box-shadow: 0 0 0 3px rgba(56, 145, 244, 0.15);
+      }
+    }
+
+    button {
+      margin-top: 1.4rem;
+      height: 52px;
+      border-radius: 999px;
+      border: none;
+
+      /* BOTÓN RISKLESS */
+      background: linear-gradient(
+        135deg,
+        var(--azul-celeste),
+        var(--azul-oscuro)
+      );
+
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(6, 33, 64, 0.35);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    .error {
+      text-align: center;
+      color: #b71c1c;
+      font-size: 13px;
+    }
+  }
+}
+
+/* =======================
+   RESPONSIVE
+======================= */
+@media (max-width: 900px) {
+  .login-card {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .card-image {
+    display: none;
+  }
+
+  .bg-white {
+    clip-path: none;
+  }
+}

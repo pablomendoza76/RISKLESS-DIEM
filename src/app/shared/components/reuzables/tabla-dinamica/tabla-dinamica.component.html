@@ -1,0 +1,54 @@
+<div class="tabla-wrapper">
+
+  <!-- HEADER -->
+  <div class="tabla-header">
+    <input
+      type="text"
+      placeholder="Buscar..."
+      [(ngModel)]="textoBusqueda"
+      (input)="buscar()"
+      class="input-busqueda"
+    />
+
+    <div class="botones">
+      <button
+        *ngFor="let btn of botones"
+        [ngClass]="btn.tipo || 'primary'"
+        (click)="emitir(btn.evento)"
+      >
+        {{ btn.texto }}
+      </button>
+    </div>
+  </div>
+
+  <!-- TABLA -->
+  <table>
+    <thead>
+      <tr>
+        <th *ngFor="let col of columnas">
+          {{ col.label }}
+        </th>
+        <th *ngIf="botones?.length">Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let fila of dataFiltrada">
+        <td *ngFor="let col of columnas">
+          {{ fila[col.key] }}
+        </td>
+
+        <td *ngIf="botones?.length">
+          <button
+            *ngFor="let btn of botones"
+            [ngClass]="btn.tipo || 'secondary'"
+            (click)="emitir(btn.evento, fila)"
+          >
+            {{ btn.texto }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
