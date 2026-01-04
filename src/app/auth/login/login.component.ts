@@ -24,25 +24,59 @@ export class LoginComponent {
     private router: Router
   ) {}
 
-  async login(): Promise<void> {
+async login(): Promise<void> {
+  console.log('🟡 [LOGIN] Iniciando login');
   this.error = null;
   this.loading = true;
 
   try {
     const usuario = await this.usuariosService.login(
       this.email.trim(),
-      this.password.trim()
+      this.password
     );
 
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    console.log('🟢 [LOGIN] Usuario recibido:', usuario);
 
-    this.router.navigateByUrl('/Administrador');
+    // ✅ VALIDACIÓN REAL
+    if (!usuario.rol || !usuario.rol.nombre) {
+      console.error('🔴 [LOGIN] Usuario sin rol:', usuario);
+      this.error = 'Usuario sin rol asignado';
+      return;
+    }
+
+    // ✅ NORMALIZACIÓN SEGURA
+    const rol = usuario.rol.nombre.trim().toLowerCase();
+    const nombre = usuario.nombre?.trim() || 'Usuario';
+
+    console.log('🟢 [LOGIN] Rol normalizado:', rol);
+    console.log('🟢 [LOGIN] Nombre:', nombre);
+
+    // Guardar sesión
+    localStorage.setItem('usuario', JSON.stringify(usuario));
+    localStorage.setItem('rol', rol);
+    localStorage.setItem('nombreUsuario', nombre);
+
+    // ✅ REDIRECCIÓN REAL
+    if (rol === 'administrador') {
+      await this.router.navigate(['/admin']);
+    } else if (rol === 'gerente') {
+      await this.router.navigate(['/gerente']);
+    } else if (rol === 'asesor') {
+      await this.router.navigate(['/asesor']);
+    } else {
+      console.warn('⚠️ Rol no reconocido:', rol);
+      await this.router.navigate(['/login']);
+    }
 
   } catch (err: any) {
+    console.error('🔴 [LOGIN] Error:', err);
     this.error = err?.message || 'Credenciales incorrectas';
   } finally {
     this.loading = false;
+    console.log('🟡 [LOGIN] Proceso finalizado');
   }
 }
+
+
 
 }

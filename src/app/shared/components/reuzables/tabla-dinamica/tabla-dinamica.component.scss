@@ -1,70 +1,285 @@
+@use '../../../styles/colores' as *;
+@use '../../../styles/tipografia' as *;
+
+/* REGLAS DE ORO RISKLESS REFINADAS:
+   1. Buscador XL con enfoque dinámico.
+   2. Filas tipo tarjeta con radio aumentado y sombra profunda.
+   3. Acentos dorados y sombras azules integradas.
+*/
+
 .tabla-wrapper {
   width: 100%;
-  background: #fff;
-  border-radius: 10px;
-  padding: 1rem;
+  padding: 2.5rem 5rem; // Un poco más de aire vertical
+  background-color: transparent;
+  box-sizing: border-box;
 }
 
+/* =========================
+   HEADER (BUSCADOR XL + BOTONES TOP)
+========================= */
 .tabla-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  gap: 1rem;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
 
   .input-busqueda {
-    flex: 1;
-    padding: 0.6rem 0.8rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    flex: 2; // Toma más espacio proporcionalmente
+    min-width: 450px; // Más ancha
+    padding: 0.7rem 1.5rem; // Menos altura (padding vertical reducido)
+    border-radius: 12px; // Bordes un poco más técnicos/limpios
+    border: 1.5px solid $gris-200;
+    background: $fondo-claro;
+    font-family: $font-work-sans;
+    font-size: 0.95rem;
+    color: $texto-principal;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 2px 6px rgba($color-azul-oscuro, 0.03);
+
+    &:focus {
+      outline: none;
+      border-color: $color-azul-celeste;
+      // Resplandor azul sutil pero expansivo
+      box-shadow: 0 10px 25px -5px rgba($color-azul-celeste, 0.15);
+      background: #fff;
+    }
   }
 
-  .botones {
+
+  .botones-top {
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
+
+    .btn-tabla {
+      padding: 0.85rem 1.75rem;
+      border-radius: 16px; // Redondeo armonizado con el buscador
+      border: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      &.primary {
+        background: $color-azul-oscuro;
+        color: $color-dorado;
+        border: 1px solid rgba($color-dorado, 0.4);
+        box-shadow: 0 6px 15px rgba($color-azul-celeste, 0.3);
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 25px rgba($color-azul-celeste, 0.45);
+          border-color: $color-dorado;
+        }
+      }
+
+      &.secondary {
+        background: $gris-100;
+        color: $texto-secundario;
+        border: 1.5px solid $gris-300;
+        
+        &:hover {
+          background: $fondo-claro;
+          color: $color-azul-oscuro;
+          border-color: $color-azul-celeste;
+          box-shadow: 0 6px 15px rgba($color-azul-celeste, 0.15);
+        }
+      }
+    }
   }
 }
 
+/* =========================
+   FILAS (TARJETAS CON SOMBRA NOTORIA)
+========================= */
 table {
   width: 100%;
-  border-collapse: collapse;
+  min-width: 850px;
+  border-collapse: separate;
+  border-spacing: 0 1.25rem; // Más espacio para que las sombras respiren
+}
 
-  th {
-    text-align: left;
-    font-weight: 600;
-    padding: 0.7rem;
-    background: #f4f6f8;
+thead th {
+  padding: 0 2rem;
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: $texto-terciario;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+tbody tr {
+  background: $fondo-claro;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  
+  // Sombra base más profunda y azulada
+  box-shadow: 0 8px 25px rgba($color-azul-oscuro, 0.07);
+
+  td:first-child { 
+    border-top-left-radius: 22px; // Bordes más redondeados
+    border-bottom-left-radius: 22px; 
+    padding-left: 2rem;
+    border-left: 4px solid transparent;
+  }
+  td:last-child { 
+    border-top-right-radius: 22px; 
+    border-bottom-right-radius: 22px; 
+    padding-right: 2rem;
   }
 
-  td {
-    padding: 0.7rem;
-    border-bottom: 1px solid #eee;
-  }
-
-  tr:hover {
-    background: #fafafa;
+  &:hover {
+    z-index: 10;
+    // Efecto de elevación más marcado
+    transform: translateY(-5px) scale(1.01);
+    // Sombra muy notoria con matiz azul de marca
+    box-shadow: 0 20px 40px rgba($color-azul-oscuro, 0.12), 
+                0 0 15px rgba($color-azul-celeste, 0.05);
+    
+    td:first-child {
+      border-left-color: $color-dorado; // Detalle dorado más grueso
+    }
   }
 }
 
-button {
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.85rem;
+tbody td {
+  padding: 1.5rem 1rem;
+  font-size: 1rem;
+  color: $texto-principal;
+}
 
-  &.primary {
-    background: #2563eb;
-    color: white;
+/* =========================
+   ACCIONES (ESTILO REFINADO)
+========================= */
+.acciones-container {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-end;
+
+  .btn-accion-fila {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 12px; // Más redondeados
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+
+    background: $gris-200;
+    color: $texto-secundario;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba($color-azul-celeste, 0.3); // Sombrita azul
+    }
+
+    &.primary, &[class*="Editar"] {
+      background: $color-azul-oscuro;
+      color: $fondo-claro;
+      &:hover {
+        background: $color-azul-celeste;
+        color: white;
+      }
+    }
+
+    &.success, &[class*="Activar"] {
+      background: $verde-50; color: $verde-700;
+      &:hover { background: $verde-600; color: white; }
+    }
+
+    &.danger, &[class*="Desactivar"] {
+      background: $rojo-50; color: $rojo-700;
+      &:hover { background: $rojo-600; color: white; }
+    }
+  }
+}
+
+/* RESPONSIVE MANTENIDO Y AJUSTADO */
+/* ============================================================
+   RESPONSIVIDAD TOTAL (WEB, TABLET Y MÓVIL)
+   ============================================================ */
+
+// 1. LAPTOPS Y PANTALLAS MEDIANAS (1100px o menos)
+@media (max-width: 1100px) {
+  .tabla-wrapper { 
+    padding: 1.5rem 2rem; // Reduce aire lateral para ganar espacio de tabla
+  }
+  
+  .tabla-header .input-busqueda { 
+    min-width: 350px; // Estiliza el buscador a un tamaño medio
+  }
+}
+
+// 2. TABLETS Y MÓVILES GRANDES (768px o menos)
+@media (max-width: 768px) {
+  .tabla-wrapper { 
+    padding: 1rem; 
   }
 
-  &.secondary {
-    background: #e5e7eb;
-    color: #111;
+  // Header en columna para evitar colisión entre buscador y botones
+  .tabla-header { 
+    flex-direction: column; 
+    align-items: stretch; 
+    gap: 1.5rem;
+
+    .input-busqueda {
+      min-width: 100%; // Buscador ocupa todo el ancho
+    }
+
+    .botones-top {
+      justify-content: center; // Centra botones de acción principales
+      
+      .btn-tabla {
+        flex: 1; // Botones crecen para facilitar toque táctil
+        justify-content: center;
+      }
+    }
   }
 
-  &.danger {
-    background: #dc2626;
-    color: white;
+  // Gestión crítica de la tabla para no romper el layout
+  .tabla-scroll, 
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto; // Permite scroll horizontal solo en los datos
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem;
+    
+    // Mantiene un ancho mínimo para que las filas no se amontonen
+    min-width: 800px; 
+  }
+}
+
+// 3. MÓVILES PEQUEÑOS (480px o menos)
+@media (max-width: 480px) {
+  .tabla-wrapper {
+    padding: 0.5rem;
+  }
+
+  .tabla-header {
+    .botones-top {
+      flex-direction: column; // Botones uno sobre otro para máxima comodidad
+      
+      .btn-tabla {
+        width: 100%;
+      }
+    }
+  }
+
+  // Estiliza el scrollbar para dispositivos móviles
+  .tabla-scroll::-webkit-scrollbar {
+    height: 4px;
+    background: transparent;
+  }
+  
+  .tabla-scroll::-webkit-scrollbar-thumb {
+    background: $gris-300;
+    border-radius: 10px;
   }
 }

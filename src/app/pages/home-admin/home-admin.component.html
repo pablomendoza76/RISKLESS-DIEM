@@ -1,1 +1,127 @@
-<p>home-admin works!</p>
+<div class="admin-container">
+
+  <!-- ================= HEADER SUPERIOR ================= -->
+  <div class="admin-topbar">
+
+    <!-- IZQUIERDA: MENSAJE -->
+    <div class="admin-role">
+      <span class="role-label">
+        ¡ BIENVENIDO AL PANEL DE ADMINISTRACIÓN !
+      </span>
+    </div>
+
+    <!-- DERECHA: USUARIO -->
+    <div class="admin-user">
+
+      <!-- AVATAR -->
+      <div
+        class="avatar clickable"
+        (click)="mapper.abrirModalLogout()">
+
+        <span class="avatar-initials">
+          {{ mapper.inicialesUsuario }}
+        </span>
+      </div>
+
+      <!-- INFO USUARIO -->
+      <div class="user-info">
+        <span class="user-name">
+          {{ mapper.nombreAdministrador }}
+        </span>
+        <span class="user-role">
+          {{ mapper.rolAdministrador }}
+        </span>
+      </div>
+
+      <!-- ================= MODAL LOGOUT ================= -->
+      <div
+        class="logout-backdrop"
+        *ngIf="mapper.mostrarLogout">
+
+        <div class="logout-modal">
+          <h3>Cerrar sesión</h3>
+          <p>¿Deseas cerrar sesión y volver al inicio?</p>
+
+          <div class="logout-actions">
+            <button
+              class="btn-cancel"
+              type="button"
+              (click)="mapper.cerrarModalLogout()">
+              Cancelar
+            </button>
+
+            <button
+              class="btn-danger"
+              type="button"
+              (click)="mapper.cerrarSesion()">
+              Cerrar sesión
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <!-- FIN MODAL -->
+
+    </div>
+
+  </div>
+  <!-- ================= FIN HEADER ================= -->
+
+
+  <!-- ================= HEADER CONTENIDO ================= -->
+  <div class="admin-header">
+
+    <div class="title-section">
+      <h2>Usuarios</h2>
+      <span class="subtitle">Administración de miembros</span>
+    </div>
+
+    <button
+      class="btn-add"
+      type="button"
+      (click)="mapper.crearUsuario()">
+      + Agregar nuevo usuario
+    </button>
+
+  </div>
+
+
+  <!-- ================= CONTENIDO ================= -->
+  <div class="content">
+
+    <!-- LOADING -->
+    <div *ngIf="mapper.cargando" class="text-gray">
+      Cargando usuarios...
+    </div>
+
+    <!-- ERROR -->
+    <div *ngIf="mapper.error" class="text-error">
+      {{ mapper.error }}
+    </div>
+
+    <!-- TABLA -->
+    <app-tabla-dinamica
+      *ngIf="!mapper.cargando"
+      [columnas]="mapper.columnas"
+      [data]="mapper.usuarios"
+      [botones]="mapper.botones"
+      (accion)="mapper.manejarAccion($event)">
+    </app-tabla-dinamica>
+
+  </div>
+
+
+  <!-- ================= MODAL FORMULARIO ================= -->
+  <div *ngIf="mapper.mostrarFormulario">
+
+    <app-dynamic-form
+      [titulo]="mapper.modoFormulario === 'crear' ? 'Crear usuario' : 'Editar usuario'"
+      [fields]="mapper.fields"
+      [initialData]="mapper.modoFormulario === 'editar' ? mapper.usuarioSeleccionado : null"
+      (formSubmit)="mapper.recibirFormulario($event)"
+      (cancelar)="mapper.cerrarFormulario()">
+    </app-dynamic-form>
+
+  </div>
+
+</div>

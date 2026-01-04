@@ -1,4 +1,94 @@
 /* You can add global styles to this file, and also import other style files */
 
+@use '../src/app/shared/styles/colores' as *;
+@use '../src/app/shared/styles/tipografia' as *;
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import 'ngx-toastr/toastr';
+
+/* =========================
+   TOAST RISKLESS REFINADO
+   Estilo exacto a la referencia
+========================= */
+
+.toast-container {
+  padding: 20px !important;
+}
+
+.ngx-toastr {
+  background-color: #fff !important; 
+  border-radius: 16px !important; // Bordes suaves como en la imagen
+  padding: 18px 24px 18px 65px !important; // Espacio para el icono a la izquierda
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1) !important; // Sombra difuminada
+  opacity: 1 !important;
+  color: $texto-principal !important;
+  border: none !important;
+  min-height: 60px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* =========================
+   TEXTO (Basado en la imagen)
+========================= */
+
+.toast-title {
+  display: none !important; // Generalmente no hay título en este estilo simple
+}
+
+.toast-message {
+  font-family: $font-work-sans;
+  font-size: 1rem !important; // Tamaño legible
+  color: $rojo-600 !important; // Color del texto según el estado (Error en la imagen)
+  font-weight: 500 !important;
+}
+
+/* Estilos de texto por estado */
+.toast-success .toast-message { color: $verde-600 !important; }
+.toast-error .toast-message { color: $rojo-600 !important; }
+.toast-warning .toast-message { color: $amarillo-800 !important; }
+.toast-info .toast-message { color: $color-azul-oscuro !important; }
+
+/* =========================
+   ICONOS CIRCULARES (Lado Izquierdo)
+========================= */
+
+.ngx-toastr::before {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Material Icons';
+  font-size: 28px !important; // Icono prominente
+  display: block !important;
+}
+
+.toast-error::before { 
+  content: 'cancel'; // Icono circular de error
+  color: $rojo-600; 
+}
+
+.toast-success::before { 
+  content: 'check_circle'; 
+  color: $verde-600; 
+}
+
+/* BOTÓN DE CIERRE (X a la derecha) */
+.toast-close-button {
+  top: 50% !important;
+  right: 15px !important;
+  transform: translateY(-50%);
+  color: $texto-terciario !important;
+  font-size: 22px !important;
+  opacity: 0.5 !important;
+  
+  &:hover {
+    opacity: 1 !important;
+  }
+}
+
+/* Ocultar barra de progreso */
+.toast-progress {
+  display: none !important;
+}

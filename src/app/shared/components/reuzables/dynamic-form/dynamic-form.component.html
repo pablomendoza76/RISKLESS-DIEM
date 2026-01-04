@@ -1,0 +1,137 @@
+<div class="dynamic-form">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    <!-- ================= HEADER ================= -->
+    <div class="form-header" *ngIf="titulo">
+      <div class="icon-container">
+        <span class="material-icons">assignment</span>
+      </div>
+
+      <div class="title-group">
+        <h2 class="form-title">{{ titulo }}</h2>
+        <p>Complete los campos del formulario</p>
+      </div>
+    </div>
+
+    <!-- ================= BODY ================= -->
+    <div class="form-body">
+      <div
+        class="form-field"
+        *ngFor="let field of fields"
+        [class.full-width]="field.type === 'file'">
+
+        <label>{{ field.label }}</label>
+
+        <div class="input-wrapper">
+
+          <!-- INPUTS -->
+          <input
+            *ngIf="
+              field.type === 'text' ||
+              field.type === 'number' ||
+              field.type === 'email' ||
+              field.type === 'password'
+            "
+            [type]="field.type"
+            [formControlName]="field.name"
+            [class.invalid]="
+              form.get(field.name)?.invalid &&
+              form.get(field.name)?.touched
+            "
+          />
+
+          <!-- SELECT -->
+          <select
+            *ngIf="field.type === 'select'"
+            [formControlName]="field.name"
+            [class.invalid]="
+              form.get(field.name)?.invalid &&
+              form.get(field.name)?.touched
+            ">
+            <option value="">Seleccione</option>
+            <option
+              *ngFor="let opt of field.options"
+              [value]="opt.value">
+              {{ opt.label }}
+            </option>
+          </select>
+
+          <!-- FILE -->
+          <div
+            class="upload-area"
+            *ngIf="field.type === 'file'"
+            (click)="fileInput.click()">
+
+            <div class="upload-icon-container">
+              <span class="material-icons">cloud_upload</span>
+            </div>
+
+            <p class="upload-text">
+              Elija un archivo o <span>arrástrelo aquí</span>
+            </p>
+
+            <input
+              #fileInput
+              type="file"
+              hidden
+              (change)="onFileChange($event, field.name)"
+            />
+          </div>
+        </div>
+
+        <!-- ================= ERRORES ================= -->
+
+        <!-- requerido -->
+        <small
+          class="error"
+          *ngIf="
+            form.get(field.name)?.errors?.['required'] &&
+            form.get(field.name)?.touched
+          ">
+          Campo obligatorio
+        </small>
+
+        <!-- email inválido -->
+        <small
+          class="error"
+          *ngIf="
+            field.type === 'email' &&
+            form.get(field.name)?.errors?.['email'] &&
+            form.get(field.name)?.touched
+          ">
+          Correo electrónico inválido
+        </small>
+
+        <!-- dominio inválido -->
+        <small
+          class="error"
+          *ngIf="
+            field.type === 'email' &&
+            form.get(field.name)?.errors?.['pattern'] &&
+            form.get(field.name)?.touched
+          ">
+          El correo debe terminar en .com
+        </small>
+
+      </div>
+    </div>
+
+    <!-- ================= ACTIONS ================= -->
+    <div class="form-actions">
+      <button
+        type="button"
+        class="btn-cancel"
+        (click)="onCancelar()">
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        class="btn-submit"
+        [disabled]="form.invalid">
+        Guardar
+      </button>
+    </div>
+
+  </form>
+</div>

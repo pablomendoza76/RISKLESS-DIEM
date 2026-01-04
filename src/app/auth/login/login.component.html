@@ -14,7 +14,9 @@
         <h1>Hola Usuario</h1>
         <p class="subtitle">Bienvenido a Riskless</p>
 
-        <form (ngSubmit)="login()">
+        <!-- IMPORTANTE: ngSubmit + novalidate -->
+        <form (ngSubmit)="login()" novalidate>
+
           <input
             type="email"
             placeholder="Email"
@@ -31,11 +33,18 @@
             required
           />
 
-          <button type="submit" [disabled]="loading">
-            {{ loading ? 'Logging in…' : 'Login' }}
+          <button
+            type="submit"
+            [disabled]="loading"
+          >
+            {{ loading ? 'Ingresando…' : 'Login' }}
           </button>
 
-          <p class="error" *ngIf="error">{{ error }}</p>
+          <!-- Error -->
+          <p class="error" *ngIf="error">
+            {{ error }}
+          </p>
+
         </form>
       </div>
     </div>

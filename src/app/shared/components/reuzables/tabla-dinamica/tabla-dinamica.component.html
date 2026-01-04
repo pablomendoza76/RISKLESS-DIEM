@@ -1,19 +1,19 @@
 <div class="tabla-wrapper">
-
-  <!-- HEADER -->
   <div class="tabla-header">
-    <input
-      type="text"
-      placeholder="Buscar..."
-      [(ngModel)]="textoBusqueda"
-      (input)="buscar()"
-      class="input-busqueda"
-    />
+    <div class="busqueda-wrapper">
+      <input
+        type="text"
+        placeholder="Buscar..."
+        [(ngModel)]="textoBusqueda"
+        (input)="buscar()"
+        class="input-busqueda"
+      />
+    </div>
 
-    <div class="botones">
+    <div class="botones-top">
       <button
-        *ngFor="let btn of botones"
-        [ngClass]="btn.tipo || 'primary'"
+        *ngFor="let btn of botonesGlobales" 
+        class="btn-tabla primary"
         (click)="emitir(btn.evento)"
       >
         {{ btn.texto }}
@@ -21,34 +21,35 @@
     </div>
   </div>
 
-  <!-- TABLA -->
-  <table>
-    <thead>
-      <tr>
-        <th *ngFor="let col of columnas">
-          {{ col.label }}
-        </th>
-        <th *ngIf="botones?.length">Acciones</th>
-      </tr>
-    </thead>
+  <div class="tabla-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th *ngFor="let col of columnas">{{ col.label }}</th>
+          <th class="text-right"></th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <tr *ngFor="let fila of dataFiltrada">
+          <td *ngFor="let col of columnas">
+            <span class="cell-text">{{ fila[col.key] }}</span>
+          </td>
 
-    <tbody>
-      <tr *ngFor="let fila of dataFiltrada">
-        <td *ngFor="let col of columnas">
-          {{ fila[col.key] }}
-        </td>
-
-        <td *ngIf="botones?.length">
-          <button
-            *ngFor="let btn of botones"
-            [ngClass]="btn.tipo || 'secondary'"
-            (click)="emitir(btn.evento, fila)"
-          >
-            {{ btn.texto }}
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
+          <td class="text-right">
+            <div class="acciones-container">
+              <button
+                *ngFor="let btn of botonesAccion" 
+                class="btn-accion-fila"
+                [ngClass]="btn.tipo"
+                (click)="emitir(btn.evento, fila)"
+              >
+                {{ btn.texto }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

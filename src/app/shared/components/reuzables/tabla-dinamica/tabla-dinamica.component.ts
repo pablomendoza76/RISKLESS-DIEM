@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -6,6 +7,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 export interface ColumnaTabla {
   key: string;
@@ -14,12 +16,15 @@ export interface ColumnaTabla {
 
 export interface BotonTabla {
   texto: string;
-  tipo?: 'primary' | 'secondary' | 'danger';
+  // Añadimos 'activate' y 'success' para soportar los estilos iOS/Riskless
+  tipo?: 'primary' | 'secondary' | 'danger' | 'activate' | 'success'; 
   evento: string;
 }
 
 @Component({
   selector: 'app-tabla-dinamica',
+  standalone: true, // Asegura compatibilidad con imports
+  imports: [CommonModule, FormsModule],
   templateUrl: './tabla-dinamica.component.html',
   styleUrls: ['./tabla-dinamica.component.scss'],
 })
@@ -37,10 +42,36 @@ export class TablaDinamicaComponent implements OnChanges {
   textoBusqueda = '';
   dataFiltrada: any[] = [];
 
+  // Propiedades para separar los botones visualmente en el HTML
+  botonesGlobales: BotonTabla[] = [];
+  botonesAccion: BotonTabla[] = [];
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data']) {
       this.dataFiltrada = [...this.data];
     }
+    
+    // Clasificamos los botones cada vez que cambian
+    if (changes['botones']) {
+      this.clasificarBotones();
+    }
+  }
+
+  /**
+   * Clasifica los botones según su texto para decidir dónde se muestran.
+   * Si el texto es "Editar", "Activar" o "Desactivar", va a la tabla.
+   * Cualquier otro (como "+ Nuevo") va al header.
+   */
+  private clasificarBotones(): void {
+    const palabrasAccion = ['editar', 'desactivar', 'activar', 'eliminar'];
+
+    this.botonesGlobales = this.botones.filter(btn => 
+      !palabrasAccion.includes(btn.texto.toLowerCase())
+    );
+
+    this.botonesAccion = this.botones.filter(btn => 
+      palabrasAccion.includes(btn.texto.toLowerCase())
+    );
   }
 
   buscar(): void {

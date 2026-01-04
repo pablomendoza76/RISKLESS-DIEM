@@ -1,28 +1,27 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { UsuarioPerfilConRol } from '../services/usuarios.service';
+// import { Injectable } from '@angular/core';
+// import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
 
-@Injectable({ providedIn: 'root' })
-export class RolGuard implements CanActivate {
+// @Injectable({ providedIn: 'root' })
+// export class RolGuard implements CanActivate {
 
-  constructor(private router: Router) {}
+//   constructor(private router: Router) {}
 
-  canActivate(): boolean {
+//   canActivate(route: ActivatedRouteSnapshot): boolean {
 
-    const raw = localStorage.getItem('usuario');
+//     const usuarioRaw = localStorage.getItem('usuario');
+//     if (!usuarioRaw) {
+//       this.router.navigate(['/login']);
+//       return false;
+//     }
 
-    if (!raw) {
-      this.router.navigate(['/login']);
-      return false;
-    }
+//     const usuario = JSON.parse(usuarioRaw);
+//     const rolEsperado = route.data['rol'];
 
-    const usuario: UsuarioPerfilConRol = JSON.parse(raw);
+//     if (!usuario.rol || usuario.rol.nombre !== rolEsperado) {
+//       this.router.navigate(['/login']);
+//       return false;
+//     }
 
-    if (!usuario.rol || usuario.rol.nombre !== 'Administrador') {
-      this.router.navigate(['/login']);
-      return false;
-    }
-
-    return true;
-  }
-}
+//     return true;
+//   }
+// }

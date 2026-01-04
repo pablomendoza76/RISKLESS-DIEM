@@ -229,3 +229,104 @@ where correo = 'gerente@demo.com';
 update usuarios
 set contrasena = 'asesor123'99
 where correo = 'asesor@demo.com';
+
+drop policy if exists "Acceso autenticado" on roles;
+drop policy if exists "Acceso autenticado" on usuarios;
+drop policy if exists "Acceso autenticado" on asegurados;
+drop policy if exists "Acceso autenticado" on bienes;
+drop policy if exists "Acceso autenticado" on polizas;
+drop policy if exists "Acceso autenticado" on clausulas;
+drop policy if exists "Acceso autenticado" on poliza_clausula;
+drop policy if exists "Acceso autenticado" on siniestros;
+drop policy if exists "Acceso autenticado" on pedidos;
+drop policy if exists "Acceso autenticado" on documentos;
+
+-- USUARIOS
+create policy "dev_full_access" on usuarios
+for all to authenticated
+using (true) with check (true);
+
+-- ROLES
+create policy "dev_full_access" on roles
+for all to authenticated
+using (true) with check (true);
+
+-- ASEGURADOS
+create policy "dev_full_access" on asegurados
+for all to authenticated
+using (true) with check (true);
+
+-- BIENES
+create policy "dev_full_access" on bienes
+for all to authenticated
+using (true) with check (true);
+
+-- POLIZAS
+create policy "dev_full_access" on polizas
+for all to authenticated
+using (true) with check (true);
+
+-- CLAUSULAS
+create policy "dev_full_access" on clausulas
+for all to authenticated
+using (true) with check (true);
+
+-- POLIZA_CLAUSULA
+create policy "dev_full_access" on poliza_clausula
+for all to authenticated
+using (true) with check (true);
+
+-- SINIESTROS
+create policy "dev_full_access" on siniestros
+for all to authenticated
+using (true) with check (true);
+
+-- PEDIDOS
+create policy "dev_full_access" on pedidos
+for all to authenticated
+using (true) with check (true);
+
+-- DOCUMENTOS
+create policy "dev_full_access" on documentos
+for all to authenticated
+using (true) with check (true);
+
+alter table usuarios
+alter column id set default auth.uid();
+
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+as $$
+begin
+  insert into public.usuarios (id, correo, rol_id)
+  values (
+    new.id,
+    new.email,
+    (select id from roles where nombre = 'Asesor' limit 1)
+  );
+  return new;
+end;
+$$;
+create trigger on_auth_user_created
+after insert on auth.users
+for each row execute procedure public.handle_new_user();
+
+alter table usuarios
+drop constraint usuarios_id_fkey;
+
+alter table usuarios
+alter column id drop default;
+
+alter table usuarios
+alter column id set default gen_random_uuid();
+
+drop policy if exists dev_full_access on usuarios;
+
+create policy dev_full_access on usuarios
+for all
+using (true)
+with check (true);
+
+

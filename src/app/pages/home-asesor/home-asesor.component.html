@@ -1,1 +1,14 @@
-<p>home-asesor works!</p>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <app-sidebar
+    [title]="sidebarTitle"
+    [items]="sidebarItems">
+  </app-sidebar>
+
+  <!-- CONTENIDO -->
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

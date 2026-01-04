@@ -7,7 +7,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { HomeAdminComponent } from './pages/home-admin/home-admin.component';
 import { HomeGerenteComponent } from './pages/home-gerente/home-gerente.component';
 import { HomeAsesorComponent } from './pages/home-asesor/home-asesor.component';
-import { RolGuard } from './guards/rol.guard';
+// import { RolGuard } from './guards/rol.guard';
 
 export const routes: Routes = [
   // Default
@@ -27,7 +27,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: HomeAdminComponent,
-    canActivate: [RolGuard],
+    // canActivate: [RolGuard],
     data: { rol: 'Administrador' },
   },
 
@@ -35,7 +35,7 @@ export const routes: Routes = [
   {
     path: 'gerente',
     component: HomeGerenteComponent,
-    canActivate: [RolGuard],
+    // canActivate: [RolGuard],
     data: { rol: 'Gerente' },
   },
 
@@ -43,7 +43,7 @@ export const routes: Routes = [
   {
     path: 'asesor',
     component: HomeAsesorComponent,
-    canActivate: [RolGuard],
+    // canActivate: [RolGuard],
     data: { rol: 'Asesor' },
   },
 

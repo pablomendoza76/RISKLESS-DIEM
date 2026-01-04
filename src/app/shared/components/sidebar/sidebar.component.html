@@ -43,11 +43,10 @@
 
   </nav>
 
-  <!-- FOOTER -->
-  <div class="sidebar-footer">
-    <span>Facebook</span>
-    <span>Twitter</span>
-    <span>Google</span>
+  <!-- ================= CERRAR SESIÓN ================= -->
+  <div class="sidebar-logout" (click)="logout.emit()">
+    <mat-icon>logout</mat-icon>
+    <span>Cerrar sesión</span>
   </div>
 
 </aside>
