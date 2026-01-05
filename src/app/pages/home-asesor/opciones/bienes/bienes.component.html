@@ -1,1 +1,38 @@
-<p>bienes works!</p>
+<div class="bienes-container">
+
+  <!-- ================= HEADER ================= -->
+  <div class="header-seccion">
+
+    <!-- GRUPO IZQUIERDO: TÍTULO + TOTAL -->
+    <div class="title-group">
+      <h2>Listado de bienes</h2>
+
+      <div class="total-badge-card">
+        <span>Total</span>
+        <strong>{{ mapper.totalBienes }}</strong>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= TABLA ================= -->
+  <div class="table-wrapper">
+    <app-tabla-dinamica
+      [columnas]="mapper.columnas"
+      [data]="mapper.bienes"
+      [botones]="mapper.botones"
+      (accion)="mapper.manejarAccion($event)">
+    </app-tabla-dinamica>
+  </div>
+
+  <!-- ================= FORMULARIO ================= -->
+  <app-dynamic-form
+    *ngIf="mapper.mostrarFormulario"
+    [titulo]="mapper.modoFormulario === 'crear' ? 'Nuevo bien' : 'Editar bien'"
+    [fields]="mapper.fields"
+    [initialData]="mapper.bienSeleccionado"
+    (formSubmit)="mapper.recibirFormulario($event)"
+    (cancelar)="mapper.cerrarFormulario()">
+  </app-dynamic-form>
+
+</div>

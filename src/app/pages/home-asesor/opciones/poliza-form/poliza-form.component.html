@@ -1,0 +1,161 @@
+<div class="poliza-form-container">
+
+  <!-- ================= HEADER ================= -->
+  <div class="header-form">
+    <h2>Nueva póliza</h2>
+    <p class="subtitle">
+      Complete la información de la póliza, agregue sus cláusulas y suba documentos de respaldo.
+    </p>
+  </div>
+
+  <!-- ================= FORMULARIO PRINCIPAL ================= -->
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+
+    <!-- ================= DATOS PÓLIZA ================= -->
+    <section class="section-card">
+
+      <h3 class="section-title">Datos de la póliza</h3>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Número de póliza</label>
+          <input type="text" formControlName="num_poliza" />
+        </div>
+
+        <div class="form-group">
+          <label>Aseguradora</label>
+          <input type="text" formControlName="aseguradora" />
+        </div>
+
+        <div class="form-group">
+          <label>Valor asegurado</label>
+          <input type="number" formControlName="valor_asegurado" />
+        </div>
+
+        <div class="form-group">
+          <label>Estado</label>
+          <select formControlName="estado">
+            <option value="Activa">Activa</option>
+            <option value="Vencida">Vencida</option>
+            <option value="Cancelada">Cancelada</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Fecha inicio</label>
+          <input type="date" formControlName="fecha_inicio" />
+        </div>
+
+        <div class="form-group">
+          <label>Fecha fin</label>
+          <input type="date" formControlName="fecha_fin" />
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= CLÁUSULAS ================= -->
+    <section class="section-card">
+
+      <div class="section-header">
+        <h3 class="section-title">Cláusulas</h3>
+
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="agregarClausula()">
+          + Agregar cláusula
+        </button>
+      </div>
+
+      <div
+        class="clausulas-grid"
+        formArrayName="clausulas">
+
+        <div
+          class="clausula-card"
+          *ngFor="let clausula of clausulas.controls; let i = index"
+          [formGroupName]="i">
+
+          <div class="form-group">
+            <label>Título</label>
+            <input type="text" formControlName="titulo" />
+          </div>
+
+          <div class="form-group">
+            <label>Descripción</label>
+            <textarea
+              rows="3"
+              formControlName="descripcion">
+            </textarea>
+          </div>
+
+          <button
+            type="button"
+            class="btn-danger btn-small"
+            (click)="eliminarClausula(i)">
+            Eliminar
+          </button>
+
+        </div>
+
+        <p class="empty" *ngIf="clausulas.length === 0">
+          No se han agregado cláusulas.
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- ================= DOCUMENTOS ================= -->
+    <section class="section-card">
+
+      <h3 class="section-title">Documentos de respaldo</h3>
+      <p class="section-help">
+        Puede subir contratos, anexos, informes u otros documentos relacionados.
+      </p>
+
+      <div class="upload-box">
+        <input
+          type="file"
+          multiple
+          (change)="onFilesSelected($event)" />
+      </div>
+
+      <ul class="documentos-list">
+        <li *ngFor="let file of archivos">
+          {{ file.name }}
+          <button
+            type="button"
+            class="btn-danger btn-small"
+            (click)="quitarArchivo(file)">
+            Quitar
+          </button>
+        </li>
+
+        <li *ngIf="archivos.length === 0" class="empty">
+          No hay documentos seleccionados.
+        </li>
+      </ul>
+
+    </section>
+
+    <!-- ================= ACCIONES ================= -->
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">
+        Guardar póliza
+      </button>
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="cancelar()">
+        Cancelar
+      </button>
+    </div>
+
+  </form>
+
+</div>

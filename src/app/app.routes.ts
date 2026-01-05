@@ -9,6 +9,7 @@ import { BienesComponent } from './pages/home-asesor/opciones/bienes/bienes.comp
 import { PedidosComponent } from './pages/home-asesor/opciones/pedidos/pedidos.component';
 import { PolizasComponent } from './pages/home-asesor/opciones/polizas/polizas.component';
 import { SiniestrosComponent } from './pages/home-asesor/opciones/siniestros/siniestros.component';
+import { PolizaFormComponent } from './pages/home-asesor/opciones/poliza-form/poliza-form.component';
 
 
 
@@ -46,6 +47,7 @@ export const routes: Routes = [
       { path: 'asegurados', component: AseguradosComponent },
       { path: 'bienes', component: BienesComponent },
       { path: 'polizas', component: PolizasComponent },
+      { path: 'polizas_crear', component: PolizaFormComponent },
       { path: 'sinistros', component: SiniestrosComponent },
       { path: 'pedidos', component: PedidosComponent },
 

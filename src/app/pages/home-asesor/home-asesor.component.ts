@@ -62,7 +62,7 @@ sidebarItems: SidebarItem[] = [
       {
         label: 'Nueva póliza',
         icon: 'add',
-        route: '/asesor/polizas/nueva'
+        route: '/asesor/polizas_crear'
       }
     ]
   },

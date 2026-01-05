@@ -16,7 +16,7 @@ import {
 } from '@angular/forms';
 
 export interface DynamicField {
-  type: 'text' | 'number' | 'select' | 'file' | 'email' | 'password';
+  type: 'text' | 'number' | 'select' | 'file' | 'email' | 'password' | 'date';
   name: string;
   label: string;
   required?: boolean;

@@ -1,1 +1,38 @@
-<p>polizas works!</p>
+<div class="polizas-container">
+
+  <!-- ================= HEADER ================= -->
+  <div class="header-seccion">
+
+    <!-- GRUPO IZQUIERDO: TÍTULO + TOTAL -->
+    <div class="title-group">
+      <h2>Listado de pólizas</h2>
+
+      <div class="total-badge-card">
+        <span>Total</span>
+        <strong>{{ mapper.totalPolizas }}</strong>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= TABLA ================= -->
+  <div class="table-wrapper">
+    <app-tabla-dinamica
+      [columnas]="mapper.columnas"
+      [data]="mapper.polizas"
+      [botones]="mapper.botones"
+      (accion)="mapper.manejarAccion($event)">
+    </app-tabla-dinamica>
+  </div>
+
+  <!-- ================= FORMULARIO ================= -->
+  <app-dynamic-form
+    *ngIf="mapper.mostrarFormulario"
+    [titulo]="mapper.modoFormulario === 'crear' ? 'Nueva póliza' : 'Editar póliza'"
+    [fields]="mapper.fields"
+    [initialData]="mapper.polizaSeleccionada"
+    (formSubmit)="mapper.recibirFormulario($event)"
+    (cancelar)="mapper.cerrarFormulario()">
+  </app-dynamic-form>
+
+</div>

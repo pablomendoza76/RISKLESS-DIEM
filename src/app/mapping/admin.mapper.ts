@@ -128,7 +128,7 @@ export class AdminMapper {
         name: 'rol_id',
         label: 'Rol',
         required: true,
-        options: this.roles, // 👈 dinámico desde BD
+        options: this.roles,
       },
     ];
   }
