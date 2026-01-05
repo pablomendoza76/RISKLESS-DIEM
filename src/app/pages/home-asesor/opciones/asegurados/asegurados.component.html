@@ -1,1 +1,41 @@
-<p>asegurados works!</p>
+<div class="asegurados-container">
+
+  <!-- ================= HEADER ================= -->
+  <div class="header-seccion">
+
+    <!-- GRUPO IZQUIERDO: TÍTULO + TOTAL -->
+    <div class="title-group">
+      <h2>Listado de asegurados</h2>
+
+      <div class="total-badge-card">
+        <span>Total</span>
+        <strong>{{ mapper.totalAsegurados }}</strong>
+      </div>
+    </div>
+
+    
+  </div>
+
+
+
+  <!-- ================= TABLA ================= -->
+  <div class="table-wrapper">
+    <app-tabla-dinamica
+      [columnas]="mapper.columnas"
+      [data]="mapper.asegurados"
+      [botones]="mapper.botones"
+      (accion)="mapper.manejarAccion($event)">
+    </app-tabla-dinamica>
+  </div>
+
+  <!-- ================= FORMULARIO ================= -->
+  <app-dynamic-form
+    *ngIf="mapper.mostrarFormulario"
+    [titulo]="mapper.modoFormulario === 'crear' ? 'Nuevo asegurado' : 'Editar asegurado'"
+    [fields]="mapper.fields"
+    [initialData]="mapper.aseguradoSeleccionado"
+    (formSubmit)="mapper.recibirFormulario($event)"
+    (cancelar)="mapper.cerrarFormulario()">
+  </app-dynamic-form>
+
+</div>

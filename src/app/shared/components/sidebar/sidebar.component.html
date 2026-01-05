@@ -44,9 +44,12 @@
   </nav>
 
   <!-- ================= CERRAR SESIÓN ================= -->
-  <div class="sidebar-logout" (click)="logout.emit()">
-    <mat-icon>logout</mat-icon>
+<div class="sidebar-footer">
+  <div class="logout-item" (click)="logout.emit()">
+    <mat-icon class="icon-logout">logout</mat-icon>
     <span>Cerrar sesión</span>
   </div>
+</div>
+
 
 </aside>

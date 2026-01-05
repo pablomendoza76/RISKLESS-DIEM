@@ -32,9 +32,7 @@ export class UsuariosService {
     private gateway: SupabaseGatewayService
   ) {}
 
-  /* =========================
-     LOGIN
-  ========================= */
+  /*  LOGIN*/
   login(
     correo: string,
     contrasena: string
@@ -68,9 +66,7 @@ export class UsuariosService {
     });
   }
 
-  /* =========================
-     LISTAR
-  ========================= */
+  /*  LISTAR*/
   listar(): Promise<UsuarioPerfilConRol[]> {
     return this.gateway.ejecutar(async () => {
       const res = await this.sb.client
@@ -97,9 +93,7 @@ export class UsuariosService {
     }, { silent: true });
   }
 
-  /* =========================
-     OBTENER POR ID
-  ========================= */
+  /*  OBTENER POR ID*/
   obtenerPorId(id: string): Promise<UsuarioPerfilConRol> {
     return this.gateway.ejecutar(async () => {
       const res = await this.sb.client
@@ -127,9 +121,7 @@ export class UsuariosService {
     });
   }
 
-  /* =========================
-     CREAR PERFIL
-  ========================= */
+  /*  CREAR PERFIL*/
   crearPerfil(
   payload: Omit<UsuarioPerfil, 'created_at'>
 ): Promise<UsuarioPerfil> {
@@ -160,9 +152,7 @@ export class UsuariosService {
 }
 
 
-  /* =========================
-     EDITAR PERFIL
-  ========================= */
+  /*  EDITAR PERFIL*/
   editarPerfil(
     id: string,
     cambios: Partial<UsuarioPerfil>
@@ -180,9 +170,7 @@ export class UsuariosService {
     }, { successMessage: 'Usuario actualizado correctamente' });
   }
 
-  /* =========================
-     DESACTIVAR
-  ========================= */
+  /*  DESACTIVAR*/
   desactivar(id: string): Promise<void> {
     return this.gateway.ejecutar(async () => {
       const res = await this.sb.client
@@ -194,9 +182,7 @@ export class UsuariosService {
     }, { successMessage: 'Usuario desactivado' });
   }
 
-  /* =========================
-     ACTIVAR
-  ========================= */
+  /*  ACTIVAR*/
   activar(id: string): Promise<void> {
     return this.gateway.ejecutar(async () => {
       const res = await this.sb.client
@@ -208,9 +194,7 @@ export class UsuariosService {
     }, { successMessage: 'Usuario activado' });
   }
 
-  /* =========================
-     NORMALIZADOR CENTRAL
-  ========================= */
+  /*  NORMALIZADOR CENTRAL*/
   private mapUsuario(row: any): UsuarioPerfilConRol {
     return {
       id: row.id,

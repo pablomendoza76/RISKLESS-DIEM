@@ -1,0 +1,44 @@
+<div class="admin-topbar">
+
+  <!-- IZQUIERDA -->
+  <div class="topbar-left">
+    <span class="role-label">
+      {{ mensaje }}
+    </span>
+  </div>
+
+  <!-- DERECHA -->
+  <div class="topbar-right">
+
+    <!-- AVATAR -->
+    <div class="avatar clickable" (click)="toggleLogout()">
+      <span class="avatar-initials">
+        {{ iniciales }}
+      </span>
+    </div>
+
+    <!-- INFO -->
+    <div class="user-info">
+      <span class="user-name">{{ nombre }}</span>
+      <span class="user-role">{{ rol }}</span>
+    </div>
+
+    <!-- DROPDOWN LOGOUT -->
+    <div class="logout-backdrop" *ngIf="mostrarLogout">
+      <div class="logout-modal">
+        <h3>Cerrar sesión</h3>
+        <p>¿Deseas cerrar sesión y volver al inicio?</p>
+
+        <div class="logout-actions">
+          <button class="btn-cancel" (click)="toggleLogout()">
+            Cancelar
+          </button>
+          <button class="btn-danger" (click)="logout.emit()">
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

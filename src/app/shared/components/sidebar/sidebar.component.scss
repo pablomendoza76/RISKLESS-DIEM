@@ -1,177 +1,242 @@
 @use '../../styles/colores' as *;
 @use '../../styles/tipografia' as *;
 
+// Variables de Control Responsivo
+$sidebar-width: 260px;
+$sidebar-mobile-height: 70px;
+
 .sidebar {
-  width: 260px;
+  width: $sidebar-width;
   height: 100vh;
-  background: #06163a; // Azul muy oscuro de la imagen
+  max-height: 100vh;
+  background: $color-azul-oscuro; // Color primario Riskless
   display: flex;
   flex-direction: column;
-  color: #ffffff;
-  transition: all 0.3s ease;
-  padding: 1.5rem 0;
-}
+  color: $texto-claro;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  overflow: hidden;
+  position: fixed; // Fijo para control responsivo
+  left: 0;
+  top: 0;
+  z-index: 1000;
 
-/* ================= HEADER (LOGO TIPO U) ================= */
-.sidebar-header {
-  padding: 1rem 1.5rem 2rem;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  // Círculo dorado con inicial (Referencia U)
-  &::before {
-    content: 'U'; // Inicial dinámica según imagen
-    font-family: $font-poppins;
-    background: $color-dorado;
-    color: #ffffff;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
+  /* ================= HEADER ================= */
+  .sidebar-header {
+    padding: 1.5rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    font-weight: 700;
-  }
-
-  // Estilo para el texto "UTPL SEGUROS"
-  font-family: $font-poppins;
-  font-size: 1.1rem;
-  font-weight: 700;
-  line-height: 1.1;
-  color: #ffffff;
-  
-  // Subtítulo pequeño
-  &::after {
-    content: 'SEGUROS';
-    display: block;
-    font-size: 0.65rem;
-    font-weight: 400;
-    opacity: 0.6;
-    letter-spacing: 1px;
-    position: absolute;
-    margin-top: 2.2rem;
-    margin-left: 3.2rem;
-  }
-}
-
-/* ================= MENU ================= */
-.sidebar-menu {
-  flex: 1;
-  padding: 0 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-/* ITEM PRINCIPAL */
-.menu-main {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0.9rem 1.2rem;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.3s;
-  color: rgba(255, 255, 255, 0.7);
-
-  .icon {
-    font-size: 20px;
-  }
-
-  .label {
-    flex: 1;
-    font-size: 0.95rem;
-    font-family: $font-work-sans;
-    font-weight: 500;
-  }
-
-  .arrow {
-    font-size: 16px;
-    opacity: 0.5;
-  }
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
-  }
-
-  &.active {
-    background: rgba(255, 255, 255, 0.1); // Fondo translúcido de la imagen
-    color: #ffffff;
-    
-    .icon {
-      color: $color-azul-celeste; // Icono resalta en azul claro
-    }
-  }
-}
-
-/* ================= SUBMENU (ESTILO DASHED) ================= */
-.submenu {
-  margin-left: 2.2rem;
-  margin-top: 0.2rem;
-  padding-bottom: 0.5rem;
-  border-left: 1.5px dashed rgba(255, 255, 255, 0.2); // Línea punteada vertical
-}
-
-.submenu-item {
-  display: flex;
-  align-items: center;
-  padding: 0.7rem 1.5rem;
-  font-size: 0.9rem;
-  font-family: $font-work-sans;
-  color: rgba(255, 255, 255, 0.5);
-  text-decoration: none;
-  transition: 0.2s;
-  position: relative;
-
-  // Punto conector dorado para el activo
-  &.active {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    margin-right: 0.5rem;
+    gap: 12px;
+    flex-shrink: 0;
 
     &::before {
-      content: '';
-      position: absolute;
-      left: -1.5px;
-      width: 6px;
-      height: 6px;
-      background: $color-dorado;
-      border-radius: 50%;
-      transform: translateX(-50%);
+      content: 'U';
+      font-family: $font-poppins;
+      background: $color-dorado; // Acento Riskless
+      color: $color-azul-oscuro;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    font-family: $font-poppins;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: $texto-claro;
+    position: relative;
+    
+    &::after {
+      content: 'SEGUROS';
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 400;
+      opacity: 0.7;
+      color: $color-dorado;
+      letter-spacing: 1px;
+      margin-top: 0.2rem;
     }
   }
 
-  &:hover {
-    color: #ffffff;
-  }
-}
-
-/* ================= FOOTER (CERRAR SESIÓN) ================= */
-.sidebar-footer {
-  padding: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: rgba(255, 255, 255, 0.6);
-  cursor: pointer;
-  transition: 0.2s;
-  font-family: $font-poppins;
-  font-size: 0.9rem;
-
-  &:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.03);
+  /* ================= MENU CON SCROLL ================= */
+  .sidebar-menu {
+    flex: 1;
+    padding: 0 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba($color-dorado, 0.2) transparent;
+    
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-thumb {
+      background: rgba($color-dorado, 0.2);
+      border-radius: 10px;
+    }
   }
 
-  // Icono de salida
-  &::before {
-    content: 'logout';
-    font-family: 'Material Icons';
-    font-size: 20px;
+  .menu-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.9rem 1.2rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    color: rgba($texto-claro, 0.7);
+
+    .icon { font-size: 20px; }
+    .label { flex: 1; font-size: 0.95rem; font-family: $font-work-sans; font-weight: 500; }
+    .arrow { font-size: 16px; opacity: 0.5; }
+
+    &:hover {
+      background: rgba($color-dorado, 0.05);
+      color: $color-dorado;
+    }
+
+    &.active {
+      background: rgba($color-dorado, 0.1);
+      color: $color-dorado;
+      .icon { color: $color-azul-celeste; }
+    }
+  }
+
+  /* ================= SUBMENU ================= */
+  .submenu {
+    margin-left: 2.2rem;
+    margin-top: 0.2rem;
+    padding-bottom: 0.5rem;
+    border-left: 1.5px dashed rgba($color-dorado, 0.3);
+  }
+
+  .submenu-item {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+    font-family: $font-work-sans;
+    color: rgba($texto-claro, 0.6);
+    text-decoration: none;
+    transition: 0.2s;
+    position: relative;
+
+    &.active {
+      color: $color-dorado;
+      background: rgba($color-dorado, 0.05);
+      border-radius: 8px;
+      margin-right: 0.5rem;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: -1.5px;
+        width: 6px;
+        height: 6px;
+        background: $color-dorado;
+        border-radius: 50%;
+        transform: translateX(-50%);
+      }
+    }
+    &:hover { color: $color-dorado; }
+  }
+
+  /* ================= FOOTER (CERRAR SESIÓN) ================= */
+  .sidebar-footer {
+    flex-shrink: 0;
+    padding: 1.5rem 1rem;
+    border-top: 1px solid rgba($color-dorado, 0.1);
+    margin-top: auto;
+
+    .logout-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px;
+      color: rgba($texto-claro, 0.8);
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-family: $font-poppins;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: rgba($color-dorado, 0.05);
+
+      .icon-logout { font-size: 20px; }
+
+      &:hover {
+        color: $texto-claro;
+        background: $rojo-600; // Uso de rojo alerta Riskless
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba($fondo-oscuro, 0.4);
+
+        .icon-logout { transform: rotate(-15deg) translateX(3px); }
+      }
+    }
+  }
+
+  /* ================= RESPONSIVIDAD ================= */
+  
+  // Tablet
+  @media (max-width: 1024px) {
+    width: 80px;
+    
+    .sidebar-header {
+      padding: 1rem 0;
+      justify-content: center;
+      &::after, span { display: none; } // Oculta textos
+    }
+
+    .menu-main {
+      padding: 1rem;
+      justify-content: center;
+      .label, .arrow { display: none; }
+    }
+    
+    .submenu, .sidebar-footer span { display: none; }
+    .sidebar-footer .logout-item { padding: 0.75rem; width: 45px; height: 45px; }
+  }
+
+  // Móvil (Menú Hamburguesa)
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    max-height: $sidebar-mobile-height;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    
+    &.active {
+      max-height: 100vh;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      
+      .sidebar-menu, .sidebar-footer { display: flex; }
+    }
+
+    .sidebar-header {
+      padding: 0.8rem 0;
+      &::after, span { display: block; } // Re-mostrar en modo expandido móvil
+    }
+
+    .sidebar-menu, .sidebar-footer {
+      display: none; // Oculto hasta que se active el botón hamburguesa
+    }
+
+    // Botón Hamburguesa (requiere un elemento en el HTML)
+    .mobile-toggle {
+      display: block;
+      cursor: pointer;
+      font-size: 2rem;
+      color: $color-dorado;
+    }
   }
 }

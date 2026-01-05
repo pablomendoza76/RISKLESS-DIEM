@@ -1,14 +1,32 @@
-<div class="layout">
+<div class="home-layout">
 
-  <!-- SIDEBAR -->
-  <app-sidebar
-    [title]="sidebarTitle"
-    [items]="sidebarItems">
-  </app-sidebar>
+  <!-- COLUMNA IZQUIERDA -->
+  <aside class="sidebar-area">
+    <app-sidebar
+      [title]="sidebarTitle"
+      [items]="sidebarItems">
+    </app-sidebar>
+  </aside>
 
-  <!-- CONTENIDO -->
-  <div class="content">
-    <router-outlet></router-outlet>
-  </div>
+  <!-- COLUMNA DERECHA -->
+  <main class="main-area">
+
+    <!-- FILA SUPERIOR -->
+    <header class="topbar-area">
+      <app-admin-topbar
+        mensaje="¡ BIENVENIDO AL PANEL DE ASESOR !"
+        [nombre]="nombreUsuario"
+        [rol]="rolUsuario"
+        [iniciales]="inicialesUsuario"
+        (logout)="cerrarSesion()">
+      </app-admin-topbar>
+    </header>
+
+    <!-- FILA INFERIOR (DINÁMICA) -->
+    <section class="content-area">
+      <router-outlet></router-outlet>
+    </section>
+
+  </main>
 
 </div>

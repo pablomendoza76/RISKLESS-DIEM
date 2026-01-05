@@ -1,33 +1,29 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 
-
-
-
 import { HomeAdminComponent } from './pages/home-admin/home-admin.component';
 import { HomeGerenteComponent } from './pages/home-gerente/home-gerente.component';
 import { HomeAsesorComponent } from './pages/home-asesor/home-asesor.component';
-// import { RolGuard } from './guards/rol.guard';
+import { AseguradosComponent } from './pages/home-asesor/opciones/asegurados/asegurados.component';
+import { BienesComponent } from './pages/home-asesor/opciones/bienes/bienes.component';
+import { PedidosComponent } from './pages/home-asesor/opciones/pedidos/pedidos.component';
+import { PolizasComponent } from './pages/home-asesor/opciones/polizas/polizas.component';
+import { SiniestrosComponent } from './pages/home-asesor/opciones/siniestros/siniestros.component';
+
+
 
 export const routes: Routes = [
-  // Default
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
-  },
 
-  //  LOGIN
-  {
-    path: 'login',
-    component: LoginComponent,
-  },
+  // DEFAULT
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+
+  // LOGIN
+  { path: 'login', component: LoginComponent },
 
   // ADMIN
   {
     path: 'admin',
     component: HomeAdminComponent,
-    // canActivate: [RolGuard],
     data: { rol: 'Administrador' },
   },
 
@@ -35,21 +31,27 @@ export const routes: Routes = [
   {
     path: 'gerente',
     component: HomeGerenteComponent,
-    // canActivate: [RolGuard],
     data: { rol: 'Gerente' },
   },
 
-  // ASESOR
+  // ASESOR (RUTAS HIJAS)
   {
     path: 'asesor',
     component: HomeAsesorComponent,
-    // canActivate: [RolGuard],
     data: { rol: 'Asesor' },
+    children: [
+
+      { path: '', redirectTo: 'asegurados', pathMatch: 'full' },
+
+      { path: 'asegurados', component: AseguradosComponent },
+      { path: 'bienes', component: BienesComponent },
+      { path: 'polizas', component: PolizasComponent },
+      { path: 'sinistros', component: SiniestrosComponent },
+      { path: 'pedidos', component: PedidosComponent },
+
+    ],
   },
 
-  // CUALQUIER OTRA RUTA
-  {
-    path: '**',
-    redirectTo: 'login',
-  },
+  // CUALQUIER OTRA
+  { path: '**', redirectTo: 'login' },
 ];

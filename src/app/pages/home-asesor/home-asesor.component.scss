@@ -1,0 +1,34 @@
+.home-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr; // sidebar + contenido
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* SIDEBAR */
+.sidebar-area {
+  grid-column: 1 / 2;
+  height: 100vh;
+}
+
+/* COLUMNA DERECHA */
+.main-area {
+  grid-column: 2 / 3;
+  display: grid;
+  grid-template-rows: auto 1fr; // topbar + contenido
+  height: 100vh;
+  background: #f6f7fb;
+}
+
+/* TOPBAR */
+.topbar-area {
+  grid-row: 1 / 2;
+  z-index: 10;
+}
+
+/* CONTENIDO */
+.content-area {
+  grid-row: 2 / 3;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
