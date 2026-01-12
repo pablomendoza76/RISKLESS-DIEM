@@ -290,21 +290,72 @@ export class SiniestrosMapper {
   /* =========================
     GUARDAR
   ========================= */
-  async recibirFormulario(form: FormGroup): Promise<void> {
+async recibirFormulario(form: FormGroup): Promise<void> {
 
-    try {
+  const v = form.value;
 
-      const v = form.value;
+  try {
 
-      // sincronizar archivos desde el formulario
-      this.archivos = Array.isArray(v.archivos) ? v.archivos : [];
+    // sincronizar archivos desde el formulario
+    this.archivos = Array.isArray(v.archivos) ? v.archivos : [];
 
-      if (this.modoFormulario === 'crear') {
+    /* =========================
+       CREAR SINIESTRO
+    ========================= */
+    if (this.modoFormulario === 'crear') {
 
-        const siniestro = await this.siniestrosService.crearDesdePedido({
-          pedido_id: v.pedido_id,
-          poliza_id: v.poliza_id,
-          fecha_siniestro: new Date().toISOString().substring(0, 10),
+      const siniestro = await this.siniestrosService.crearDesdePedido({
+        pedido_id: v.pedido_id,
+        poliza_id: v.poliza_id,
+        fecha_siniestro: new Date().toISOString().substring(0, 10),
+        monto_danio: v.monto_danio ? Number(v.monto_danio) : null,
+        deducible: v.deducible ? Number(v.deducible) : null,
+        descripcion_siniestro: v.descripcion_siniestro || null,
+        proveedor_nombre: v.proveedor_nombre || null,
+        proveedor_direccion: v.proveedor_direccion || null,
+        proveedor_telefono: v.proveedor_telefono || null,
+        proveedor_correo: v.proveedor_correo || null,
+      });
+
+      // subir archivos si existen
+      for (const file of this.archivos) {
+        await this.documentosService.subirDocumento(file, {
+          entidad: 'siniestro',
+          entidad_id: siniestro.id,
+          tipo_documento: 'Documento siniestro'
+        });
+      }
+
+      // enviar correo (NO afecta al flujo)
+      try {
+        const pdfBase64 = SiniestroPdfMapper.generar(siniestro);
+
+        await this.emailEdgeService.enviarCorreo({
+          to: 'pm572357@gmail.com',
+          subject: 'Notificación de siniestro',
+          html: '<p>Se ha registrado un nuevo siniestro.</p>',
+          attachments: [
+            {
+              filename: 'siniestro.pdf',
+              content: pdfBase64.split(',')[1],
+              encoding: 'base64'
+            }
+          ]
+        });
+      } catch (e) {
+        console.error('Error enviando correo', e);
+      }
+    }
+
+    /* =========================
+       EDITAR SINIESTRO
+    ========================= */
+    if (this.modoFormulario === 'editar' && this.siniestroSeleccionado) {
+
+      await this.siniestrosService.editar(
+        this.siniestroSeleccionado.id,
+        {
+          estado: v.estado,
           monto_danio: v.monto_danio ? Number(v.monto_danio) : null,
           deducible: v.deducible ? Number(v.deducible) : null,
           descripcion_siniestro: v.descripcion_siniestro || null,
@@ -312,63 +363,27 @@ export class SiniestrosMapper {
           proveedor_direccion: v.proveedor_direccion || null,
           proveedor_telefono: v.proveedor_telefono || null,
           proveedor_correo: v.proveedor_correo || null,
+        }
+      );
+
+      // subir nuevos archivos si existen
+      for (const file of this.archivos) {
+        await this.documentosService.subirDocumento(file, {
+          entidad: 'siniestro',
+          entidad_id: this.siniestroSeleccionado.id,
+          tipo_documento: 'Documento siniestro'
         });
-
-        // subir archivos solo si existen
-        for (const file of this.archivos) {
-          await this.documentosService.subirDocumento(file, {
-            entidad: 'siniestro',
-            entidad_id: siniestro.id,
-            tipo_documento: 'Documento siniestro'
-          });
-        }
-
-        // intentar enviar correo sin romper el flujo
-        try {
-          const pdfBase64 = SiniestroPdfMapper.generar(siniestro);
-
-          await this.emailEdgeService.enviarCorreo({
-            to: 'pm572357@gmail.com',
-            subject: 'Notificación de siniestro',
-            html: `
-  <div style="font-family: Arial, sans-serif; line-height: 1.5">
-    <h2 style="color:#1f2937">📄 Notificación de Siniestro</h2>
-
-    <p>Se ha registrado un <strong>nuevo siniestro</strong> en el sistema.</p>
-
-    <ul>
-      <li><strong>Pedido:</strong> ${v.pedido_id}</li>
-      <li><strong>Póliza:</strong> ${v.poliza_id}</li>
-      <li><strong>Fecha:</strong> ${new Date().toLocaleDateString()}</li>
-      <li><strong>Monto daño:</strong> ${v.monto_danio ?? 'No especificado'}</li>
-    </ul>
-
-    <p>Se adjunta el PDF del siniestro.</p>
-
-    <hr>
-    <small>Sistema de Gestión de Siniestros</small>
-  </div>
-`,
-            attachments: [
-              {
-                filename: 'siniestro.pdf',
-                content: pdfBase64.split(',')[1],
-                encoding: 'base64'
-              }
-            ]
-          });
-        } catch (e) {
-          console.error('Error enviando correo', e);
-        }
       }
-
-    } catch (e) {
-      console.error('Error creando siniestro', e);
-    } finally {
-      this.archivos = [];
-      this.cerrarFormulario(true);
     }
+
+  } catch (e) {
+    console.error('Error en formulario de siniestro', e);
+  } finally {
+    this.archivos = [];
+    this.cerrarFormulario(true);
   }
+}
+
 
 
 
