@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { SidebarComponent, SidebarItem } from '../../shared/components/sidebar/sidebar.component';
 import { AdminTopbarComponent } from '../../shared/components/reuzables/admin-topbar/admin-topbar.component';
+import { AuthService } from '../../services/presentación/auth.service';
 
 @Component({
   selector: 'app-home-asesor',
@@ -25,6 +27,8 @@ export class HomeAsesorComponent {
   nombreUsuario = 'Juan Pérez';
   rolUsuario = 'Asesor';
   inicialesUsuario = 'JP';
+
+  constructor(private auth: AuthService, private router: Router) {}
 
 sidebarItems: SidebarItem[] = [
 
@@ -93,8 +97,14 @@ sidebarItems: SidebarItem[] = [
 ];
 
 
-  cerrarSesion() {
-    console.log('Cerrar sesión asesor');
-    // aquí luego llamas a tu AuthService
+  async cerrarSesion() {
+    try {
+      await this.auth.logout();
+      this.router.navigate(['/login']);
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      // Forzar navegación incluso si hay error
+      this.router.navigate(['/login']);
+    }
   }
 }

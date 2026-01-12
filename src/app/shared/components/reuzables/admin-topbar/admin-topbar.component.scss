@@ -64,3 +64,102 @@
     color: $texto-terciario;
   }
 }
+
+/* ================= LOGOUT DROPDOWN ================= */
+
+.logout-backdrop {
+  position: absolute;
+  top: calc(100% + 12px); // Posición exacta debajo del avatar/info
+  right: 0;
+  z-index: 1000;
+}
+
+.logout-modal {
+  width: 220px;
+  background: $fondo-claro;
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid $gris-200;
+  box-shadow: 0 12px 30px rgba($color-azul-oscuro, 0.15);
+  animation: dropdownFade 0.2s ease-out;
+
+  // Pequeño triángulo indicador (opcional, estilo iOS)
+  &::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 20px;
+    width: 12px;
+    height: 12px;
+    background: $fondo-claro;
+    border-top: 1px solid $gris-200;
+    border-left: 1px solid $gris-200;
+    transform: rotate(45deg);
+  }
+
+  h3 {
+    font-family: $font-poppins;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $color-azul-oscuro;
+    margin-bottom: 0.4rem;
+  }
+
+  p {
+    font-size: 0.75rem;
+    color: $texto-terciario;
+    margin-bottom: 0.9rem;
+    line-height: 1.3;
+  }
+
+  .logout-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    button {
+      width: 100%;
+      padding: 0.45rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-family: $font-poppins;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-cancel {
+      background: $fondo-gris-suave;
+      border: 1px solid $gris-200;
+      color: $texto-principal;
+
+      &:hover {
+        background: darken($fondo-gris-suave, 3%);
+      }
+    }
+
+    .btn-danger {
+      background: rgba($color-dorado, 0.1);
+      border: 1px solid rgba($color-dorado, 0.3);
+      color: $color-azul-oscuro;
+
+      &:hover {
+        background: $color-dorado;
+        color: white;
+      }
+    }
+  }
+}
+
+/* ================= ANIMACIÓN ================= */
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

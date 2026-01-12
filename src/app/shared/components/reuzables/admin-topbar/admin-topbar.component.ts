@@ -21,5 +21,16 @@ export class AdminTopbarComponent {
 
   toggleLogout() {
     this.mostrarLogout = !this.mostrarLogout;
+    console.log('Mostrar logout:', this.mostrarLogout);
+  }
+
+  cerrarModalLogout() {
+    this.mostrarLogout = false;
+  }
+
+  confirmarLogout() {
+    console.log('Confirmar logout clicked');
+    this.logout.emit();
+    this.mostrarLogout = false;
   }
 }
