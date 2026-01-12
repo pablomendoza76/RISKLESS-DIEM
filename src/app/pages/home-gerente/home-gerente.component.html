@@ -1,61 +1,75 @@
-<div class="dashboard-wrapper">
+<div class="dashboard-container">
   
   <header class="dashboard-header">
-    <div class="header-content">
-      <h1>Panel de Control Gerencial</h1>
-      <button class="btn-logout" (click)="cerrarSesion()">
-        <mat-icon>logout</mat-icon> Salir
-      </button>
+    <div class="header-info">
+      <h1>Panel Gerencial</h1>
+      <p class="subtitle">Indicadores clave de rendimiento (KPIs)</p>
     </div>
+    <button class="btn-logout" (click)="cerrarSesion()">
+      <mat-icon>power_settings_new</mat-icon> Salir
+    </button>
   </header>
 
-  <main class="dashboard-content">
-    <div class="metrics-grid" *ngIf="!loading; else loadingTemplate">
+  <div *ngIf="loading" class="main-loader">
+    <div class="spinner"></div>
+    <p>Sincronizando datos...</p>
+  </div>
+
+  <main class="dashboard-body" *ngIf="!loading">
+    
+    <div class="kpi-grid">
+      <div class="kpi-card glass blue">
+        <div class="kpi-icon"><mat-icon>people</mat-icon></div>
+        <div class="kpi-content">
+          <span class="label">Asegurados</span>
+          <h2 class="value">{{ totalAsegurados }}</h2>
+        </div>
+      </div>
+
+      <div class="kpi-card glass green">
+        <div class="kpi-icon"><mat-icon>verified_user</mat-icon></div>
+        <div class="kpi-content">
+          <span class="label">Pólizas Activas</span>
+          <h2 class="value">{{ totalPolizas }}</h2>
+        </div>
+      </div>
+
+      <div class="kpi-card glass gold">
+        <div class="kpi-icon"><mat-icon>payments</mat-icon></div>
+        <div class="kpi-content">
+          <span class="label">Recaudación Total</span>
+          <h2 class="value">{{ totalRecaudado | currency }}</h2>
+        </div>
+      </div>
+
+      <div class="kpi-card glass red">
+        <div class="kpi-icon"><mat-icon>report_problem</mat-icon></div>
+        <div class="kpi-content">
+          <span class="label">Siniestros Críticos</span>
+          <h2 class="value">{{ siniestrosActivos }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
       
-      <div class="metric-card blue">
-        <mat-icon class="icon">people</mat-icon>
-        <div class="data">
-          <h3>{{ totalAsegurados }}</h3>
-          <p>Asegurados</p>
-        </div>
+      <div class="chart-container glass">
+        <h3>Evolución de Recaudación</h3>
+        <canvas baseChart
+          [data]="revenueChartData"
+          [type]="'bar'">
+        </canvas>
       </div>
 
-      <div class="metric-card green">
-        <mat-icon class="icon">verified_user</mat-icon>
-        <div class="data">
-          <h3>{{ totalPolizas }}</h3>
-          <p>Pólizas Totales</p>
-        </div>
-      </div>
-
-      <div class="metric-card gold">
-        <mat-icon class="icon">account_balance_wallet</mat-icon>
-        <div class="data">
-          <h3>{{ valorTotalAsegurado | currency }}</h3>
-          <p>Valor Asegurado</p>
-        </div>
-      </div>
-
-      <div class="metric-card red">
-        <mat-icon class="icon">error_outline</mat-icon>
-        <div class="data">
-          <h3>{{ siniestrosActivos }}</h3>
-          <p>Siniestros Activos</p>
-        </div>
-      </div>
-
-      <div class="metric-card purple">
-        <mat-icon class="icon">payments</mat-icon>
-        <div class="data">
-          <h3>{{ totalRecaudado | currency }}</h3>
-          <p>Recaudación Total</p>
-        </div>
+      <div class="chart-container glass">
+        <h3>Distribución de Siniestros</h3>
+        <canvas baseChart
+          [data]="claimsChartData"
+          [type]="'doughnut'">
+        </canvas>
       </div>
 
     </div>
 
-    <ng-template #loadingTemplate>
-      <div class="loader">Consultando datos en tiempo real...</div>
-    </ng-template>
   </main>
 </div>
