@@ -42,6 +42,8 @@ export class DynamicFormComponent
   @Input() fields: DynamicField[] = [];
   @Input() titulo: string = '';
   @Input() initialData: any | null = null;
+  @Input() embedded = false;
+
 
   @Output() cancelar = new EventEmitter<void>();
   @Output() formSubmit = new EventEmitter<FormGroup>();

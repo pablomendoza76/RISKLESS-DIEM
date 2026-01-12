@@ -1,0 +1,67 @@
+<div class="page-layout">
+
+  <div class="background-decor">
+    <span class="bubble bubble-1"></span>
+    <span class="bubble bubble-2"></span>
+    <span class="bubble bubble-3"></span>
+    <span class="bubble bubble-4"></span>
+    <span class="bubble bubble-5"></span>
+  </div>
+
+  <section class="welcome-section">
+    <div class="welcome-content">
+
+      <div class="welcome-icon animate-fade">
+        <span class="material-icons">assignment</span>
+      </div>
+
+      <h1 class="welcome-title animate-slide">
+        Bienvenido al módulo de Pedidos
+      </h1>
+
+      <p class="welcome-text animate-fade-delay">
+        Desde aquí puede registrar rápidamente un nuevo pedido del sistema,
+        adjuntar documentos y procesar la información de forma segura.
+      </p>
+
+      <div class="welcome-actions">
+        <button 
+          class="btn-primary animate-pop" 
+          (click)="mapper.crearPedido(); scrollToForm()">
+          Registrar nuevo pedido
+        </button>
+      </div>
+
+    </div>
+
+    <div class="wave-divider">
+      <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+        <path 
+          d="M0,40 C320,100 420,0 740,40 C1060,80 1120,20 1440,40 L1440,100 L0,100 Z" 
+          fill="#f8f8f8"> </path>
+      </svg>
+    </div>
+  </section>
+
+  <section 
+    class="form-section-container" 
+    id="formulario-destino"
+    *ngIf="mapper.mostrarFormulario">
+
+    <div class="integrated-form-wrapper animate-slide-up">
+      
+      <app-dynamic-form
+        [titulo]="mapper.modoFormulario === 'crear' ? 'Nuevo pedido' : 'Editar pedido'"
+        [fields]="mapper.fields"
+        [initialData]="mapper.pedidoSeleccionado"
+        (valueChange)="mapper.manejarCambioFormulario($event)"
+        (formSubmit)="mapper.recibirFormulario($event.value)"
+        (filesSelected)="mapper.archivos = $event"
+        (cancelar)="mapper.cerrarFormulario()">
+      </app-dynamic-form>
+
+    </div>
+
+  </section>
+
+</div>

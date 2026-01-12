@@ -1,0 +1,143 @@
+/* VARIABLES (Asegurando colores) */
+$color-azul-oscuro: #062140;
+$color-dorado: #C6AF6B;
+$color-azul-celeste: #3891F4;
+$fondo-gris-suave: #f8f8f8;
+$blanco: #ffffff;
+
+/* LAYOUT GLOBAL */
+.page-layout {
+  min-height: 100vh;
+  background-color: $fondo-gris-suave;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* DECORACIÓN FONDO */
+.background-decor {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 80vh;
+  overflow: hidden; z-index: 0; pointer-events: none;
+  .bubble {
+    position: absolute; border-radius: 50%; opacity: 0.1;
+    background: linear-gradient(135deg, $color-azul-celeste, $color-azul-oscuro);
+    &.bubble-1 { width: 400px; height: 400px; top: -100px; left: -100px; }
+    &.bubble-2 { width: 200px; height: 200px; top: 20%; right: 10%; background: $color-dorado; opacity: 0.08; }
+  }
+}
+
+/* SECCIÓN BIENVENIDA (Azul) */
+.welcome-section {
+  position: relative;
+  background: linear-gradient(170deg, $color-azul-oscuro 0%, lighten($color-azul-oscuro, 8%) 100%);
+  color: #fff;
+  padding: 4rem 2rem 10rem; /* Espacio extra abajo para que el form suba */
+  text-align: center;
+  z-index: 1;
+
+  .welcome-content {
+    max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+    
+    .welcome-icon {
+      width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      .material-icons { font-size: 3rem; color: $color-dorado; }
+    }
+    
+    .welcome-title { font-size: 2.5rem; font-weight: 700; color: #fff; margin: 0; }
+    .welcome-text { font-size: 1.1rem; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0; }
+    
+    .btn-primary {
+      background: $color-dorado; color: $color-azul-oscuro; font-weight: 700;
+      padding: 1rem 3rem; border-radius: 50px; border: none; cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: transform 0.2s;
+      &:hover { transform: translateY(-3px); background: lighten($color-dorado, 5%); }
+    }
+  }
+
+  .wave-divider {
+    position: absolute; bottom: -1px; left: 0; width: 100%; line-height: 0;
+    svg { width: 100%; height: 100px; }
+  }
+}
+
+/* =================================================================
+   SECCIÓN FORMULARIO (INTEGRACIÓN)
+   ================================================================= */
+.form-section-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  padding: 0 1.5rem 4rem; /* Padding lateral y bottom */
+  
+  /* MARGEN NEGATIVO: Esto hace que el formulario suba sobre la parte azul */
+  margin-top: -6rem; 
+
+  /* Wrapper de la tarjeta blanca */
+  .integrated-form-wrapper {
+    max-width: 1200px; /* Ancho máximo amplio */
+    margin: 0 auto;
+    background: $blanco;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(6, 33, 64, 0.15); /* Sombra elegante */
+    border-top: 6px solid $color-azul-celeste; /* Detalle de marca */
+    overflow: hidden; /* Asegura que el contenido respete los bordes */
+    
+    /* Animación de entrada */
+    opacity: 0;
+    animation: slideUpCard 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* =======================================================
+     MAGIC FIX: RESETEAR EL COMPONENTE DYNAMIC-FORM
+     ======================================================= */
+  ::ng-deep app-dynamic-form {
+    
+    /* 1. Quitamos el Overlay (Fondo oscuro fijo) */
+    .dynamic-form {
+      position: static !important;
+      inset: auto !important;
+      background: transparent !important;
+      backdrop-filter: none !important;
+      padding: 0 !important;
+      width: 100% !important;
+      height: auto !important;
+      display: block !important;
+      animation: none !important;
+    }
+
+    /* 2. Reseteamos la "Ventana Modal" interna */
+    form {
+      /* Le decimos que ocupe todo el espacio de nuestro wrapper .integrated-form-wrapper */
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      background: transparent !important; /* El fondo ya lo tiene el wrapper padre */
+      box-shadow: none !important; /* La sombra ya la tiene el wrapper padre */
+      border-radius: 0 !important;
+      animation: none !important;
+      max-height: none !important;
+    }
+    
+    /* 3. Ajustes de espaciado interno */
+    .form-header { padding: 2rem 3rem !important; }
+    .form-body { padding: 2rem 3rem !important; max-height: none !important; overflow: visible !important; }
+    .form-actions { padding: 2rem 3rem !important; background: transparent !important; }
+  }
+}
+
+/* ANIMACIONES */
+@keyframes slideUpCard {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .welcome-section { padding-bottom: 5rem; }
+  .form-section-container { margin-top: -3rem; padding: 0 1rem 2rem; }
+  ::ng-deep .form-header, ::ng-deep .form-body, ::ng-deep .form-actions {
+    padding: 1.5rem !important;
+  }
+}
