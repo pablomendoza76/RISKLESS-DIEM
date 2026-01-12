@@ -12,6 +12,7 @@ import {
 } from '../shared/components/reuzables/tabla-dinamica/tabla-dinamica.component';
 
 import { Pedido } from '../interfaces/pedido.model';
+import { DocumentosService } from '../services/documentos.service';
 
 @Injectable({ providedIn: 'root' })
 export class PedidosMapper {
@@ -64,7 +65,8 @@ export class PedidosMapper {
   constructor(
     private pedidosService: PedidosService,
     private aseguradosService: AseguradosService,
-    private bienesService: BienesService
+    private bienesService: BienesService,
+     private documentosService: DocumentosService
   ) {}
 
   /* =========================
@@ -300,32 +302,90 @@ definirCamposCrear(): void {
   /* =========================
      SUBMIT
   ========================= */
-  async recibirFormulario(v: any): Promise<void> {
+async recibirFormulario(v: any): Promise<void> {
 
-    if (this.modoFormulario === 'crear') {
+  console.log('INICIO recibirFormulario');
+  console.log('Modo formulario:', this.modoFormulario);
+  console.log('Archivos recibidos en mapper:', this.archivos);
 
-      const usuario = JSON.parse(localStorage.getItem('usuario')!);
-      const aseguradoId = await this.resolverAsegurado(v);
-      const bienId = await this.resolverBien(v);
+  // CREAR PEDIDO
+  if (this.modoFormulario === 'crear') {
 
-      await this.pedidosService.crear({
-        usuario_id: usuario.id,
-        asegurado_id: aseguradoId,
-        bien_id: bienId,
-        descripcion: v.descripcion,
-        archivos: this.archivos
+    console.log('Entrando a CREAR');
+
+    const usuarioRaw = localStorage.getItem('usuario');
+    console.log('Usuario raw:', usuarioRaw);
+
+    const usuario = JSON.parse(usuarioRaw!);
+    console.log('Usuario parseado:', usuario);
+
+    // resolver asegurado
+    console.log('Resolviendo asegurado');
+    const aseguradoId = await this.resolverAsegurado(v);
+    console.log('Asegurado ID:', aseguradoId);
+
+    // resolver bien
+    console.log('Resolviendo bien');
+    const bienId = await this.resolverBien(v);
+    console.log('Bien ID:', bienId);
+
+    // crear pedido
+    console.log('Creando pedido');
+    const pedido = await this.pedidosService.crear({
+      usuario_id: usuario.id,
+      asegurado_id: aseguradoId,
+      bien_id: bienId,
+      descripcion: v.descripcion
+    });
+
+    console.log('Pedido creado:', pedido);
+
+    if (!pedido || !pedido.id) {
+      console.error('Pedido inválido, no tiene ID');
+      throw new Error('Pedido no creado');
+    }
+
+    // subir documentos
+    console.log('Iniciando subida de documentos');
+
+    if (!this.archivos.length) {
+      console.warn('No hay archivos para subir');
+    }
+
+    for (const file of this.archivos) {
+      console.log('Subiendo archivo:', {
+        nombre: file.name,
+        tipo: file.type,
+        size: file.size
       });
-    }
 
-    if (this.modoFormulario === 'editar' && this.pedidoSeleccionado) {
-      await this.pedidosService.editar(
-        this.pedidoSeleccionado.id,
-        { descripcion: v.descripcion }
-      );
-    }
+      await this.documentosService.subirDocumento(file, {
+        entidad: 'pedido',
+        entidad_id: pedido.id,
+        tipo_documento: 'Documento pedido'
+      });
 
-    this.cerrarFormulario(true);
+      console.log('Archivo subido:', file.name);
+    }
   }
+
+  // EDITAR PEDIDO
+  if (this.modoFormulario === 'editar' && this.pedidoSeleccionado) {
+
+    console.log('Entrando a EDITAR');
+    console.log('Pedido seleccionado:', this.pedidoSeleccionado.id);
+
+    await this.pedidosService.editar(
+      this.pedidoSeleccionado.id,
+      { descripcion: v.descripcion }
+    );
+  }
+
+  console.log('Cerrando formulario');
+  this.cerrarFormulario(true);
+}
+
+
 
   cerrarFormulario(recargar = false): void {
     this.mostrarFormulario = false;

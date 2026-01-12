@@ -45,6 +45,8 @@ export class DynamicFormComponent
 
   @Output() cancelar = new EventEmitter<void>();
   @Output() formSubmit = new EventEmitter<FormGroup>();
+  @Output() filesSelected = new EventEmitter<File[]>();
+
 
   // emite cambios por campo
   @Output() valueChange = new EventEmitter<{
@@ -148,25 +150,28 @@ export class DynamicFormComponent
   }
 
   /* archivos */
-  onFileChange(event: Event, fieldName: string): void {
-    const input = event.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0) return;
+onFileChange(event: Event, fieldName: string): void {
+  const input = event.target as HTMLInputElement;
+  if (!input.files || input.files.length === 0) return;
 
-    const files = Array.from(input.files);
+  const files = Array.from(input.files);
 
-    if (!this.selectedFiles[fieldName]) {
-      this.selectedFiles[fieldName] = [];
-    }
-
-    this.selectedFiles[fieldName].push(...files);
-
-    this.form.patchValue(
-      { [fieldName]: this.selectedFiles[fieldName] },
-      { emitEvent: true }
-    );
-
-    input.value = '';
+  if (!this.selectedFiles[fieldName]) {
+    this.selectedFiles[fieldName] = [];
   }
+
+  this.selectedFiles[fieldName].push(...files);
+
+  // 🔥 EMITIR AL PADRE
+  this.filesSelected.emit(this.selectedFiles[fieldName]);
+
+  this.form.patchValue(
+    { [fieldName]: this.selectedFiles[fieldName] },
+    { emitEvent: true }
+  );
+
+  input.value = '';
+}
 
   /* submit */
   submit(): void {

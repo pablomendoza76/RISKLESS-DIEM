@@ -16,15 +16,11 @@ export class SiniestrosService {
      (con info básica del pedido)
   ========================= */
   listar(): Promise<any[]> {
-    return this.gateway.ejecutar(async () => {
-      const res = await this.sb.client
-        .from('siniestros')
-        .select(`
+  return this.gateway.ejecutar(async () => {
+    const res = await this.sb.client
+      .from('siniestros')
+      .select(`
         *,
-        proveedor_nombre,
-        proveedor_direccion,
-        proveedor_telefono,
-        proveedor_correo,
         pedido:pedido_id (
           id,
           descripcion,
@@ -45,14 +41,15 @@ export class SiniestrosService {
           aseguradora
         )
       `)
-        .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false });
 
-      return {
-        data: res.data ?? [],
-        error: res.error
-      };
-    }, { silent: true });
-  }
+    return {
+      data: res.data ?? [],
+      error: res.error
+    };
+  }, { silent: true });
+}
+
 
 
   /* =========================

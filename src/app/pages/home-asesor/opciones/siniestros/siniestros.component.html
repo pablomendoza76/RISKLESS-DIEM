@@ -23,12 +23,19 @@
   </div>
 
   <!-- ================= FORMULARIO ================= -->
-  <app-dynamic-form *ngIf="mapper.mostrarFormulario" [titulo]="mapper.modoFormulario === 'crear'
+ <app-dynamic-form
+  *ngIf="mapper.mostrarFormulario"
+  [titulo]="mapper.modoFormulario === 'crear'
     ? 'Nuevo siniestro'
-    : 'Editar siniestro'" [fields]="mapper.fields" [initialData]="mapper.siniestroSeleccionado"
-    (valueChange)="mapper.manejarCambioFormulario($event)" (formSubmit)="mapper.recibirFormulario($event)"
-    (cancelar)="mapper.cerrarFormulario()">
-  </app-dynamic-form>
+    : 'Editar siniestro'"
+  [fields]="mapper.fields"
+  [initialData]="mapper.siniestroSeleccionado"
+  (valueChange)="mapper.manejarCambioFormulario($event)"
+  (formSubmit)="mapper.recibirFormulario($event)"
+  (filesSelected)="mapper.archivos = $event"
+  (cancelar)="mapper.cerrarFormulario()">
+</app-dynamic-form>
+
 
 
 </div>

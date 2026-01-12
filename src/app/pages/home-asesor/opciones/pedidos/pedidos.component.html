@@ -26,7 +26,7 @@
   </div>
 
   <!-- ================= FORMULARIO ================= -->
-  <app-dynamic-form
+<app-dynamic-form
   *ngIf="mapper.mostrarFormulario"
   [titulo]="mapper.modoFormulario === 'crear'
     ? 'Nuevo pedido'
@@ -35,6 +35,7 @@
   [initialData]="mapper.pedidoSeleccionado"
   (valueChange)="mapper.manejarCambioFormulario($event)"
   (formSubmit)="mapper.recibirFormulario($event.value)"
+  (filesSelected)="mapper.archivos = $event"
   (cancelar)="mapper.cerrarFormulario()">
 </app-dynamic-form>
 
