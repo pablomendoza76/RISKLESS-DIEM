@@ -158,15 +158,14 @@ definirCamposCrear(): void {
     this.mostrarFormulario = true;
   }
 
-  editarPedido(pedido: Pedido): void {
-    if (pedido.estado !== 'Abierto') return;
+ editarPedido(pedido: Pedido): void {
+  this.modoFormulario = 'editar';
+  this.pedidoSeleccionado = pedido;
+  this.archivos = [];
+  this.definirCamposEditar();
+  this.mostrarFormulario = true;
+}
 
-    this.modoFormulario = 'editar';
-    this.pedidoSeleccionado = pedido;
-    this.archivos = [];
-    this.definirCamposEditar();
-    this.mostrarFormulario = true;
-  }
 
   /* =========================
      ARCHIVOS

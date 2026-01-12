@@ -290,72 +290,24 @@ export class SiniestrosMapper {
   /* =========================
     GUARDAR
   ========================= */
-async recibirFormulario(form: FormGroup): Promise<void> {
+  async recibirFormulario(form: FormGroup): Promise<void> {
 
-  const v = form.value;
+    const v = form.value;
 
-  try {
+    try {
 
-    // sincronizar archivos desde el formulario
-    this.archivos = Array.isArray(v.archivos) ? v.archivos : [];
+      // sincronizar archivos desde el formulario
+      this.archivos = Array.isArray(v.archivos) ? v.archivos : [];
 
-    /* =========================
-       CREAR SINIESTRO
-    ========================= */
-    if (this.modoFormulario === 'crear') {
+      /* =========================
+         CREAR SINIESTRO
+      ========================= */
+      if (this.modoFormulario === 'crear') {
 
-      const siniestro = await this.siniestrosService.crearDesdePedido({
-        pedido_id: v.pedido_id,
-        poliza_id: v.poliza_id,
-        fecha_siniestro: new Date().toISOString().substring(0, 10),
-        monto_danio: v.monto_danio ? Number(v.monto_danio) : null,
-        deducible: v.deducible ? Number(v.deducible) : null,
-        descripcion_siniestro: v.descripcion_siniestro || null,
-        proveedor_nombre: v.proveedor_nombre || null,
-        proveedor_direccion: v.proveedor_direccion || null,
-        proveedor_telefono: v.proveedor_telefono || null,
-        proveedor_correo: v.proveedor_correo || null,
-      });
-
-      // subir archivos si existen
-      for (const file of this.archivos) {
-        await this.documentosService.subirDocumento(file, {
-          entidad: 'siniestro',
-          entidad_id: siniestro.id,
-          tipo_documento: 'Documento siniestro'
-        });
-      }
-
-      // enviar correo (NO afecta al flujo)
-      try {
-        const pdfBase64 = SiniestroPdfMapper.generar(siniestro);
-
-        await this.emailEdgeService.enviarCorreo({
-          to: 'pm572357@gmail.com',
-          subject: 'Notificación de siniestro',
-          html: '<p>Se ha registrado un nuevo siniestro.</p>',
-          attachments: [
-            {
-              filename: 'siniestro.pdf',
-              content: pdfBase64.split(',')[1],
-              encoding: 'base64'
-            }
-          ]
-        });
-      } catch (e) {
-        console.error('Error enviando correo', e);
-      }
-    }
-
-    /* =========================
-       EDITAR SINIESTRO
-    ========================= */
-    if (this.modoFormulario === 'editar' && this.siniestroSeleccionado) {
-
-      await this.siniestrosService.editar(
-        this.siniestroSeleccionado.id,
-        {
-          estado: v.estado,
+        const siniestro = await this.siniestrosService.crearDesdePedido({
+          pedido_id: v.pedido_id,
+          poliza_id: v.poliza_id,
+          fecha_siniestro: new Date().toISOString().substring(0, 10),
           monto_danio: v.monto_danio ? Number(v.monto_danio) : null,
           deducible: v.deducible ? Number(v.deducible) : null,
           descripcion_siniestro: v.descripcion_siniestro || null,
@@ -363,32 +315,74 @@ async recibirFormulario(form: FormGroup): Promise<void> {
           proveedor_direccion: v.proveedor_direccion || null,
           proveedor_telefono: v.proveedor_telefono || null,
           proveedor_correo: v.proveedor_correo || null,
-        }
-      );
-
-      // subir nuevos archivos si existen
-      for (const file of this.archivos) {
-        await this.documentosService.subirDocumento(file, {
-          entidad: 'siniestro',
-          entidad_id: this.siniestroSeleccionado.id,
-          tipo_documento: 'Documento siniestro'
         });
+
+        // subir archivos si existen
+        for (const file of this.archivos) {
+          await this.documentosService.subirDocumento(file, {
+            entidad: 'siniestro',
+            entidad_id: siniestro.id,
+            tipo_documento: 'Documento siniestro'
+          });
+        }
+
+        // enviar correo (NO afecta al flujo)
+        try {
+          const pdfBase64 = SiniestroPdfMapper.generar(siniestro);
+
+          await this.emailEdgeService.enviarCorreo({
+            to: 'pm572357@gmail.com',
+            subject: 'Notificación de siniestro',
+            html: '<p>Se ha registrado un nuevo siniestro.</p>',
+            attachments: [
+              {
+                filename: 'siniestro.pdf',
+                content: pdfBase64.split(',')[1],
+                encoding: 'base64'
+              }
+            ]
+          });
+        } catch (e) {
+          console.error('Error enviando correo', e);
+        }
       }
+
+      /* =========================
+         EDITAR SINIESTRO
+      ========================= */
+      if (this.modoFormulario === 'editar' && this.siniestroSeleccionado) {
+
+        await this.siniestrosService.editar(
+          this.siniestroSeleccionado.id,
+          {
+            estado: v.estado,
+            monto_danio: v.monto_danio ? Number(v.monto_danio) : null,
+            deducible: v.deducible ? Number(v.deducible) : null,
+            descripcion_siniestro: v.descripcion_siniestro || null,
+            proveedor_nombre: v.proveedor_nombre || null,
+            proveedor_direccion: v.proveedor_direccion || null,
+            proveedor_telefono: v.proveedor_telefono || null,
+            proveedor_correo: v.proveedor_correo || null,
+          }
+        );
+
+        // subir nuevos archivos si existen
+        for (const file of this.archivos) {
+          await this.documentosService.subirDocumento(file, {
+            entidad: 'siniestro',
+            entidad_id: this.siniestroSeleccionado.id,
+            tipo_documento: 'Documento siniestro'
+          });
+        }
+      }
+
+    } catch (e) {
+      console.error('Error en formulario de siniestro', e);
+    } finally {
+      this.archivos = [];
+      this.cerrarFormulario(true);
     }
-
-  } catch (e) {
-    console.error('Error en formulario de siniestro', e);
-  } finally {
-    this.archivos = [];
-    this.cerrarFormulario(true);
   }
-}
-
-
-
-
-
-
 
   cerrarFormulario(recargar = false): void {
     this.mostrarFormulario = false;

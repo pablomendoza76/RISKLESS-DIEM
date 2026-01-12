@@ -1,6 +1,10 @@
-<div class="dynamic-form">
+<div 
+  class="dynamic-form"
+  [class.is-embedded]="embedded">
+
   <form [formGroup]="form" (ngSubmit)="submit()">
 
+    <!-- CABECERA -->
     <div class="form-header" *ngIf="titulo">
       <div class="icon-container">
         <span class="material-icons">assignment</span>
@@ -12,6 +16,7 @@
       </div>
     </div>
 
+    <!-- CUERPO -->
     <div class="form-body">
 
       <div 
@@ -50,6 +55,7 @@
             ">
           </textarea>
 
+          <!-- CONTADOR -->
           <small 
             class="char-counter"
             *ngIf="field.type === 'textarea'">
@@ -71,6 +77,7 @@
             </option>
           </select>
 
+          <!-- FILE -->
           <div 
             *ngIf="field.type === 'file'" 
             class="upload-area"
@@ -95,6 +102,7 @@
 
         </div>
 
+        <!-- ARCHIVOS CARGADOS -->
         <div 
           class="uploaded-files"
           *ngIf="field.type === 'file' && selectedFiles[field.name]?.length">
@@ -117,6 +125,7 @@
           </div>
         </div>
 
+        <!-- ERRORES -->
         <small 
           class="error"
           *ngIf="
@@ -149,6 +158,7 @@
       </div>
     </div>
 
+    <!-- ACCIONES -->
     <div class="form-actions">
       <button 
         type="button" 

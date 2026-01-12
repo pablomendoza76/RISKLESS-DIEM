@@ -11,6 +11,8 @@ import { PolizasComponent } from './pages/home-asesor/opciones/polizas/polizas.c
 import { SiniestrosComponent } from './pages/home-asesor/opciones/siniestros/siniestros.component';
 import { PolizaFormComponent } from './pages/home-asesor/opciones/poliza-form/poliza-form.component';
 import { FacturacionComponent } from './pages/home-asesor/opciones/facturacion/facturacion.component';
+import { PedidosAseguradoComponent } from './pages/pedidos-asegurado/pedidos-asegurado.component';
+
 
 
 
@@ -35,6 +37,13 @@ export const routes: Routes = [
     component: HomeGerenteComponent,
     data: { rol: 'Gerente' },
   },
+
+  // PEDIDO INDIVIDUAL
+  {
+    path: 'pedidoAgurado',
+    component: PedidosAseguradoComponent,
+  },
+
 
   // ASESOR (RUTAS HIJAS)
   {
