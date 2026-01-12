@@ -4,7 +4,7 @@ import { AlertService } from './presentación/alert.service';
 @Injectable({ providedIn: 'root' })
 export class SupabaseGatewayService {
 
-  constructor(private alert: AlertService) {}
+  constructor(private alert: AlertService) { }
 
   async ejecutar<T>(
     operacion: () => Promise<{ data: T | null; error: any }>,
@@ -31,8 +31,9 @@ export class SupabaseGatewayService {
       }
 
       if (data === null || data === undefined) {
-        throw new Error('No se obtuvo información');
+        return data as T;
       }
+
 
       if (opciones?.successMessage) {
         this.alert.success(opciones.successMessage);

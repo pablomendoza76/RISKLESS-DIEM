@@ -33,7 +33,6 @@ export class PolizaFormComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
 
-    // Inicializar formulario
     this.form = this.fb.group({
       num_poliza: ['', Validators.required],
       aseguradora: ['', Validators.required],
@@ -42,7 +41,7 @@ export class PolizaFormComponent implements OnInit {
       fecha_inicio: ['', Validators.required],
       fecha_fin: ['', Validators.required],
 
-      // 🔹 Cláusulas NUEVAS (FormArray)
+      // 🔹 Cláusulas NUEVAS
       clausulas: this.fb.array([])
     });
   }
@@ -81,7 +80,6 @@ export class PolizaFormComponent implements OnInit {
       this.archivos.push(input.files[i]);
     }
 
-    // limpiar input
     input.value = '';
   }
 
@@ -99,8 +97,6 @@ export class PolizaFormComponent implements OnInit {
       return;
     }
 
-    const usuarioId = localStorage.getItem('usuarioId') ?? 'sistema';
-
     await this.mapper.crearPolizaCompleta({
       poliza: {
         num_poliza: this.form.value.num_poliza,
@@ -111,17 +107,16 @@ export class PolizaFormComponent implements OnInit {
         fecha_fin: this.form.value.fecha_fin,
       },
       clausulasNuevas: this.form.value.clausulas,
-      documentos: this.archivos,
-      usuarioId
+      documentos: this.archivos
     });
 
-    this.router.navigate(['/polizas']);
+    this.router.navigate(['/asesor/polizas']);
   }
 
   /* =========================
      CANCELAR
   ========================= */
   cancelar(): void {
-    this.router.navigate(['/polizas']);
+    this.router.navigate(['/asesor/polizas']);
   }
 }

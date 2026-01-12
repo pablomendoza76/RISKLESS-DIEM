@@ -10,6 +10,7 @@ import { PedidosComponent } from './pages/home-asesor/opciones/pedidos/pedidos.c
 import { PolizasComponent } from './pages/home-asesor/opciones/polizas/polizas.component';
 import { SiniestrosComponent } from './pages/home-asesor/opciones/siniestros/siniestros.component';
 import { PolizaFormComponent } from './pages/home-asesor/opciones/poliza-form/poliza-form.component';
+import { FacturacionComponent } from './pages/home-asesor/opciones/facturacion/facturacion.component';
 
 
 
@@ -50,6 +51,7 @@ export const routes: Routes = [
       { path: 'polizas_crear', component: PolizaFormComponent },
       { path: 'sinistros', component: SiniestrosComponent },
       { path: 'pedidos', component: PedidosComponent },
+      { path: 'facturacion', component: FacturacionComponent },
 
     ],
   },

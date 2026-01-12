@@ -1,15 +1,14 @@
-<div class="pedidos-container">
+<div class="facturacion-container">
 
   <!-- ================= HEADER ================= -->
   <div class="header-seccion">
 
-    <!-- GRUPO IZQUIERDO: TÍTULO + TOTAL -->
     <div class="title-group">
-      <h2>Listado de pedidos</h2>
+      <h2>Listado de facturación</h2>
 
       <div class="total-badge-card">
         <span>Total</span>
-        <strong>{{ mapper.totalPedidos }}</strong>
+        <strong>{{ mapper.totalFacturas }}</strong>
       </div>
     </div>
 
@@ -17,26 +16,26 @@
 
   <!-- ================= TABLA ================= -->
   <div class="table-wrapper">
-    <app-tabla-dinamica
-      [columnas]="mapper.columnas"
-      [data]="mapper.pedidos"
-      [botones]="mapper.botones"
-      (accion)="mapper.manejarAccion($event)">
-    </app-tabla-dinamica>
+   <app-tabla-dinamica
+  [columnas]="mapper.columnas"
+  [data]="mapper.facturas"
+  [botones]="mapper.botones"
+  (accion)="mapper.manejarAccion($event)">
+</app-tabla-dinamica>
+
   </div>
 
   <!-- ================= FORMULARIO ================= -->
-  <app-dynamic-form
+<app-dynamic-form
   *ngIf="mapper.mostrarFormulario"
   [titulo]="mapper.modoFormulario === 'crear'
-    ? 'Nuevo pedido'
-    : 'Editar pedido'"
+    ? 'Nueva factura'
+    : 'Editar factura'"
   [fields]="mapper.fields"
-  [initialData]="mapper.pedidoSeleccionado"
+  [initialData]="mapper.formData"
   (valueChange)="mapper.manejarCambioFormulario($event)"
-  (formSubmit)="mapper.recibirFormulario($event.value)"
+  (formSubmit)="mapper.recibirFormulario($event)"
   (cancelar)="mapper.cerrarFormulario()">
 </app-dynamic-form>
-
 
 </div>

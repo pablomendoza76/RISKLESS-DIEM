@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { SupabaseGatewayService } from './supabase-gateway.service';
 import { Documento } from '../interfaces/documento.model';
+
 @Injectable({ providedIn: 'root' })
 export class DocumentosService {
 
-  private readonly BUCKET = 'documentos';
+  // ✅ bucket unificado
+  private readonly BUCKET = 'archivos';
 
   constructor(
     private sb: SupabaseService,
@@ -38,41 +40,76 @@ export class DocumentosService {
   /* =========================
      SUBIR DOCUMENTO
   ========================= */
-  subirDocumento(
-    file: File,
-    payload: Omit<Documento, 'id' | 'created_at' | 'ruta_storage' | 'nombre_archivo'>
-  ): Promise<Documento> {
+subirDocumento(
+  file: File,
+  payload: Omit<
+    Documento,
+    'id' | 'created_at' | 'ruta_storage' | 'nombre_archivo' | 'subido_por'
+  >
+): Promise<Documento> {
 
-    return this.gateway.ejecutar(async () => {
+  return this.gateway.ejecutar(async () => {
 
-      const filePath = `${payload.entidad}/${payload.entidad_id}/${Date.now()}_${file.name}`;
+    /* =========================
+       1. USUARIO DESDE STORE
+    ========================= */
+    const usuarioRaw = localStorage.getItem('usuario');
 
-      //  Subir a Storage
-      const upload = await this.sb.client.storage
-        .from(this.BUCKET)
-        .upload(filePath, file, { upsert: false });
+    if (!usuarioRaw) {
+      throw new Error('Usuario no autenticado (store)');
+    }
 
-      if (upload.error) throw upload.error;
+    const usuario = JSON.parse(usuarioRaw);
 
-      //  Guardar metadata
-      const res = await this.sb.client
-        .from('documentos')
-        .insert({
-          ...payload,
-          nombre_archivo: file.name,
-          ruta_storage: filePath
-        })
-        .select()
-        .maybeSingle<Documento>();
+    if (!usuario?.id) {
+      throw new Error('Usuario inválido en store');
+    }
 
-      return {
-        data: res.data,
-        error: res.error
-      };
-    }, {
-      successMessage: 'Documento subido correctamente'
-    });
-  }
+    const usuarioId = usuario.id; // ✅ UUID REAL (tabla usuarios)
+
+    /* =========================
+       2. PATH STORAGE
+    ========================= */
+    const filePath =
+      `documentos/${payload.entidad}/${payload.entidad_id}/${Date.now()}_${file.name}`;
+
+    /* =========================
+       3. SUBIR A STORAGE
+    ========================= */
+    const upload = await this.sb.client.storage
+      .from(this.BUCKET)
+      .upload(filePath, file, {
+        upsert: false,
+        contentType: file.type
+      });
+
+    if (upload.error) throw upload.error;
+
+    /* =========================
+       4. GUARDAR METADATA
+    ========================= */
+    const res = await this.sb.client
+      .from('documentos')
+      .insert({
+        ...payload,
+        subido_por: usuarioId, // 🔐 UUID desde tu login
+        nombre_archivo: file.name,
+        ruta_storage: filePath
+      })
+      .select()
+      .maybeSingle<Documento>();
+
+    return {
+      data: res.data,
+      error: res.error
+    };
+
+  }, {
+    successMessage: 'Documento subido correctamente'
+  });
+}
+
+
 
   /* =========================
      OBTENER URL PÚBLICA
@@ -91,12 +128,13 @@ export class DocumentosService {
   eliminar(documento: Documento): Promise<void> {
 
     return this.gateway.ejecutar(async () => {
-      //  Eliminar archivo
+
+      /* ===== ELIMINAR ARCHIVO ===== */
       await this.sb.client.storage
         .from(this.BUCKET)
         .remove([documento.ruta_storage]);
 
-      //  Eliminar metadata
+      /* ===== ELIMINAR METADATA ===== */
       const res = await this.sb.client
         .from('documentos')
         .delete()

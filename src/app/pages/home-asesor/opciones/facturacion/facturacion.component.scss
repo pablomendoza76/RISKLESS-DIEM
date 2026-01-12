@@ -1,7 +1,7 @@
 @use '../../../../shared/styles/colores' as *;
 @use '../../../../shared/styles/tipografia' as *;
 
-.siniestros-container {
+.facturacion-container {
   padding: 2rem 3rem;
   min-height: 100vh;
   background-color: transparent;
@@ -12,7 +12,7 @@
     justify-content: flex-start;
     align-items: center;
     margin-bottom: 1rem;
-    margin-left: 75px;
+    margin-left: 75px; // Mantiene tu margen para sidebar
 
     .title-group {
       display: flex;
@@ -66,9 +66,10 @@
     border-radius: 16px;
     overflow-x: auto;
 
+    // Asegura que la tabla tenga ancho mínimo para scroll
     ::ng-deep app-tabla-dinamica {
       display: block;
-      min-width: 900px;
+      min-width: 900px; 
     }
   }
 }
@@ -77,7 +78,7 @@
 
 // Tablets
 @media (max-width: 1024px) {
-  .siniestros-container {
+  .facturacion-container {
     padding: 1.5rem 2rem;
 
     .header-seccion {
@@ -92,13 +93,14 @@
 
 // Móviles
 @media (max-width: 768px) {
-  .siniestros-container {
+  .facturacion-container {
     padding: 1rem;
 
     .header-seccion {
       flex-direction: column;
       align-items: flex-start;
       gap: 1rem;
+      margin-left: 0; // En móvil solemos quitar el margen izquierdo grande
 
       .title-group {
         flex-direction: column;
@@ -132,7 +134,7 @@
 
 // Móviles pequeños
 @media (max-width: 480px) {
-  .siniestros-container {
+  .facturacion-container {
     .header-seccion .title-group h2 {
       font-size: 1.25rem;
     }

@@ -330,3 +330,134 @@ using (true)
 with check (true);
 
 
+drop table if exists pedidos cascade;
+
+create table pedidos (
+  id uuid primary key default gen_random_uuid(),
+
+  -- Usuario autenticado que genera el pedido
+  usuario_id uuid not null references usuarios(id),
+
+  -- Datos del reclamo
+  asegurado_id uuid not null references asegurados(id),
+  bien_id uuid not null references bienes(id),
+
+  descripcion text not null,
+
+  estado text not null default 'Abierto',
+  -- Abierto | Aprobado | Rechazado | Convertido
+
+  created_at timestamp default now()
+);
+
+drop table if exists siniestros cascade;
+
+create table siniestros (
+  id uuid primary key default gen_random_uuid(),
+
+  -- Relación 1–1 con pedido
+  pedido_id uuid unique not null references pedidos(id),
+
+  -- Aquí recién entra la póliza
+  poliza_id uuid not null references polizas(id),
+
+  fecha_siniestro date not null,
+  monto_danio numeric,
+
+  estado text not null default 'En proceso',
+  -- En proceso | Cerrado | Rechazado
+
+  created_at timestamp default now()
+);
+
+-- =========================
+-- AJUSTE SEGURO TABLA SINIESTROS
+-- (NO se borra pedidos)
+-- =========================
+
+-- 1️⃣ Agregar columnas que el frontend ya usa
+alter table siniestros
+add column if not exists pedido_id uuid,
+add column if not exists deducible numeric,
+add column if not exists descripcion_siniestro text;
+
+-- 2️⃣ Crear relación con pedidos (FK)
+do $$
+begin
+  if not exists (
+    select 1
+    from information_schema.table_constraints
+    where constraint_name = 'siniestros_pedido_fkey'
+  ) then
+    alter table siniestros
+    add constraint siniestros_pedido_fkey
+    foreign key (pedido_id)
+    references pedidos(id)
+    on delete cascade;
+  end if;
+end $$;
+
+-- 3️⃣ Garantizar relación 1–1 (un pedido → un siniestro)
+create unique index if not exists siniestros_pedido_unique
+on siniestros(pedido_id);
+
+-- 4️⃣ Activar RLS y política full access (desarrollo)
+alter table siniestros enable row level security;
+
+drop policy if exists dev_full_access on siniestros;
+
+create policy dev_full_access on siniestros
+for all
+using (true)
+with check (true);
+
+-- =========================
+-- RESET TABLA FACTURACION
+-- =========================
+
+drop table if exists facturacion cascade;
+
+create table facturacion (
+  id uuid primary key default gen_random_uuid(),
+
+  -- relación directa con siniestro
+  siniestro_id uuid not null
+    references siniestros(id)
+    on delete cascade,
+
+  -- datos financieros
+  monto_facturado numeric not null,
+  monto_cancelado numeric not null,
+  porcentaje_descuento numeric,
+
+  -- control de pago
+  fecha_pago date not null,
+
+  -- indica si tiene archivos en documentos
+  tiene_evidencia boolean not null default false,
+
+  created_at timestamp default now()
+);
+
+-- =========================
+-- RLS
+-- =========================
+alter table facturacion enable row level security;
+
+drop policy if exists dev_full_access on facturacion;
+
+create policy dev_full_access
+on facturacion
+for all
+using (true)
+with check (true);
+
+-- =========================
+-- EXTENDER SINIESTROS: DATOS PROVEEDOR
+-- =========================
+
+alter table siniestros
+add column if not exists proveedor_nombre text,
+add column if not exists proveedor_direccion text,
+add column if not exists proveedor_telefono text,
+add column if not exists proveedor_correo text;

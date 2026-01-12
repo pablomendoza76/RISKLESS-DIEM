@@ -67,6 +67,14 @@ sidebarItems: SidebarItem[] = [
     ]
   },
 
+  
+  // PEDIDOS
+  {
+    label: 'Pedidos',
+    icon: 'assignment',
+    route: '/asesor/pedidos'
+  },
+
   // SINIESTROS
   {
     label: 'Siniestros',
@@ -74,12 +82,13 @@ sidebarItems: SidebarItem[] = [
     route: '/asesor/sinistros'
   },
 
-  // PEDIDOS
+  // fACTURACIÓN
   {
-    label: 'Pedidos',
-    icon: 'assignment',
-    route: '/asesor/pedidos'
-  }
+    label: 'Facturación',
+    icon: 'attach_money',
+    route: '/asesor/facturacion'
+  },
+
 
 ];
 

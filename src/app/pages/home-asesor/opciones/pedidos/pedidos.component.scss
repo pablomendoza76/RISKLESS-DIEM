@@ -1,0 +1,140 @@
+@use '../../../../shared/styles/colores' as *;
+@use '../../../../shared/styles/tipografia' as *;
+
+.pedidos-container {
+  padding: 2rem 3rem;
+  min-height: 100vh;
+  background-color: transparent;
+
+  /* ================= HEADER SECCIÓN ================= */
+  .header-seccion {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1rem;
+    margin-left: 75px;
+
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+
+      h2 {
+        font-family: $font-poppins;
+        font-size: 2rem;
+        font-weight: 700;
+        color: $color-azul-oscuro;
+        margin: 0;
+        letter-spacing: -0.8px;
+      }
+
+      /* Tarjeta Total */
+      .total-badge-card {
+        background: $fondo-claro;
+        padding: 0.4rem 1.2rem;
+        border-radius: 999px;
+        border: 1px solid $gris-200;
+        box-shadow: 0 4px 12px rgba($color-azul-oscuro, 0.04);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        height: fit-content;
+
+        span {
+          font-family: $font-work-sans;
+          font-size: 0.85rem;
+          color: $texto-terciario;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        strong {
+          color: $color-azul-celeste;
+          font-family: $font-poppins;
+          font-size: 1.1rem;
+          font-weight: 800;
+        }
+      }
+    }
+  }
+
+  /* ================= TABLE WRAPPER ================= */
+  .table-wrapper {
+    width: 100%;
+    background: transparent;
+    border-radius: 16px;
+    overflow-x: auto;
+
+    ::ng-deep app-tabla-dinamica {
+      display: block;
+      min-width: 900px;
+    }
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+
+// Tablets
+@media (max-width: 1024px) {
+  .pedidos-container {
+    padding: 1.5rem 2rem;
+
+    .header-seccion {
+      margin-bottom: 2rem;
+
+      .title-group h2 {
+        font-size: 1.6rem;
+      }
+    }
+  }
+}
+
+// Móviles
+@media (max-width: 768px) {
+  .pedidos-container {
+    padding: 1rem;
+
+    .header-seccion {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+
+      .title-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+
+        h2 {
+          font-size: 1.4rem;
+          line-height: 1.2;
+        }
+
+        .total-badge-card {
+          padding: 0.3rem 0.8rem;
+
+          span {
+            font-size: 0.75rem;
+          }
+
+          strong {
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+
+    .table-wrapper {
+      padding-bottom: 1rem;
+    }
+  }
+}
+
+// Móviles pequeños
+@media (max-width: 480px) {
+  .pedidos-container {
+    .header-seccion .title-group h2 {
+      font-size: 1.25rem;
+    }
+  }
+}

@@ -11,7 +11,9 @@ export class AseguradosService {
     private gateway: SupabaseGatewayService
   ) {}
 
-  /*  LISTAR*/
+  /* =========================
+     LISTAR
+  ========================= */
   listar(): Promise<Asegurado[]> {
     return this.gateway.ejecutar(async () => {
       const res = await this.sb.client
@@ -26,14 +28,16 @@ export class AseguradosService {
     }, { silent: true });
   }
 
-  /*  OBTENER POR ID*/
+  /* =========================
+     OBTENER POR ID
+  ========================= */
   obtenerPorId(id: string): Promise<Asegurado> {
     return this.gateway.ejecutar(async () => {
       const res = await this.sb.client
         .from('asegurados')
         .select('*')
         .eq('id', id)
-        .maybeSingle();
+        .maybeSingle<Asegurado>();
 
       return {
         data: res.data,
@@ -42,11 +46,30 @@ export class AseguradosService {
     });
   }
 
-  /*  CREAR*/
+  /* =========================
+     🆕 OBTENER POR CÉDULA
+  ========================= */
+  obtenerPorCedula(cedula: string): Promise<Asegurado | null> {
+    return this.gateway.ejecutar(async () => {
+      const res = await this.sb.client
+        .from('asegurados')
+        .select('*')
+        .eq('cedula', cedula)
+        .maybeSingle<Asegurado>();
+
+      return {
+        data: res.data ?? null,
+        error: res.error
+      };
+    }, { silent: true });
+  }
+
+  /* =========================
+     CREAR
+  ========================= */
   crear(
     payload: Omit<Asegurado, 'id' | 'created_at'>
   ): Promise<Asegurado> {
-
     return this.gateway.ejecutar(async () => {
       const res = await this.sb.client
         .from('asegurados')
@@ -63,12 +86,13 @@ export class AseguradosService {
     });
   }
 
-  /*  EDITAR*/
+  /* =========================
+     EDITAR
+  ========================= */
   editar(
     id: string,
     cambios: Partial<Asegurado>
   ): Promise<Asegurado> {
-
     return this.gateway.ejecutar(async () => {
       const res = await this.sb.client
         .from('asegurados')
@@ -86,7 +110,9 @@ export class AseguradosService {
     });
   }
 
-  /*  ELIMINAR*/
+  /* =========================
+     ELIMINAR
+  ========================= */
   eliminar(id: string): Promise<void> {
     return this.gateway.ejecutar(async () => {
       const res = await this.sb.client

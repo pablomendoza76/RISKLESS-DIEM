@@ -15,12 +15,9 @@
   // Animación de Entrada
   animation: overlayFadeIn 0.3s ease-out forwards;
 
-  // Estado de Salida
   &.is-closing {
     animation: overlayFadeOut 0.3s ease-in forwards;
-    form {
-      animation: formSlideOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
+    form { animation: formSlideOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
   }
 
   form {
@@ -28,46 +25,47 @@
     max-width: 680px;
     background: $fondo-claro;
     border-radius: 24px;
-    padding: 2.5rem;
     box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
     
-    // Animación de Entrada
+    // --- AJUSTE PARA SCROLL ---
+    max-height: calc(100vh - 4rem); 
+    overflow: hidden; 
+    // --------------------------
+
     animation: formSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
-    /* CABECERA CON ICONO ESTILIZADO */
+    /* CABECERA (FIJA) */
     .form-header {
+      flex-shrink: 0; // No se encoge
       display: flex;
       align-items: center;
       gap: 1.25rem;
-      padding-bottom: 1.5rem;
+      padding: 2.5rem 2.5rem 1.5rem; // Padding superior e lateral original
       position: relative;
 
-      // Línea divisoria elegante
       &::after {
         content: '';
         position: absolute;
         bottom: 0;
-        left: -2.5rem; // Extender hasta el borde del padding del form
-        right: -2.5rem;
+        left: 0;
+        right: 0;
         height: 1px;
         background: linear-gradient(to right, transparent, $gris-200, transparent);
       }
 
       .icon-container {
-        width: 44px; // Un poco más pequeño y fino
+        width: 44px;
         height: 44px;
         background: $gris-50;
         border: 1px solid $gris-200;
-        border-radius: 12px; // Forma de app icon moderno
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: $color-azul-oscuro;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-
         svg, i { font-size: 1.1rem; }
       }
 
@@ -87,12 +85,22 @@
       }
     }
 
-    /* CUERPO DEL FORMULARIO */
+    /* CUERPO DEL FORMULARIO (CON SCROLL INTERNO) */
     .form-body {
+      flex-grow: 1;
+      overflow-y: auto; // Activa scroll si el contenido excede la altura
+      padding: 1.75rem 2.5rem; // Mantiene tus paddings y gaps
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       column-gap: 1.5rem;
       row-gap: 1.25rem;
+
+      // Scrollbar minimalista para no dañar la estética
+      &::-webkit-scrollbar { width: 6px; }
+      &::-webkit-scrollbar-thumb { 
+        background: $gris-200; 
+        border-radius: 10px; 
+      }
 
       .full-width { grid-column: span 2; }
     }
@@ -109,7 +117,7 @@
         margin-left: 2px;
       }
 
-      .input-wrapper {
+     .input-wrapper {
         position: relative;
         display: flex;
         align-items: center;
@@ -122,6 +130,7 @@
           background: #fff;
           font-size: 0.95rem;
           transition: all 0.3s ease;
+          font-family: inherit; /* IMPORTANTE: Para que textarea use la misma fuente */
 
           &:focus {
             outline: none;
@@ -129,46 +138,61 @@
             box-shadow: 0 0 0 4px rgba($color-azul-celeste, 0.08);
           }
         }
+
+        /* --- ESTILOS ESPECÍFICOS PARA TEXTAREA --- */
+        textarea {
+          min-height: 120px;      /* Altura inicial más cómoda */
+          resize: vertical;       /* Usuario solo puede estirar hacia abajo */
+          line-height: 1.5;       /* Mejora la lectura de párrafos */
+          padding-bottom: 1.8rem; /* Espacio extra abajo para que no tape el contador */
+        }
+
+        /* --- CONTADOR FLOTANTE (DENTRO DEL WRAPPER) --- */
+        .char-counter {
+          position: absolute;
+          bottom: 10px;
+          right: 12px;
+          font-size: 0.75rem;
+          color: $texto-terciario;
+          background: rgba(255, 255, 255, 0.9); /* Fondo suave por si hay texto debajo */
+          padding: 0 4px;
+          border-radius: 4px;
+          pointer-events: none; /* Permite hacer clic a través del contador */
+        }
       }
+      
     }
 
     /* UPLOAD AREA */
+    /* UPLOAD AREA */
     .upload-area {
-      grid-column: span 2;
+      // grid-column: span 2;  <--- BORRA ESTA LÍNEA
       border: 2px dashed $gris-300;
       border-radius: 18px;
       padding: 2rem;
       text-align: center;
       background: $gris-50;
       transition: all 0.3s ease;
+      width: 100%; // <--- AGREGA ESTA LÍNEA por seguridad
 
       &:hover {
         background: #fff;
         border-color: $color-azul-celeste;
         transform: translateY(-2px);
       }
-
-      .upload-icon-container {
-        width: 50px;
-        height: 50px;
-        background: $gris-200;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 0.75rem;
-        color: $texto-terciario;
-      }
+      
+      // ... resto del contenido igual
     }
 
-    /* ACCIONES */
+    /* ACCIONES (FIJAS AL FINAL) */
     .form-actions {
+      flex-shrink: 0; // No se encoge
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 1rem;
-      padding-top: 1.5rem;
+      padding: 1.5rem 2.5rem 2.5rem; // Padding lateral y fondo original
       border-top: 1px solid $gris-100;
+      background: $fondo-claro; // Evita transparencia al scrollear detrás
 
       .left-group { display: flex; gap: 0.75rem; }
 
@@ -205,16 +229,60 @@
   }
 }
 
-/* KEYFRAMES DE ENTRADA Y SALIDA */
+/* KEYFRAMES (SIN CAMBIOS) */
 @keyframes overlayFadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes overlayFadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes formSlideIn { from { opacity: 0; transform: scale(0.96) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes formSlideOut { from { opacity: 1; transform: scale(1) translateY(0); } to { opacity: 0; transform: scale(0.96) translateY(20px); } }
 
-@keyframes formSlideIn { 
-  from { opacity: 0; transform: scale(0.96) translateY(30px); } 
-  to { opacity: 1; transform: scale(1) translateY(0); } 
+/* ARCHIVOS CARGADOS (DENTRO DEL GRID) */
+.uploaded-files {
+  grid-column: span 2;
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-@keyframes formSlideOut { 
-  from { opacity: 1; transform: scale(1) translateY(0); } 
-  to { opacity: 0; transform: scale(0.96) translateY(20px); } 
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $gris-50;
+  border: 1.5px solid $gris-200;
+  border-radius: 12px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  color: $texto-principal;
+  transition: all 0.2s ease;
+  &:hover { background: #fff; border-color: $color-azul-celeste; }
 }
+
+.file-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.remove-file {
+  margin-left: 0.75rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: $texto-terciario;
+  transition: all 0.2s ease;
+  &:hover { background: rgba($color-azul-oscuro, 0.08); color: $color-azul-oscuro; }
+}
+
+
+

@@ -1,1 +1,34 @@
-<p>siniestros works!</p>
+<div class="siniestros-container">
+
+  <!-- ================= HEADER ================= -->
+  <div class="header-seccion">
+
+    <!-- GRUPO IZQUIERDO: TÍTULO + TOTAL -->
+    <div class="title-group">
+      <h2>Listado de siniestros</h2>
+
+      <div class="total-badge-card">
+        <span>Total</span>
+        <strong>{{ mapper.totalSiniestros }}</strong>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= TABLA ================= -->
+  <div class="table-wrapper">
+    <app-tabla-dinamica [columnas]="mapper.columnas" [data]="mapper.siniestros" [botones]="mapper.botones"
+      (accion)="mapper.manejarAccion($event)">
+    </app-tabla-dinamica>
+  </div>
+
+  <!-- ================= FORMULARIO ================= -->
+  <app-dynamic-form *ngIf="mapper.mostrarFormulario" [titulo]="mapper.modoFormulario === 'crear'
+    ? 'Nuevo siniestro'
+    : 'Editar siniestro'" [fields]="mapper.fields" [initialData]="mapper.siniestroSeleccionado"
+    (valueChange)="mapper.manejarCambioFormulario($event)" (formSubmit)="mapper.recibirFormulario($event)"
+    (cancelar)="mapper.cerrarFormulario()">
+  </app-dynamic-form>
+
+
+</div>

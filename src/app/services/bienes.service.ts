@@ -112,4 +112,25 @@ export class BienesService {
       successMessage: 'Bien eliminado correctamente'
     });
   }
+
+  /* =========================
+   OBTENER POR NÚMERO DE SERIE
+========================= */
+obtenerPorNumeroSerie(numSerie: string): Promise<Bien | null> {
+  return this.gateway.ejecutar(async () => {
+    const res = await this.sb.client
+      .from('bienes')
+      .select('*')
+      .eq('num_serie', numSerie)
+      .maybeSingle<Bien>();
+
+    return {
+      data: res.data,
+      error: res.error
+    };
+  }, {
+    silent: true
+  });
+}
+
 }

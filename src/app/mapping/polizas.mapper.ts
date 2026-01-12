@@ -15,6 +15,7 @@ import {
   ColumnaTabla,
   BotonTabla
 } from '../shared/components/reuzables/tabla-dinamica/tabla-dinamica.component';
+import { SupabaseService } from '../services/supabase.service';
 
 @Injectable({
   providedIn: 'root',
@@ -76,7 +77,8 @@ export class PolizasMapper {
     private polizasService: PolizasService,
     private clausulasService: ClausulasService,
     private polizaClausulaService: PolizaClausulaService,
-    private documentosService: DocumentosService
+    private documentosService: DocumentosService,
+    private supabase: SupabaseService
   ) {}
 
   /* =========================
@@ -110,6 +112,27 @@ export class PolizasMapper {
       
     ];
   }
+
+
+
+ getUsuarioLogueadoId(): string {
+  const raw = localStorage.getItem('usuario');
+
+  if (!raw) {
+    throw new Error('Usuario no autenticado (sin store)');
+  }
+
+  const usuario = JSON.parse(raw);
+
+  if (!usuario?.id) {
+    throw new Error('Usuario inválido en store');
+  }
+
+  return usuario.id; // ✅ UUID REAL
+}
+
+
+
 
   /* =========================
      CARGA DE DATOS
@@ -219,42 +242,10 @@ export class PolizasMapper {
     await this.cargarDocumentos(poliza.id);
   }
 
-  async subirDocumento(
-    file: File,
-    tipo: string,
-    usuarioId: string
-  ): Promise<void> {
-
-    if (!this.polizaSeleccionada) return;
-
-    await this.documentosService.subirDocumento(file, {
-      entidad: 'poliza',
-      entidad_id: this.polizaSeleccionada.id,
-      tipo_documento: tipo,
-      subido_por: usuarioId,
-    });
-
-    await this.cargarDocumentos(this.polizaSeleccionada.id);
-  }
-
-  eliminarDocumento(doc: Documento): Promise<void> {
-    return this.documentosService.eliminar(doc);
-  }
-
-  obtenerUrlDocumento(doc: Documento): string {
-    return this.documentosService.obtenerUrl(doc.ruta_storage);
-  }
-
-  // poliza form
-  /* =========================
-   CREAR PÓLIZA DESDE VISTA
-   (con cláusulas nuevas + documentos)
-========================= */
 async crearPolizaCompleta(payload: {
   poliza: Omit<Poliza, 'id' | 'created_at'>;
   clausulasNuevas: { titulo: string; descripcion: string }[];
   documentos: File[];
-  usuarioId: string;
 }): Promise<void> {
 
   try {
@@ -270,31 +261,32 @@ async crearPolizaCompleta(payload: {
        2. CREAR CLÁUSULAS
     ===================== */
     for (const clausula of payload.clausulasNuevas) {
-      const nuevaClausula = await this.clausulasService.crear({
+      const nueva = await this.clausulasService.crear({
         titulo: clausula.titulo,
-        descripcion: clausula.descripcion
+        descripcion: clausula.descripcion,
       });
 
       await this.polizaClausulaService.asignar(
         polizaId,
-        nuevaClausula.id
+        nueva.id
       );
     }
 
     /* =====================
        3. SUBIR DOCUMENTOS
+       (el usuario se resuelve
+        DENTRO del service)
     ===================== */
     for (const file of payload.documentos) {
       await this.documentosService.subirDocumento(file, {
         entidad: 'poliza',
         entidad_id: polizaId,
-        tipo_documento: 'Documento póliza',
-        subido_por: payload.usuarioId
+        tipo_documento: 'Documento póliza'
       });
     }
 
     /* =====================
-       4. REFRESCAR LISTA
+       4. REFRESCAR
     ===================== */
     await this.cargarPolizas();
 
@@ -306,5 +298,22 @@ async crearPolizaCompleta(payload: {
     this.cargando = false;
   }
 }
+
+
+
+  eliminarDocumento(doc: Documento): Promise<void> {
+    return this.documentosService.eliminar(doc);
+  }
+
+  obtenerUrlDocumento(doc: Documento): string {
+    return this.documentosService.obtenerUrl(doc.ruta_storage);
+  }
+
+  // poliza form
+  /* =========================
+   CREAR PÓLIZA DESDE VISTA
+   (con cláusulas nuevas + documentos)
+========================= */
+
 
 }

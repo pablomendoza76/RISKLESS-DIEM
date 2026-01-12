@@ -1,23 +1,24 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SiniestrosMapper } from '../../../../mapping/siniestros.mapper';
+
+import { FacturacionMapper } from '../../../../mapping/facturacion.mapper';
 import { DynamicFormComponent } from '../../../../shared/components/reuzables/dynamic-form/dynamic-form.component';
 import { TablaDinamicaComponent } from '../../../../shared/components/reuzables/tabla-dinamica/tabla-dinamica.component';
 
 @Component({
-  selector: 'app-siniestros',
+  selector: 'app-facturacion',
   standalone: true,
   imports: [
     CommonModule,
     TablaDinamicaComponent,
     DynamicFormComponent
   ],
-  templateUrl: './siniestros.component.html',
-  styleUrl: './siniestros.component.scss'
+  templateUrl: './facturacion.component.html',
+  styleUrl: './facturacion.component.scss'
 })
-export class SiniestrosComponent implements OnInit {
+export class FacturacionComponent implements OnInit {
 
-  mapper = inject(SiniestrosMapper);
+  mapper = inject(FacturacionMapper);
 
   async ngOnInit(): Promise<void> {
     await this.mapper.init();

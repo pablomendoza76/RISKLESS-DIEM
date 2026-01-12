@@ -1,7 +1,6 @@
 <div class="dynamic-form">
   <form [formGroup]="form" (ngSubmit)="submit()">
 
-    <!-- ================= HEADER ================= -->
     <div class="form-header" *ngIf="titulo">
       <div class="icon-container">
         <span class="material-icons">assignment</span>
@@ -13,53 +12,68 @@
       </div>
     </div>
 
-    <!-- ================= BODY ================= -->
     <div class="form-body">
-      <div
-        class="form-field"
+
+      <div 
+        class="form-field" 
         *ngFor="let field of fields"
-        [class.full-width]="field.type === 'file'">
+        [class.full-width]="field.type === 'file' || field.type === 'textarea'">
 
         <label>{{ field.label }}</label>
 
         <div class="input-wrapper">
 
-          <!-- INPUTS -->
-          <input
+          <input 
             *ngIf="
-              field.type === 'text' ||
-              field.type === 'number' ||
-              field.type === 'email' ||
-              field.type === 'password'
+              field.type === 'text' || 
+              field.type === 'number' || 
+              field.type === 'email' || 
+              field.type === 'password' || 
+              field.type === 'date'
             "
-            [type]="field.type"
-            [formControlName]="field.name"
+            [type]="field.type" 
+            [formControlName]="field.name" 
             [class.invalid]="
-              form.get(field.name)?.invalid &&
+              form.get(field.name)?.invalid && 
               form.get(field.name)?.touched
             "
           />
 
-          <!-- SELECT -->
-          <select
+          <textarea 
+            *ngIf="field.type === 'textarea'"
+            [formControlName]="field.name"
+            [attr.maxLength]="field.maxLength || 200"
+            rows="4"
+            [class.invalid]="
+              form.get(field.name)?.invalid && 
+              form.get(field.name)?.touched
+            ">
+          </textarea>
+
+          <small 
+            class="char-counter"
+            *ngIf="field.type === 'textarea'">
+            {{ form.get(field.name)?.value?.length || 0 }}/{{ field.maxLength || 200 }}
+          </small>
+
+          <select 
             *ngIf="field.type === 'select'"
             [formControlName]="field.name"
             [class.invalid]="
-              form.get(field.name)?.invalid &&
+              form.get(field.name)?.invalid && 
               form.get(field.name)?.touched
             ">
             <option value="">Seleccione</option>
-            <option
-              *ngFor="let opt of field.options"
+            <option 
+              *ngFor="let opt of field.options" 
               [value]="opt.value">
               {{ opt.label }}
             </option>
           </select>
 
-          <!-- FILE -->
-          <div
+          <div 
+            *ngIf="field.type === 'file'" 
             class="upload-area"
-            *ngIf="field.type === 'file'"
             (click)="fileInput.click()">
 
             <div class="upload-icon-container">
@@ -67,47 +81,66 @@
             </div>
 
             <p class="upload-text">
-              Elija un archivo o <span>arrástrelo aquí</span>
+              Elija uno o más archivos o <span>arrástrelos aquí</span>
             </p>
 
-            <input
-              #fileInput
-              type="file"
-              hidden
-              (change)="onFileChange($event, field.name)"
+            <input 
+              #fileInput 
+              type="file" 
+              multiple 
+              hidden 
+              (change)="onFileChange($event, field.name)" 
             />
+          </div>
+
+        </div>
+
+        <div 
+          class="uploaded-files"
+          *ngIf="field.type === 'file' && selectedFiles[field.name]?.length">
+          
+          <div 
+            class="file-item" 
+            *ngFor="let file of selectedFiles[field.name]; let i = index">
+            
+            <span class="file-name">
+              {{ file.name }}
+            </span>
+
+            <button 
+              type="button" 
+              class="remove-file"
+              (click)="selectedFiles[field.name].splice(i, 1)">
+              ✕
+            </button>
+
           </div>
         </div>
 
-        <!-- ================= ERRORES ================= -->
-
-        <!-- requerido -->
-        <small
+        <small 
           class="error"
           *ngIf="
-            form.get(field.name)?.errors?.['required'] &&
+            form.get(field.name)?.errors?.['required'] && 
             form.get(field.name)?.touched
           ">
           Campo obligatorio
         </small>
 
-        <!-- email inválido -->
-        <small
+        <small 
           class="error"
           *ngIf="
-            field.type === 'email' &&
-            form.get(field.name)?.errors?.['email'] &&
+            field.type === 'email' && 
+            form.get(field.name)?.errors?.['email'] && 
             form.get(field.name)?.touched
           ">
           Correo electrónico inválido
         </small>
 
-        <!-- dominio inválido -->
-        <small
+        <small 
           class="error"
           *ngIf="
-            field.type === 'email' &&
-            form.get(field.name)?.errors?.['pattern'] &&
+            field.type === 'email' && 
+            form.get(field.name)?.errors?.['pattern'] && 
             form.get(field.name)?.touched
           ">
           El correo debe terminar en .com
@@ -116,17 +149,16 @@
       </div>
     </div>
 
-    <!-- ================= ACTIONS ================= -->
     <div class="form-actions">
-      <button
-        type="button"
-        class="btn-cancel"
+      <button 
+        type="button" 
+        class="btn-cancel" 
         (click)="onCancelar()">
         Cancelar
       </button>
 
-      <button
-        type="submit"
+      <button 
+        type="submit" 
         class="btn-submit"
         [disabled]="form.invalid">
         Guardar
