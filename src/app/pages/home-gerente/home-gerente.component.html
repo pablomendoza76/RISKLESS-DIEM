@@ -1,29 +1,61 @@
-<div class="home-layout">
+<div class="dashboard-wrapper">
+  
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1>Panel de Control Gerencial</h1>
+      <button class="btn-logout" (click)="cerrarSesion()">
+        <mat-icon>logout</mat-icon> Salir
+      </button>
+    </div>
+  </header>
 
-  <aside class="sidebar-area">
-    <app-sidebar
-      [title]="sidebarTitle"
-      [items]="sidebarItems"
-      (logout)="cerrarSesion()">
-    </app-sidebar>
-  </aside>
+  <main class="dashboard-content">
+    <div class="metrics-grid" *ngIf="!loading; else loadingTemplate">
+      
+      <div class="metric-card blue">
+        <mat-icon class="icon">people</mat-icon>
+        <div class="data">
+          <h3>{{ totalAsegurados }}</h3>
+          <p>Asegurados</p>
+        </div>
+      </div>
 
-  <main class="main-area">
+      <div class="metric-card green">
+        <mat-icon class="icon">verified_user</mat-icon>
+        <div class="data">
+          <h3>{{ totalPolizas }}</h3>
+          <p>Pólizas Totales</p>
+        </div>
+      </div>
 
-    <header class="topbar-area">
-      <app-admin-topbar
-        mensaje="¡ BIENVENIDO, ÁREA GERENCIAL !"
-        [nombre]="nombreUsuario"
-        [rol]="rolUsuario"
-        [iniciales]="inicialesUsuario"
-        (logout)="cerrarSesion()">
-      </app-admin-topbar>
-    </header>
+      <div class="metric-card gold">
+        <mat-icon class="icon">account_balance_wallet</mat-icon>
+        <div class="data">
+          <h3>{{ valorTotalAsegurado | currency }}</h3>
+          <p>Valor Asegurado</p>
+        </div>
+      </div>
 
-    <section class="content-area">
-      <router-outlet></router-outlet>
-    </section>
+      <div class="metric-card red">
+        <mat-icon class="icon">error_outline</mat-icon>
+        <div class="data">
+          <h3>{{ siniestrosActivos }}</h3>
+          <p>Siniestros Activos</p>
+        </div>
+      </div>
 
+      <div class="metric-card purple">
+        <mat-icon class="icon">payments</mat-icon>
+        <div class="data">
+          <h3>{{ totalRecaudado | currency }}</h3>
+          <p>Recaudación Total</p>
+        </div>
+      </div>
+
+    </div>
+
+    <ng-template #loadingTemplate>
+      <div class="loader">Consultando datos en tiempo real...</div>
+    </ng-template>
   </main>
-
 </div>

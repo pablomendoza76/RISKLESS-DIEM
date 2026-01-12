@@ -1,31 +1,57 @@
-.home-layout {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+.dashboard-wrapper {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 2rem;
 
-  .sidebar-area {
-    width: 260px;
-    height: 100%;
-    flex-shrink: 0;
+  .dashboard-header {
+    margin-bottom: 2rem;
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      h1 { color: #2c3e50; font-weight: 600; margin: 0; }
+    }
   }
 
-  .main-area {
-    flex-grow: 1;
+  .btn-logout {
     display: flex;
-    flex-direction: column;
-    background-color: #f4f7f9; // O el color de fondo de tu paleta
-    overflow: hidden;
-
-    .topbar-area {
-      height: 70px;
-      flex-shrink: 0;
-    }
-
-    .content-area {
-      flex-grow: 1;
-      padding: 20px;
-      overflow-y: auto;
-    }
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    &:hover { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
   }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .metric-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+
+    .icon { font-size: 40px; width: 40px; height: 40px; opacity: 0.8; }
+    .data {
+      h3 { margin: 0; font-size: 1.8rem; color: #1e293b; }
+      p { margin: 0; color: #64748b; font-weight: 500; }
+    }
+
+    &.blue .icon { color: #3b82f6; }
+    &.green .icon { color: #10b981; }
+    &.gold .icon { color: #f59e0b; }
+    &.red .icon { color: #ef4444; }
+    &.purple .icon { color: #8b5cf6; }
+  }
+
+  .loader { text-align: center; padding: 4rem; color: #64748b; font-style: italic; }
 }
