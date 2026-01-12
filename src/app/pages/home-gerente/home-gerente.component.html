@@ -1,1 +1,29 @@
-<p>home-gerente works!</p>
+<div class="home-layout">
+
+  <aside class="sidebar-area">
+    <app-sidebar
+      [title]="sidebarTitle"
+      [items]="sidebarItems"
+      (logout)="cerrarSesion()">
+    </app-sidebar>
+  </aside>
+
+  <main class="main-area">
+
+    <header class="topbar-area">
+      <app-admin-topbar
+        mensaje="¡ BIENVENIDO, ÁREA GERENCIAL !"
+        [nombre]="nombreUsuario"
+        [rol]="rolUsuario"
+        [iniciales]="inicialesUsuario"
+        (logout)="cerrarSesion()">
+      </app-admin-topbar>
+    </header>
+
+    <section class="content-area">
+      <router-outlet></router-outlet>
+    </section>
+
+  </main>
+
+</div>
