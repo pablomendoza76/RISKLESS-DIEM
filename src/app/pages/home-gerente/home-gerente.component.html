@@ -1,75 +1,338 @@
 <div class="dashboard-container">
   
+  <!-- HEADER -->
   <header class="dashboard-header">
-    <div class="header-info">
-      <h1>Panel Gerencial</h1>
-      <p class="subtitle">Indicadores clave de rendimiento (KPIs)</p>
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="h2">Panel Gerencial</h1>
+        <p class="subtitle">Indicadores Clave de Rendimiento</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn-export" (click)="exportarAExcel()" [disabled]="exportando || !dataLoaded">
+          <mat-icon>{{ exportando ? 'hourglass_empty' : 'download' }}</mat-icon>
+          <span>{{ exportando ? 'Exportando...' : 'Exportar' }}</span>
+        </button>
+        <button class="btn-logout" (click)="cerrarSesion()">
+          <mat-icon>power_settings_new</mat-icon>
+          <span>Cerrar Sesión</span>
+        </button>
+      </div>
     </div>
-    <button class="btn-logout" (click)="cerrarSesion()">
-      <mat-icon>power_settings_new</mat-icon> Salir
-    </button>
   </header>
 
+  <!-- LOADER -->
   <div *ngIf="loading" class="main-loader">
     <div class="spinner"></div>
-    <p>Sincronizando datos...</p>
+    <p class="body">Cargando datos del panel ejecutivo...</p>
   </div>
 
-  <main class="dashboard-body" *ngIf="!loading">
+  <!-- DASHBOARD CONTENT -->
+  <main class="dashboard-body" *ngIf="!loading && dataLoaded">
     
-    <div class="kpi-grid">
-      <div class="kpi-card glass blue">
-        <div class="kpi-icon"><mat-icon>people</mat-icon></div>
-        <div class="kpi-content">
-          <span class="label">Asegurados</span>
-          <h2 class="value">{{ totalAsegurados }}</h2>
+    <!-- SECCIÓN 1: KPIs PRINCIPALES -->
+    <section class="kpi-section">
+      <h3 class="section-title">Indicadores Principales</h3>
+      <div class="kpi-grid">
+        
+        <div class="kpi-card primary">
+          <div class="kpi-icon">
+            <mat-icon>people</mat-icon>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Total Asegurados</span>
+            <h2 class="kpi-value">{{ totalAsegurados }}</h2>
+            <span class="kpi-trend positive">
+              <mat-icon>trending_up</mat-icon>
+              Activos
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div class="kpi-card glass green">
-        <div class="kpi-icon"><mat-icon>verified_user</mat-icon></div>
-        <div class="kpi-content">
-          <span class="label">Pólizas Activas</span>
-          <h2 class="value">{{ totalPolizas }}</h2>
+        <div class="kpi-card success">
+          <div class="kpi-icon">
+            <mat-icon>verified_user</mat-icon>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Pólizas Activas</span>
+            <h2 class="kpi-value">{{ totalPolizasActivas }}</h2>
+            <span class="kpi-subtitle">de {{ totalPolizas }} totales</span>
+          </div>
         </div>
-      </div>
 
-      <div class="kpi-card glass gold">
-        <div class="kpi-icon"><mat-icon>payments</mat-icon></div>
-        <div class="kpi-content">
-          <span class="label">Recaudación Total</span>
-          <h2 class="value">{{ totalRecaudado | currency }}</h2>
+        <div class="kpi-card gold">
+          <div class="kpi-icon">
+            <mat-icon>account_balance</mat-icon>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Valor Total Asegurado</span>
+            <h2 class="kpi-value">{{ valorTotalAsegurado | currency:'USD':'symbol':'1.0-0' }}</h2>
+            <span class="kpi-subtitle">Cartera protegida</span>
+          </div>
         </div>
-      </div>
 
-      <div class="kpi-card glass red">
-        <div class="kpi-icon"><mat-icon>report_problem</mat-icon></div>
-        <div class="kpi-content">
-          <span class="label">Siniestros Críticos</span>
-          <h2 class="value">{{ siniestrosActivos }}</h2>
+        <div class="kpi-card warning">
+          <div class="kpi-icon">
+            <mat-icon>report_problem</mat-icon>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Siniestros en Proceso</span>
+            <h2 class="kpi-value">{{ siniestrosEnProceso }}</h2>
+            <span class="kpi-subtitle">de {{ totalSiniestros }} totales</span>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="charts-grid">
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: MÉTRICAS FINANCIERAS -->
+    <section class="kpi-section">
+      <h3 class="section-title">Desempeño Financiero</h3>
+      <div class="kpi-grid">
+        
+        <div class="kpi-card financial">
+          <div class="kpi-icon">
+            <mat-icon>payments</mat-icon>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Total Recaudado</span>
+            <h2 class="kpi-value">{{ totalRecaudado | currency:'USD':'symbol':'1.0-0' }}</h2>
+            <span class="kpi-subtitle">{{ tasaRecuperacion | number:'1.1-1' }}% recuperación</span>
+          </div>
+        </div>
+
+        <div class="kpi-card info">
+          <div class="kpi-icon">
+            <mat-icon>receipt_long</mat-icon>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Total Facturado</span>
+            <h2 class="kpi-value">{{ totalFacturado | currency:'USD':'symbol':'1.0-0' }}</h2>
+            <span class="kpi-subtitle">Emisiones totales</span>
+          </div>
+        </div>
+
+        <div class="kpi-card alert">
+          <div class="kpi-icon">
+            <mat-icon>pending_actions</mat-icon>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Pendiente de Pago</span>
+            <h2 class="kpi-value">{{ totalPendientePago | currency:'USD':'symbol':'1.0-0' }}</h2>
+            <span class="kpi-subtitle">Por cobrar</span>
+          </div>
+        </div>
+
+        <div class="kpi-card purple">
+          <div class="kpi-icon">
+            <mat-icon>local_offer</mat-icon>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Descuento Promedio</span>
+            <h2 class="kpi-value">{{ promedioDescuento | number:'1.1-1' }}%</h2>
+            <span class="kpi-subtitle">Aplicado en facturas</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: MÉTRICAS OPERATIVAS -->
+    <section class="kpi-section">
+      <h3 class="section-title">Eficiencia Operativa</h3>
+      <div class="kpi-grid">
+        
+        <div class="kpi-card metric">
+          <div class="kpi-icon">
+            <mat-icon>assessment</mat-icon>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Tasa de Siniestralidad</span>
+            <h2 class="kpi-value">{{ tasaSiniestralidad | number:'1.2-2' }}%</h2>
+            <span class="kpi-subtitle">Daños vs. Asegurado</span>
+          </div>
+        </div>
+
+        <div class="kpi-card metric">
+          <div class="kpi-icon">
+            <mat-icon>speed</mat-icon>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Eficiencia Operativa</span>
+            <h2 class="kpi-value">{{ eficienciaOperativa | number:'1.1-1' }}%</h2>
+            <span class="kpi-subtitle">Siniestros finalizados</span>
+          </div>
+        </div>
+
+        <div class="kpi-card metric">
+          <div class="kpi-icon">
+            <mat-icon>transform</mat-icon>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Conversión de Pedidos</span>
+            <h2 class="kpi-value">{{ tasaConversionPedidos | number:'1.1-1' }}%</h2>
+            <span class="kpi-subtitle">{{ pedidosConvertidos }} convertidos</span>
+          </div>
+        </div>
+
+        <div class="kpi-card metric">
+          <div class="kpi-icon">
+            <mat-icon>attach_money</mat-icon>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Monto Promedio Daño</span>
+            <h2 class="kpi-value">{{ promedioMontoDanio | currency:'USD':'symbol':'1.0-0' }}</h2>
+            <span class="kpi-subtitle">Por siniestro</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: GRÁFICOS PRINCIPALES -->
+    <section class="charts-section">
+      <h3 class="section-title">Análisis Gráfico</h3>
       
-      <div class="chart-container glass">
-        <h3>Evolución de Recaudación</h3>
-        <canvas baseChart
-          [data]="revenueChartData"
-          [type]="'bar'">
-        </canvas>
+      <div class="charts-grid-main">
+        
+        <!-- Recaudación Mensual -->
+        <div class="chart-card large">
+          <div class="chart-header">
+            <h4 class="title-sm">Recaudación Mensual</h4>
+            <span class="chart-badge">Últimos 6 meses</span>
+          </div>
+          <div class="chart-content">
+            <canvas baseChart
+              [data]="recaudacionMensualChart"
+              [type]="'line'"
+              [options]="chartOptions">
+            </canvas>
+          </div>
+        </div>
+
+        <!-- Top 5 Aseguradoras -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h4 class="title-sm">Top Aseguradoras</h4>
+            <span class="chart-badge">Por valor</span>
+          </div>
+          <div class="chart-content">
+            <canvas baseChart
+              [data]="aseguradorasChart"
+              [type]="'bar'"
+              [options]="chartOptions">
+            </canvas>
+          </div>
+        </div>
+
       </div>
 
-      <div class="chart-container glass">
-        <h3>Distribución de Siniestros</h3>
-        <canvas baseChart
-          [data]="claimsChartData"
-          [type]="'doughnut'">
-        </canvas>
-      </div>
+      <div class="charts-grid-secondary">
+        
+        <!-- Distribución de Siniestros -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h4 class="title-sm">Estado de Siniestros</h4>
+            <span class="chart-badge">Total: {{ totalSiniestros }}</span>
+          </div>
+          <div class="chart-content">
+            <canvas baseChart
+              [data]="siniestrosEstadoChart"
+              [type]="'doughnut'"
+              [options]="chartOptions">
+            </canvas>
+          </div>
+        </div>
 
-    </div>
+        <!-- Tendencia de Siniestros -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h4 class="title-sm">Tendencia Siniestros</h4>
+            <span class="chart-badge">Últimos 6 meses</span>
+          </div>
+          <div class="chart-content">
+            <canvas baseChart
+              [data]="tendenciaSiniestrosChart"
+              [type]="'bar'"
+              [options]="chartOptions">
+            </canvas>
+          </div>
+        </div>
+
+        <!-- Estado de Pedidos -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h4 class="title-sm">Estado de Pedidos</h4>
+            <span class="chart-badge">Total: {{ totalPedidos }}</span>
+          </div>
+          <div class="chart-content">
+            <canvas baseChart
+              [data]="pedidosEstadoChart"
+              [type]="'pie'"
+              [options]="chartOptions">
+            </canvas>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN 5: RESUMEN ESTADÍSTICO -->
+    <section class="stats-section">
+      <h3 class="section-title">Resumen Estadístico</h3>
+      
+      <div class="stats-grid">
+        
+        <div class="stat-item">
+          <mat-icon class="stat-icon">description</mat-icon>
+          <div class="stat-info">
+            <span class="stat-label">Documentos</span>
+            <span class="stat-value">{{ totalDocumentos }}</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <mat-icon class="stat-icon success">check_circle</mat-icon>
+          <div class="stat-info">
+            <span class="stat-label">Siniestros Finalizados</span>
+            <span class="stat-value">{{ siniestrosFinalizados }}</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <mat-icon class="stat-icon error">cancel</mat-icon>
+          <div class="stat-info">
+            <span class="stat-label">Siniestros Rechazados</span>
+            <span class="stat-value">{{ siniestrosRechazados }}</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <mat-icon class="stat-icon warning">hourglass_empty</mat-icon>
+          <div class="stat-info">
+            <span class="stat-label">Pedidos Abiertos</span>
+            <span class="stat-value">{{ pedidosAbiertos }}</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <mat-icon class="stat-icon primary">thumb_up</mat-icon>
+          <div class="stat-info">
+            <span class="stat-label">Pedidos Aprobados</span>
+            <span class="stat-value">{{ pedidosAprobados }}</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <mat-icon class="stat-icon gold">monetization_on</mat-icon>
+          <div class="stat-info">
+            <span class="stat-label">Monto Total Daños</span>
+            <span class="stat-value">{{ montoTotalDanios | currency:'USD':'symbol':'1.0-0' }}</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
 
   </main>
+
 </div>
