@@ -1,8 +1,16 @@
-<aside class="sidebar">
+<aside class="sidebar" [class.mobile-active]="isMobileMenuOpen">
 
   <!-- HEADER -->
   <div class="sidebar-header">
-    {{ title }}
+    <!-- Botón Hamburguesa (solo visible en móvil) -->
+    <mat-icon 
+      class="mobile-toggle" 
+      *ngIf="isMobileView"
+      (click)="toggleMobileMenu()">
+      {{ isMobileMenuOpen ? 'close' : 'menu' }}
+    </mat-icon>
+    
+    <span class="sidebar-title">{{ title }}</span>
   </div>
 
   <!-- MENU -->
@@ -16,7 +24,7 @@
       <div
         class="menu-main"
         [class.active]="activeIndex === i"
-        (click)="item.children ? toggle(i) : null"
+        (click)="item.children ? toggle(i) : navigateAndClose(item.route)"
         [routerLink]="!item.children ? item.route : null"
       >
         <mat-icon class="icon">{{ item.icon }}</mat-icon>
@@ -34,6 +42,7 @@
           *ngFor="let child of item.children"
           [routerLink]="child.route"
           routerLinkActive="active"
+          (click)="closeMobileMenu()"
         >
           <mat-icon>{{ child.icon }}</mat-icon>
           <span>{{ child.label }}</span>

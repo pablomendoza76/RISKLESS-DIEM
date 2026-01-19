@@ -28,38 +28,58 @@ $sidebar-mobile-height: 70px;
     align-items: center;
     gap: 12px;
     flex-shrink: 0;
+    position: relative;
 
-    &::before {
-      content: 'U';
-      font-family: $font-poppins;
-      background: $color-dorado; // Acento Riskless
-      color: $color-azul-oscuro;
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      font-weight: 700;
+    .mobile-toggle {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: $color-dorado;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba($color-dorado, 0.1);
+      }
     }
 
-    font-family: $font-poppins;
-    font-size: 1.1rem;
-    font-weight: 700;
-    line-height: 1.1;
-    color: $texto-claro;
-    position: relative;
-    
-    &::after {
-      content: 'SEGUROS';
-      display: block;
-      font-size: 0.65rem;
-      font-weight: 400;
-      opacity: 0.7;
-      color: $color-dorado;
-      letter-spacing: 1px;
-      margin-top: 0.2rem;
+    .sidebar-title {
+      font-family: $font-poppins;
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.1;
+      color: $texto-claro;
+      position: relative;
+      flex: 1;
+      
+      &::before {
+        content: 'U';
+        font-family: $font-poppins;
+        background: $color-dorado;
+        color: $color-azul-oscuro;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-right: 12px;
+        vertical-align: middle;
+      }
+      
+      &::after {
+        content: 'SEGUROS';
+        display: block;
+        font-size: 0.65rem;
+        font-weight: 400;
+        opacity: 0.7;
+        color: $color-dorado;
+        letter-spacing: 1px;
+        margin-top: 0.2rem;
+      }
     }
   }
 
@@ -213,7 +233,7 @@ $sidebar-mobile-height: 70px;
     justify-content: space-between;
     padding: 0 1rem;
     
-    &.active {
+    &.mobile-active {
       max-height: 100vh;
       flex-direction: column;
       align-items: stretch;
@@ -224,19 +244,34 @@ $sidebar-mobile-height: 70px;
 
     .sidebar-header {
       padding: 0.8rem 0;
-      &::after, span { display: block; } // Re-mostrar en modo expandido móvil
+      
+      .mobile-toggle {
+        display: block;
+      }
+      
+      .sidebar-title {
+        &::after, span { display: block; } // Re-mostrar en modo expandido móvil
+      }
     }
 
     .sidebar-menu, .sidebar-footer {
       display: none; // Oculto hasta que se active el botón hamburguesa
     }
-
-    // Botón Hamburguesa (requiere un elemento en el HTML)
-    .mobile-toggle {
-      display: block;
-      cursor: pointer;
-      font-size: 2rem;
-      color: $color-dorado;
+    
+    // Cuando el menú está activo en móvil, mostrar textos
+    &.mobile-active {
+      .menu-main {
+        .label, .arrow { display: block; } // Mostrar textos en móvil activo
+        justify-content: flex-start;
+      }
+      
+      .submenu {
+        display: block; // Mostrar submenús
+      }
+      
+      .sidebar-footer {
+        span { display: block; } // Mostrar texto del logout
+      }
     }
   }
 }

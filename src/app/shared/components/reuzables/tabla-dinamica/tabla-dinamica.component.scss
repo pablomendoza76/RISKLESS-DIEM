@@ -170,6 +170,12 @@ tbody td {
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
+    // Mejora para táctil móvil
+    min-height: 44px; // Área mínima para toque
+    min-width: 44px; // Área mínima para toque
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     background: $gris-200;
     color: $texto-secundario;
@@ -230,6 +236,8 @@ tbody td {
 
     .input-busqueda {
       min-width: 100%; // Buscador ocupa todo el ancho
+      padding: 0.8rem 1.2rem; // Más padding para área táctil
+      font-size: 1rem; // Texto más grande en móvil
     }
 
     .botones-top {
@@ -238,6 +246,9 @@ tbody td {
       .btn-tabla {
         flex: 1; // Botones crecen para facilitar toque táctil
         justify-content: center;
+        padding: 1.2rem 1.5rem; // Más padding para mejor área táctil
+        font-size: 1.1rem; // Texto más grande en móvil
+        min-height: 52px; // Área táctil más grande
       }
     }
   }
@@ -252,9 +263,48 @@ tbody td {
     padding-bottom: 1rem;
     
     // Mantiene un ancho mínimo para que las filas no se amontonen
-    min-width: 800px; 
+    min-width: 600px; // Reducido drásticamente para móviles
   }
-}
+  
+  // Ajustes para filas en móvil
+  tbody tr {
+    td {
+      padding: 1rem 0.6rem; // Padding más generoso para mejor espaciado
+      font-size: 1rem; // Texto más grande y legible
+      line-height: 1.4; // Altura de línea mejor para legibilidad
+      
+      .cell-text {
+        max-width: 120px; // Ancho más generoso para contenido
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+    
+    td:first-child {
+      padding-left: 1rem; // Padding más generoso
+    }
+    
+    td:last-child {
+      padding-right: 1rem; // Padding más generoso
+    }
+  }
+  
+  // Acciones más compactas en móvil
+  .acciones-container {
+    flex-direction: column;
+    gap: 0.75rem; // Más espacio entre botones
+    
+    .btn-accion-fila {
+      width: 100%;
+      padding: 1rem 1.2rem; // Más padding para mejor área táctil
+      font-size: 0.9rem; // Texto más grande
+      text-align: center;
+      min-height: 52px; // Área táctil más grande
+      justify-content: center;
+      align-items: center;
+    }
+  }
 
 // 3. MÓVILES PEQUEÑOS (480px o menos)
 @media (max-width: 480px) {
@@ -282,4 +332,31 @@ tbody td {
     background: $gris-300;
     border-radius: 10px;
   }
+  
+  // Headers más compactos
+  thead th {
+    padding: 0 1rem;
+    font-size: 0.7rem;
+  }
+  
+  // Filas más compactas
+  tbody tr {
+    td {
+      padding: 0.8rem 0.3rem;
+      font-size: 0.8rem;
+      
+      .cell-text {
+        max-width: 80px; // Más estrecho en móviles pequeños
+      }
+    }
+    
+    td:first-child {
+      padding-left: 0.5rem;
+    }
+    
+    td:last-child {
+      padding-right: 0.5rem;
+    }
+  }
+}
 }
