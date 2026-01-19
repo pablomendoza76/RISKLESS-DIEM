@@ -1,4 +1,6 @@
 /* FUENTES – RISKLESS*/
+@use 'sass:math';
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600&display=swap');
 
 /* VARIABLES DE FUENTES*/
@@ -33,19 +35,19 @@ $lh-body-sm: 1.625rem;
 $lh-caption: 1.125rem;
 
 /* HEADINGS*/
-.h1 { font: 500 $fs-h1 / $lh-h1 $font-poppins; }
-.h2 { font: 500 $fs-h2 / $lh-h2 $font-poppins; }
-.h3 { font: 600 $fs-h3 / $lh-h3 $font-poppins; }
+.h1 { font: 500 math.div($fs-h1, $lh-h1) $font-poppins; }
+.h2 { font: 500 math.div($fs-h2, $lh-h2) $font-poppins; }
+.h3 { font: 600 math.div($fs-h3, $lh-h3) $font-poppins; }
 
 /* TITLES / HEADLINES*/
-.title-sm { font: 500 $fs-title-sm / $lh-title $font-poppins; }
-.title { font: 600 $fs-title / $lh-title $font-poppins; }
-.subtitle { font: 400 $fs-subtitle / $lh-subtitle $font-work-sans; }
+.title-sm { font: 500 math.div($fs-title-sm, $lh-title) $font-poppins; }
+.title { font: 600 math.div($fs-title, $lh-title) $font-poppins; }
+.subtitle { font: 400 math.div($fs-subtitle, $lh-subtitle) $font-work-sans; }
 
 /* BODY*/
-.body-lg { font: 400 $fs-body-lg / $lh-body-lg $font-work-sans; }
-.body { font: 400 $fs-body / $lh-body $font-work-sans; }
-.body-sm { font: 400 $fs-body-sm / $lh-body-sm $font-work-sans; }
+.body-lg { font: 400 math.div($fs-body-lg, $lh-body-lg) $font-work-sans; }
+.body { font: 400 math.div($fs-body, $lh-body) $font-work-sans; }
+.body-sm { font: 400 math.div($fs-body-sm, $lh-body-sm) $font-work-sans; }
 
 /* CAPTION*/
-.caption { font: 400 $fs-caption / $lh-caption $font-work-sans; }
+.caption { font: 400 math.div($fs-caption, $lh-caption) $font-work-sans; }

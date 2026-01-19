@@ -9,19 +9,19 @@
   /* ================= HEADER SECCIÓN ================= */
   .header-seccion {
     display: flex;
-    justify-content: flex-start; // Alineación al inicio para el grupo izquierdo
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    margin-left: 75px;
+    margin-left: 0; // Eliminar margen izquierdo globalmente
 
     .title-group {
       display: flex;
       align-items: center;
-      gap: 1.25rem; // Espacio entre título y tarjeta
+      gap: 1.25rem;
 
       h2 {
         font-family: $font-poppins;
-        font-size: 2rem; // Título más grande y dominante
+        font-size: 2rem;
         font-weight: 700;
         color: $color-azul-oscuro;
         margin: 0;
@@ -64,12 +64,13 @@
     width: 100%;
     background: transparent;
     border-radius: 16px;
-    // Asegura que la tabla dinámica herede el comportamiento responsivo
-    overflow-x: auto; 
+    overflow-x: auto; // Permite scroll horizontal sin afectar layout
+    -webkit-overflow-scrolling: touch; // Mejora scroll táctil
+    padding-bottom: 1rem; // Espacio para scroll táctil
     
     ::ng-deep app-tabla-dinamica {
       display: block;
-      min-width: 900px; // Evita que se amontone en pantallas medianas
+      min-width: 900px; // Ancho mínimo para legibilidad
     }
   }
 }
@@ -97,27 +98,38 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 1rem;
+      margin-bottom: 1.5rem;
+      margin-left: 0; // Eliminar margen izquierdo en móvil
 
       .title-group {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.75rem;
+        width: 100%; // Ocupa todo el ancho disponible
 
-        h2 { 
+        h2 {
           font-size: 1.4rem;
           line-height: 1.2;
         }
 
         .total-badge-card {
           padding: 0.3rem 0.8rem;
-          span { font-size: 0.75rem; }
-          strong { font-size: 0.9rem; }
+
+          span {
+            font-size: 0.75rem;
+          }
+
+          strong {
+            font-size: 0.9rem;
+          }
         }
       }
     }
 
     .table-wrapper {
-      padding-bottom: 1rem; // Espacio para el scroll horizontal táctil
+      padding: 0 1rem 1rem; // Padding horizontal para evitar que los botones se peguen al borde
+      border-radius: 12px;
+      background: $fondo-claro;
     }
   }
 }
@@ -125,8 +137,24 @@
 // Móviles pequeños
 @media (max-width: 480px) {
   .asegurados-container {
-    .header-seccion .title-group h2 {
-      font-size: 1.25rem;
+    padding: 0.75rem;
+
+    .header-seccion {
+      .title-group {
+        h2 {
+          font-size: 1.25rem;
+        }
+      }
+    }
+
+    .table-wrapper {
+      padding: 0 0.75rem 0.75rem;
+      overflow-x: auto; // Scroll horizontal para móviles pequeños
+      -webkit-overflow-scrolling: touch; // Scroll táctil mejorado
+      
+      ::ng-deep app-tabla-dinamica {
+        min-width: 600px; // Reducir aún más para móviles pequeños
+      }
     }
   }
 }

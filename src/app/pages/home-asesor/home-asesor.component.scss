@@ -1,3 +1,6 @@
+@use '../../shared/styles/colores' as *;
+@use '../../shared/styles/tipografia' as *;
+
 .home-layout {
   display: grid;
   grid-template-columns: 260px 1fr; // sidebar + contenido
@@ -31,4 +34,42 @@
   grid-row: 2 / 3;
   overflow-y: auto;
   padding: 1.5rem;
+}
+
+/* ================= RESPONSIVIDAD ================= */
+
+// Tablet
+@media (max-width: 1024px) {
+  .home-layout {
+    grid-template-columns: 80px 1fr;
+  }
+}
+
+// Móvil
+@media (max-width: 768px) {
+  .home-layout {
+    grid-template-columns: 1fr; // Solo contenido, sidebar se vuelve overlay
+    grid-template-rows: 70px 1fr; // Espacio para header móvil + contenido
+  }
+
+  .sidebar-area {
+    grid-column: 1 / -1; // Ocupa todo el ancho
+    grid-row: 1 / 2; // Posición en la primera fila
+    height: 70px;
+    z-index: 1000;
+  }
+
+  .main-area {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3; // Se mueve a la segunda fila
+    margin-top: 0; // Sin margen extra
+  }
+
+  .topbar-area {
+    display: none; // Ocultar topbar original en móvil
+  }
+
+  .content-area {
+    padding: 1rem;
+  }
 }

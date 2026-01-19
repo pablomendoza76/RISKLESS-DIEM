@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './admin-topbar.component.html',
   styleUrls: ['./admin-topbar.component.scss'],
+  encapsulation: ViewEncapsulation.Emulated
 })
 export class AdminTopbarComponent {
 
