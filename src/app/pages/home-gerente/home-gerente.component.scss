@@ -1,42 +1,19 @@
 // ============================================
-// VARIABLES CORPORATIVAS RISKLEES-DIEM
+// IMPORTS
 // ============================================
-$color-dorado: #C6AF6B;
-$color-azul-oscuro: #062140;
-$color-azul-celeste: #3891F4;
-
-$texto-principal: #2b2b2b;
-$texto-secundario: #5a5a5a;
-$texto-claro: #f6f6f6;
-
-$fondo-claro: #ffffff;
-$fondo-gris-suave: #f8f8f8;
-
-$verde-600: #2e7d32;
-$verde-50: #e6f5e9;
-$rojo-600: #c62828;
-$rojo-50: #fde7e9;
-$amarillo-600: #fbc02d;
-$amarillo-50: #fff8e1;
-$morado-600: #6a1b9a;
-$morado-50: #f3e5f5;
-$aqua-500: #00acc1;
-$aqua-50: #e0f7fa;
-
-// ============================================
-// CONTAINER PRINCIPAL
-// ============================================
-.dashboard-container {
 @use '../../shared/styles/colores' as *;
 @use '../../shared/styles/tipografia' as *;
 
+// ============================================
+// LAYOUT GENERAL
+// ============================================
 .dashboard-container {
-  padding: 2rem;
-  background: $fondo-gris-suave;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   padding: 1.5rem;
-  font-family: 'Work Sans', sans-serif;
+  min-height: 100vh;
+  // Usamos los grises de la paleta para el gradiente de fondo
+  background: linear-gradient(135deg, $gris-50 0%, $gris-200 100%);
+  font-family: $font-work-sans;
+  color: $texto-principal;
   
   @media (min-width: 768px) {
     padding: 2rem;
@@ -51,7 +28,7 @@ $aqua-50: #e0f7fa;
   border-radius: 16px;
   padding: 1.5rem 2rem;
   margin-bottom: 2rem;
-  box-shadow: 0 8px 16px rgba(6, 33, 64, 0.15);
+  box-shadow: 0 8px 16px rgba($color-azul-oscuro, 0.15);
   
   .header-content {
     display: flex;
@@ -64,15 +41,16 @@ $aqua-50: #e0f7fa;
   .header-text {
     h1 {
       color: $fondo-claro;
-      font-size: 1.875rem;
+      font-family: $font-poppins;
+      font-size: $fs-h2;
       font-weight: 600;
       margin: 0 0 0.25rem 0;
-      font-family: 'Poppins', sans-serif;
     }
     
     .subtitle {
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 0.95rem;
+      color: $fondo-claro-80;
+      font-family: $font-work-sans;
+      font-size: $fs-body;
       margin: 0;
       letter-spacing: 0.3px;
     }
@@ -85,6 +63,7 @@ $aqua-50: #e0f7fa;
     flex-wrap: wrap;
   }
   
+  // Botón Exportar (Azul Celeste)
   .btn-export {
     display: flex;
     align-items: center;
@@ -94,11 +73,11 @@ $aqua-50: #e0f7fa;
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
+    font-family: $font-work-sans;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: $fs-body-sm; // Ajustado a escala
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Work Sans', sans-serif;
     
     mat-icon {
       font-size: 20px;
@@ -109,7 +88,7 @@ $aqua-50: #e0f7fa;
     &:hover:not(:disabled) {
       background: darken($color-azul-celeste, 8%);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
+      box-shadow: 0 4px 12px rgba($verde-700, 0.4); // Sombra sutil
     }
     
     &:active:not(:disabled) {
@@ -119,13 +98,13 @@ $aqua-50: #e0f7fa;
     &:disabled {
       opacity: 0.6;
       cursor: not-allowed;
-      
       mat-icon {
         animation: rotate 1s linear infinite;
       }
     }
   }
   
+  // Botón Logout (Dorado)
   .btn-logout {
     display: flex;
     align-items: center;
@@ -135,11 +114,11 @@ $aqua-50: #e0f7fa;
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
+    font-family: $font-work-sans;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: $fs-body-sm;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Work Sans', sans-serif;
     
     mat-icon {
       font-size: 20px;
@@ -150,7 +129,7 @@ $aqua-50: #e0f7fa;
     &:hover {
       background: lighten($color-dorado, 8%);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(198, 175, 107, 0.4);
+      box-shadow: 0 4px 12px rgba($color-dorado, 0.4);
     }
     
     &:active {
@@ -177,7 +156,7 @@ $aqua-50: #e0f7fa;
   .spinner {
     width: 50px;
     height: 50px;
-    border: 4px solid rgba(198, 175, 107, 0.2);
+    border: 4px solid rgba($color-dorado, 0.2);
     border-top-color: $color-dorado;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
@@ -186,25 +165,13 @@ $aqua-50: #e0f7fa;
   p {
     margin-top: 1rem;
     color: $texto-secundario;
-    font-size: 0.95rem;
+    font-family: $font-work-sans;
+    font-size: $fs-body;
   }
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
-  h1 { 
-    font-family: $font-poppins;
-    font-size: $fs-h2; 
-    font-weight: 700; 
-    color: $color-azul-oscuro; 
-    margin: 0; 
-  }
-  
-  .subtitle { 
-    font-family: $font-work-sans;
-    color: $texto-terciario; 
-    font-size: $fs-body-sm; 
-  }
 }
 
 // ============================================
@@ -217,11 +184,11 @@ $aqua-50: #e0f7fa;
 }
 
 .section-title {
-  font-size: 1.25rem;
+  font-family: $font-poppins;
+  font-size: $fs-title;
   font-weight: 600;
   color: $color-azul-oscuro;
   margin: 0 0 1.25rem 0;
-  font-family: 'Poppins', sans-serif;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -246,11 +213,6 @@ $aqua-50: #e0f7fa;
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
   }
-.glass {
-  background: $fondo-claro;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px -1px rgba($color-azul-oscuro, 0.1), 0 2px 4px -1px rgba($color-azul-oscuro, 0.06);
-  border: 1px solid $gris-200;
 }
 
 // ============================================
@@ -264,11 +226,12 @@ $aqua-50: #e0f7fa;
   align-items: flex-start;
   gap: 1.25rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e9ecef;
+  border: 1px solid $gris-200;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
   
+  // Línea lateral animada
   &::before {
     content: '';
     position: absolute;
@@ -313,7 +276,8 @@ $aqua-50: #e0f7fa;
   }
   
   .kpi-label {
-    font-size: 0.85rem;
+    font-family: $font-work-sans;
+    font-size: $fs-body-sm;
     color: $texto-secundario;
     font-weight: 500;
     text-transform: uppercase;
@@ -321,17 +285,18 @@ $aqua-50: #e0f7fa;
   }
   
   .kpi-value {
-    font-size: 1.75rem;
+    font-family: $font-poppins;
+    font-size: $fs-h2; // Ajustado a la paleta (aprox 30px)
     font-weight: 700;
     color: $texto-principal;
     margin: 0;
-    font-family: 'Poppins', sans-serif;
     line-height: 1.2;
   }
   
   .kpi-subtitle {
-    font-size: 0.8rem;
-    color: $texto-secundario;
+    font-family: $font-work-sans;
+    font-size: $fs-caption;
+    color: $texto-terciario;
     margin-top: 0.25rem;
   }
   
@@ -339,7 +304,8 @@ $aqua-50: #e0f7fa;
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    font-size: 0.8rem;
+    font-family: $font-work-sans;
+    font-size: $fs-body-sm;
     font-weight: 600;
     margin-top: 0.25rem;
     
@@ -352,13 +318,17 @@ $aqua-50: #e0f7fa;
     &.positive {
       color: $verde-600;
     }
+    &.negative {
+        color: $rojo-600;
+    }
   }
   
-  // Variantes de color
+  // VARIANTES DE COLOR (Mapeadas a la paleta Riskless)
+  
   &.primary {
     &::before { background: $color-azul-celeste; }
     .kpi-icon {
-      background: rgba(56, 145, 244, 0.1);
+      background: rgba($color-azul-celeste, 0.1);
       color: $color-azul-celeste;
     }
   }
@@ -374,7 +344,7 @@ $aqua-50: #e0f7fa;
   &.gold {
     &::before { background: $color-dorado; }
     .kpi-icon {
-      background: rgba(198, 175, 107, 0.15);
+      background: rgba($color-dorado, 0.15);
       color: darken($color-dorado, 10%);
     }
   }
@@ -390,7 +360,7 @@ $aqua-50: #e0f7fa;
   &.financial {
     &::before { background: $color-dorado; }
     .kpi-icon {
-      background: rgba(198, 175, 107, 0.15);
+      background: rgba($color-dorado, 0.15);
       color: darken($color-dorado, 15%);
     }
   }
@@ -398,7 +368,7 @@ $aqua-50: #e0f7fa;
   &.info {
     &::before { background: $color-azul-celeste; }
     .kpi-icon {
-      background: rgba(56, 145, 244, 0.1);
+      background: rgba($color-azul-celeste, 0.1);
       color: $color-azul-celeste;
     }
   }
@@ -422,31 +392,15 @@ $aqua-50: #e0f7fa;
   &.metric {
     &::before { background: $color-azul-oscuro; }
     .kpi-icon {
-      background: rgba(6, 33, 64, 0.08);
+      background: rgba($color-azul-oscuro, 0.08);
       color: $color-azul-oscuro;
     }
   }
 
+  // Variantes extra simples
   &.blue .kpi-icon { background: $azul-50; color: $azul-600; }
   &.green .kpi-icon { background: $verde-50; color: $verde-600; }
-  &.gold .kpi-icon { background: $amarillo-50; color: $amarillo-600; }
   &.red .kpi-icon { background: $rojo-50; color: $rojo-600; }
-
-  .label { 
-    font-family: $font-work-sans;
-    font-size: $fs-caption; 
-    color: $texto-terciario; 
-    text-transform: uppercase; 
-    letter-spacing: 0.5px; 
-  }
-  
-  .value { 
-    font-family: $font-poppins;
-    font-size: $fs-h3; 
-    font-weight: 800; 
-    color: $color-azul-oscuro; 
-    margin: 0; 
-  }
 }
 
 // ============================================
@@ -481,7 +435,7 @@ $aqua-50: #e0f7fa;
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e9ecef;
+  border: 1px solid $gris-200;
   transition: all 0.3s ease;
   
   &:hover {
@@ -498,14 +452,14 @@ $aqua-50: #e0f7fa;
     align-items: center;
     margin-bottom: 1.25rem;
     padding-bottom: 0.75rem;
-    border-bottom: 2px solid #f1f3f5;
+    border-bottom: 2px solid $gris-100;
     
     h4 {
       margin: 0;
-      font-size: 1.1rem;
+      font-family: $font-poppins;
+      font-size: $fs-body-lg;
       font-weight: 600;
       color: $color-azul-oscuro;
-      font-family: 'Poppins', sans-serif;
     }
     
     .chart-badge {
@@ -513,7 +467,8 @@ $aqua-50: #e0f7fa;
       color: $fondo-claro;
       padding: 0.35rem 0.75rem;
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-family: $font-work-sans;
+      font-size: $fs-body-sm;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -537,35 +492,6 @@ $aqua-50: #e0f7fa;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
-  
-  @media (max-width: 640px) {
-  .chart-container {
-    padding: 1.5rem;
-    h3 { 
-      font-family: $font-poppins;
-      margin-bottom: 1.5rem; 
-      color: $color-azul-oscuro; 
-      font-size: $fs-title; 
-    }
-  }
-}
-
-/* ================= RESPONSIVIDAD ================= */
-
-// Tablet
-@media (max-width: 1024px) {
-  .dashboard-container {
-    padding: 1.5rem;
-  }
-  
-  .kpi-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-  }
-  
-  .charts-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .stat-item {
@@ -576,7 +502,7 @@ $aqua-50: #e0f7fa;
   align-items: center;
   gap: 1rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e9ecef;
+  border: 1px solid $gris-200;
   transition: all 0.3s ease;
   
   &:hover {
@@ -605,44 +531,17 @@ $aqua-50: #e0f7fa;
   }
   
   .stat-label {
-    font-size: 0.8rem;
+    font-family: $font-work-sans;
+    font-size: $fs-body-sm;
     color: $texto-secundario;
     font-weight: 500;
   }
   
   .stat-value {
-    font-size: 1.25rem;
+    font-family: $font-poppins;
+    font-size: $fs-title;
     font-weight: 700;
     color: $texto-principal;
-    font-family: 'Poppins', sans-serif;
-  }
-}
-
-// ============================================
-// RESPONSIVE ADJUSTMENTS
-// ============================================
-@media (max-width: 768px) {
-  .dashboard-header {
-    .header-content {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    
-    .header-actions {
-      width: 100%;
-      
-      .btn-export,
-      .btn-logout {
-        flex: 1;
-        justify-content: center;
-      }
-    }
-  }
-  
-  .kpi-card {
-    .kpi-value {
-      font-size: 1.5rem;
-    }
   }
 }
 
@@ -672,25 +571,52 @@ $aqua-50: #e0f7fa;
   @for $i from 1 through 20 {
     &:nth-child(#{$i}) {
       animation-delay: #{$i * 0.05}s;
-// Móvil
+    }
+  }
+}
+
+// ============================================
+// RESPONSIVE ADJUSTMENTS
+// ============================================
+@media (max-width: 1024px) {
+  .dashboard-container {
+    padding: 1.5rem;
+  }
+  
+  .kpi-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
   .dashboard-container {
     padding: 1rem;
   }
-  
+
   .dashboard-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
     margin-bottom: 1.5rem;
     
-    h1 {
+    .header-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .header-text h1 {
       font-size: $fs-title;
     }
     
-    .btn-logout {
+    .header-actions {
       width: 100%;
-      justify-content: center;
+      
+      .btn-export,
+      .btn-logout {
+        flex: 1;
+        justify-content: center;
+      }
     }
   }
   
@@ -705,28 +631,27 @@ $aqua-50: #e0f7fa;
     .kpi-icon {
       width: 40px;
       height: 40px;
-      
       mat-icon {
         font-size: 20px;
       }
     }
     
-    .value {
-      font-size: $fs-h2;
+    .kpi-value {
+      font-size: $fs-h3; // Más pequeño en móvil
     }
   }
   
-  .charts-grid {
+  .charts-grid-main,
+  .charts-grid-secondary {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
   
-  .chart-container {
+  .chart-card {
     padding: 1rem;
     
-    h3 {
-      font-size: $fs-subtitle;
-      margin-bottom: 1rem;
+    .chart-header h4 {
+      font-size: $fs-body;
     }
   }
 }
