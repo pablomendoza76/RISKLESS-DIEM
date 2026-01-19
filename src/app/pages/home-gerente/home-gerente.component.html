@@ -1,1 +1,75 @@
-<p>home-gerente works!</p>
+<div class="dashboard-container">
+  
+  <header class="dashboard-header">
+    <div class="header-info">
+      <h1>Panel Gerencial</h1>
+      <p class="subtitle">Indicadores clave de rendimiento (KPIs)</p>
+    </div>
+    <button class="btn-logout" (click)="cerrarSesion()">
+      <mat-icon>power_settings_new</mat-icon> Salir
+    </button>
+  </header>
+
+  <div *ngIf="loading" class="main-loader">
+    <div class="spinner"></div>
+    <p>Sincronizando datos...</p>
+  </div>
+
+  <main class="dashboard-body" *ngIf="!loading">
+    
+    <div class="kpi-grid">
+      <div class="kpi-card glass blue">
+        <div class="kpi-icon"><mat-icon>people</mat-icon></div>
+        <div class="kpi-content">
+          <span class="label">Asegurados</span>
+          <h2 class="value">{{ totalAsegurados }}</h2>
+        </div>
+      </div>
+
+      <div class="kpi-card glass green">
+        <div class="kpi-icon"><mat-icon>verified_user</mat-icon></div>
+        <div class="kpi-content">
+          <span class="label">Pólizas Activas</span>
+          <h2 class="value">{{ totalPolizas }}</h2>
+        </div>
+      </div>
+
+      <div class="kpi-card glass gold">
+        <div class="kpi-icon"><mat-icon>payments</mat-icon></div>
+        <div class="kpi-content">
+          <span class="label">Recaudación Total</span>
+          <h2 class="value">{{ totalRecaudado | currency }}</h2>
+        </div>
+      </div>
+
+      <div class="kpi-card glass red">
+        <div class="kpi-icon"><mat-icon>report_problem</mat-icon></div>
+        <div class="kpi-content">
+          <span class="label">Siniestros Críticos</span>
+          <h2 class="value">{{ siniestrosActivos }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      
+      <div class="chart-container glass">
+        <h3>Evolución de Recaudación</h3>
+        <canvas baseChart
+          [data]="revenueChartData"
+          [type]="'bar'">
+        </canvas>
+      </div>
+
+      <div class="chart-container glass">
+        <h3>Distribución de Siniestros</h3>
+        <canvas baseChart
+          [data]="claimsChartData"
+          [type]="'doughnut'">
+        </canvas>
+      </div>
+
+    </div>
+
+  </main>
+</div>

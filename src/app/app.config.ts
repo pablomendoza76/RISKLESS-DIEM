@@ -6,6 +6,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 import { provideToastr } from 'ngx-toastr';
 
+
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -18,5 +21,7 @@ export const appConfig: ApplicationConfig = {
       progressBar: true,
       closeButton: false,
     }),
+    
+    provideCharts(withDefaultRegisterables()),
   ],
 };
