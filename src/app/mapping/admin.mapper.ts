@@ -6,6 +6,7 @@ import { UsuarioPerfilConRol, UsuariosService } from '../services/usuarios.servi
 import { RolesService, Rol } from '../services/roles.service';
 import { DynamicField } from '../shared/components/reuzables/dynamic-form/dynamic-form.component';
 import { ColumnaTabla, BotonTabla } from '../shared/components/reuzables/tabla-dinamica/tabla-dinamica.component';
+import { AuthService } from '../services/presentación/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -68,7 +69,8 @@ export class AdminMapper {
   constructor(
     private usuariosService: UsuariosService,
     private rolesService: RolesService,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) {}
 
   /* =========================
@@ -227,9 +229,15 @@ export class AdminMapper {
     this.mostrarLogout = false;
   }
 
-  cerrarSesion(): void {
-    localStorage.clear();
-    this.mostrarLogout = false;
-    this.router.navigate(['/login']);
+  async cerrarSesion(): Promise<void> {
+    try {
+      await this.auth.logout();
+      this.mostrarLogout = false;
+      this.router.navigate(['/login']);
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      this.mostrarLogout = false;
+      this.router.navigate(['/login']);
+    }
   }
 }
