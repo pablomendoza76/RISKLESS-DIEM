@@ -27,6 +27,12 @@ $aqua-50: #e0f7fa;
 // CONTAINER PRINCIPAL
 // ============================================
 .dashboard-container {
+@use '../../shared/styles/colores' as *;
+@use '../../shared/styles/tipografia' as *;
+
+.dashboard-container {
+  padding: 2rem;
+  background: $fondo-gris-suave;
   min-height: 100vh;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   padding: 1.5rem;
@@ -186,6 +192,19 @@ $aqua-50: #e0f7fa;
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+  h1 { 
+    font-family: $font-poppins;
+    font-size: $fs-h2; 
+    font-weight: 700; 
+    color: $color-azul-oscuro; 
+    margin: 0; 
+  }
+  
+  .subtitle { 
+    font-family: $font-work-sans;
+    color: $texto-terciario; 
+    font-size: $fs-body-sm; 
+  }
 }
 
 // ============================================
@@ -227,6 +246,11 @@ $aqua-50: #e0f7fa;
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
   }
+.glass {
+  background: $fondo-claro;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba($color-azul-oscuro, 0.1), 0 2px 4px -1px rgba($color-azul-oscuro, 0.06);
+  border: 1px solid $gris-200;
 }
 
 // ============================================
@@ -402,6 +426,27 @@ $aqua-50: #e0f7fa;
       color: $color-azul-oscuro;
     }
   }
+
+  &.blue .kpi-icon { background: $azul-50; color: $azul-600; }
+  &.green .kpi-icon { background: $verde-50; color: $verde-600; }
+  &.gold .kpi-icon { background: $amarillo-50; color: $amarillo-600; }
+  &.red .kpi-icon { background: $rojo-50; color: $rojo-600; }
+
+  .label { 
+    font-family: $font-work-sans;
+    font-size: $fs-caption; 
+    color: $texto-terciario; 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px; 
+  }
+  
+  .value { 
+    font-family: $font-poppins;
+    font-size: $fs-h3; 
+    font-weight: 800; 
+    color: $color-azul-oscuro; 
+    margin: 0; 
+  }
 }
 
 // ============================================
@@ -494,6 +539,31 @@ $aqua-50: #e0f7fa;
   gap: 1rem;
   
   @media (max-width: 640px) {
+  .chart-container {
+    padding: 1.5rem;
+    h3 { 
+      font-family: $font-poppins;
+      margin-bottom: 1.5rem; 
+      color: $color-azul-oscuro; 
+      font-size: $fs-title; 
+    }
+  }
+}
+
+/* ================= RESPONSIVIDAD ================= */
+
+// Tablet
+@media (max-width: 1024px) {
+  .dashboard-container {
+    padding: 1.5rem;
+  }
+  
+  .kpi-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  .charts-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -602,6 +672,61 @@ $aqua-50: #e0f7fa;
   @for $i from 1 through 20 {
     &:nth-child(#{$i}) {
       animation-delay: #{$i * 0.05}s;
+// Móvil
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    
+    h1 {
+      font-size: $fs-title;
+    }
+    
+    .btn-logout {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
+  .kpi-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .kpi-card {
+    padding: 1rem;
+    
+    .kpi-icon {
+      width: 40px;
+      height: 40px;
+      
+      mat-icon {
+        font-size: 20px;
+      }
+    }
+    
+    .value {
+      font-size: $fs-h2;
+    }
+  }
+  
+  .charts-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .chart-container {
+    padding: 1rem;
+    
+    h3 {
+      font-size: $fs-subtitle;
+      margin-bottom: 1rem;
     }
   }
 }

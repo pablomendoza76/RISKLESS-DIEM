@@ -23,5 +23,35 @@
       <span class="user-role">{{ rol }}</span>
     </div>
 
+    <!-- ================= MODAL LOGOUT ================= -->
+    <div
+      class="logout-backdrop"
+      *ngIf="mostrarLogout">
+
+      <div class="logout-modal">
+        <h3>Cerrar sesión</h3>
+        <p>¿Deseas cerrar sesión y volver al inicio?</p>
+
+        <div class="logout-actions">
+          <button
+            class="btn-cancel"
+            type="button"
+            (click)="cerrarModalLogout()">
+            Cancelar
+          </button>
+
+          <button
+            class="btn-danger"
+            type="button"
+            (click)="confirmarLogout()">
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+
+    </div>
+    <!-- FIN MODAL -->
+
   </div>
+
 </div>
