@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { Router } from '@angular/router';
+import { RouterOutlet, Router } from '@angular/router';
 
 import { SidebarComponent, SidebarItem } from '../../shared/components/sidebar/sidebar.component';
 import { AdminTopbarComponent } from '../../shared/components/reuzables/admin-topbar/admin-topbar.component';
+
 import { AuthService } from '../../services/presentación/auth.service';
+import { NotificacionesService } from '../../services/presentación/Notificaciones.service';
+import { AlertService } from '../../services/presentación/alert.service';
 
 @Component({
   selector: 'app-home-asesor',
@@ -19,7 +21,7 @@ import { AuthService } from '../../services/presentación/auth.service';
   templateUrl: './home-asesor.component.html',
   styleUrl: './home-asesor.component.scss'
 })
-export class HomeAsesorComponent {
+export class HomeAsesorComponent implements OnInit {
 
   sidebarTitle = 'Panel Asesor';
 
@@ -28,82 +30,110 @@ export class HomeAsesorComponent {
   rolUsuario = 'Asesor';
   inicialesUsuario = 'JP';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private notificacionesService: NotificacionesService,
+    private alert: AlertService
+  ) {}
 
-sidebarItems: SidebarItem[] = [
+  // ===============================
+  // INIT
+  // ===============================
+  async ngOnInit(): Promise<void> {
+    await this.verificarNotificacionesPendientes();
+  }
 
-  // INICIO
-  {
-    label: 'Inicio',
-    icon: 'home',
-    route: '/asesor'
-  },
+  // ===============================
+  // SIDEBAR
+  // ===============================
+  sidebarItems: SidebarItem[] = [
 
-  // ASEGURADOS
-  {
-    label: 'Asegurados',
-    icon: 'person',
-    route: '/asesor/asegurados'
-  },
+    {
+      label: 'Inicio',
+      icon: 'home',
+      route: '/asesor'
+    },
 
-  // BIENES
-  {
-    label: 'Bienes',
-    icon: 'inventory',
-    route: '/asesor/bienes'
-  },
+    {
+      label: 'Asegurados',
+      icon: 'person',
+      route: '/asesor/asegurados'
+    },
 
-  // PÓLIZAS (CON HIJOS)
-  {
-    label: 'Pólizas',
-    icon: 'description',
-    children: [
-      {
-        label: 'Listado',
-        icon: 'list',
-        route: '/asesor/polizas'
-      },
-      {
-        label: 'Nueva póliza',
-        icon: 'add',
-        route: '/asesor/polizas_crear'
+    {
+      label: 'Bienes',
+      icon: 'inventory',
+      route: '/asesor/bienes'
+    },
+
+    {
+      label: 'Pólizas',
+      icon: 'description',
+      children: [
+        {
+          label: 'Listado',
+          icon: 'list',
+          route: '/asesor/polizas'
+        },
+        {
+          label: 'Nueva póliza',
+          icon: 'add',
+          route: '/asesor/polizas_crear'
+        }
+      ]
+    },
+
+    {
+      label: 'Pedidos',
+      icon: 'assignment',
+      route: '/asesor/pedidos'
+    },
+
+    {
+      label: 'Siniestros',
+      icon: 'warning',
+      route: '/asesor/sinistros'
+    },
+
+    {
+      label: 'Facturación',
+      icon: 'attach_money',
+      route: '/asesor/facturacion'
+    }
+  ];
+
+  // ===============================
+  // NOTIFICACIONES (AVISO INICIAL)
+  // ===============================
+  private async verificarNotificacionesPendientes(): Promise<void> {
+    try {
+      const total = await this.notificacionesService.contadorNoLeidas();
+
+      if (total > 0) {
+        // Evita mostrar el mensaje más de una vez por sesión
+        if (!sessionStorage.getItem('notificaciones_asesor_alert')) {
+          sessionStorage.setItem('notificaciones_asesor_alert', 'true');
+
+          this.alert.info(
+            `🔔 Tienes ${total} notificaciones pendientes. Revisa la campana.`
+          );
+        }
       }
-    ]
-  },
+    } catch {
+      // No romper el dashboard si falla
+    }
+  }
 
-  
-  // PEDIDOS
-  {
-    label: 'Pedidos',
-    icon: 'assignment',
-    route: '/asesor/pedidos'
-  },
-
-  // SINIESTROS
-  {
-    label: 'Siniestros',
-    icon: 'warning',
-    route: '/asesor/sinistros'
-  },
-
-  // fACTURACIÓN
-  {
-    label: 'Facturación',
-    icon: 'attach_money',
-    route: '/asesor/facturacion'
-  },
-
-
-];
-
-
-  async cerrarSesion() {
+  // ===============================
+  // LOGOUT
+  // ===============================
+  async cerrarSesion(): Promise<void> {
     try {
       await this.auth.logout();
       this.router.navigate(['/login']);
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
-      // Forzar navegación incluso si hay error
       this.router.navigate(['/login']);
     }
   }

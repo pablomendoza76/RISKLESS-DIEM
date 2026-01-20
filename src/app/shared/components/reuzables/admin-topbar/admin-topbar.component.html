@@ -10,6 +10,31 @@
   <!-- DERECHA -->
   <div class="topbar-right">
 
+    <!-- ================= CAMPANA NOTIFICACIONES ================= -->
+    <div class="notification-wrapper">
+
+      <div
+        class="notification clickable"
+        title="Notificaciones"
+        (click)="toggleNotificaciones()">
+
+        <mat-icon>notifications</mat-icon>
+      </div>
+
+      <!-- MODAL NOTIFICACIONES -->
+      <div
+        class="notifications-dropdown"
+        *ngIf="mostrarNotificaciones">
+
+        <app-modal-notificaciones
+          [isOpen]="mostrarNotificaciones">
+        </app-modal-notificaciones>
+
+      </div>
+
+    </div>
+    <!-- ================= FIN NOTIFICACIONES ================= -->
+
     <!-- AVATAR -->
     <div class="avatar clickable" (click)="toggleLogout()">
       <span class="avatar-initials">
@@ -50,7 +75,7 @@
       </div>
 
     </div>
-    <!-- FIN MODAL -->
+    <!-- ================= FIN MODAL LOGOUT ================= -->
 
   </div>
 

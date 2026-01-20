@@ -1,0 +1,223 @@
+/* === VARIABLES (Ajusta a tu tema) === */
+$primary: #2563eb; 
+$text-dark: #1e293b;
+$text-light: #64748b;
+$bg-overlay: rgba(15, 23, 42, 0.4);
+$bg-modal: #ffffff;
+$border-color: #e2e8f0;
+$hover-bg: #f8fafc;
+
+/* === OVERLAY & MODAL === */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: $bg-overlay;
+  backdrop-filter: blur(4px); /* Efecto vidrio elegante */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Alineado arriba */
+  padding-top: 5vh; /* Un poco de aire arriba */
+  z-index: 1050;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal {
+  width: 100%;
+  max-width: 440px;
+  /* IMPORTANTE: Altura máxima y Flex para el scroll interno */
+  max-height: 85vh; 
+  display: flex;
+  flex-direction: column;
+  
+  background: $bg-modal;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Para respetar los bordes redondeados */
+}
+
+/* === HEADER (Fijo) === */
+.header {
+  flex-shrink: 0; /* No se encoge */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid $border-color;
+  background: #fff;
+
+  .title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    h2 {
+      font-size: 1.125rem; /* 18px */
+      font-weight: 700;
+      color: $text-dark;
+      margin: 0;
+    }
+
+    .badge {
+      background: $primary;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+  }
+
+  .close-btn {
+    border: none;
+    background: transparent;
+    color: $text-light;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    transition: all 0.2s;
+
+    &:hover {
+      background: $hover-bg;
+      color: $text-dark;
+    }
+    
+    /* Si no usas mat-icon y usas texto 'X' */
+    font-size: 1.2rem; 
+    line-height: 1;
+  }
+}
+
+/* === BODY (Con Scroll) === */
+.body {
+  flex: 1; /* Ocupa el espacio restante */
+  overflow-y: auto; /* Scroll vertical */
+  padding: 0 20px 20px 20px; /* Padding interno */
+  background-color: #fcfcfc; /* Fondo muy sutil */
+}
+
+/* === SECTIONS === */
+section {
+  margin-top: 20px;
+
+  .section-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: $text-light;
+    margin-bottom: 10px;
+    padding-left: 4px;
+  }
+}
+
+/* === CARDS DE NOTIFICACIÓN === */
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.notification-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid $border-color;
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border-color: darken($border-color, 5%);
+  }
+
+  .card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: $text-dark;
+    line-height: 1.2;
+  }
+
+  .card-message {
+    font-size: 0.85rem;
+    color: $text-light;
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limitar a 2 lineas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Puntos de Prioridad */
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 6px; /* Alinear visualmente con el titulo */
+    flex-shrink: 0;
+
+    &.alta { background-color: #ef4444; box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2); }
+    &.media { background-color: #f59e0b; }
+    &.baja { background-color: #22c55e; }
+  }
+}
+
+/* === ESTADOS (Empty / Loading) === */
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: $text-light;
+
+  &.empty {
+    .icon-placeholder { font-size: 3rem; margin-bottom: 10px; }
+    p { font-weight: 600; color: $text-dark; margin: 0; }
+    small { font-size: 0.85rem; }
+  }
+}
+
+/* === SCROLLBAR PERSONALIZADO (Webkit) === */
+.custom-scroll {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
+    &:hover { background-color: #94a3b8; }
+  }
+}
+
+/* === ANIMACIONES === */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-pop {
+  animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}

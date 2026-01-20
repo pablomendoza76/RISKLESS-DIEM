@@ -1,35 +1,44 @@
 @use '../../../styles/colores' as *;
 @use '../../../styles/tipografia' as *;
 
-/* REGLAS DE ORO RISKLESS REFINADAS:
-   1. Buscador XL con enfoque dinámico.
-   2. Filas tipo tarjeta con radio aumentado y sombra profunda.
-   3. Acentos dorados y sombras azules integradas.
-*/
+/* REGLAS DE ORO RISKLESS REFINADAS (CON MOTOR DE SCROLL MEJORADO) */
 
 .tabla-wrapper {
   width: 100%;
-  padding: 2.5rem 5rem; // Un poco más de aire vertical
-  background-color: transparent;
+  height: 90%;        /* Ocupa el alto disponible */
+  max-height: 80vh;   /* Límite para activar el scroll */
+  padding: 2.5rem 5rem;
   box-sizing: border-box;
+  background-color: transparent;
+  
+  /* === CAMBIO ESTRUCTURAL: FLEX PARA EL STICKY === */
+  display: flex;
+  flex-direction: column;
+  
+  /* IMPORTANTE: Crear contexto de apilamiento bajo para no pelear con modales */
+  position: relative; 
+  z-index: 1; 
 }
 
 /* =========================
    HEADER (BUSCADOR XL + BOTONES TOP)
 ========================= */
 .tabla-header {
+  flex-shrink: 0; 
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 2rem;
   margin-bottom: 2rem;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 2; /* Apenas por encima del wrapper base */
 
   .input-busqueda {
-    flex: 2; // Toma más espacio proporcionalmente
-    min-width: 450px; // Más ancha
-    padding: 0.7rem 1.5rem; // Menos altura (padding vertical reducido)
-    border-radius: 12px; // Bordes un poco más técnicos/limpios
+    flex: 2;
+    min-width: 450px;
+    padding: 0.7rem 1.5rem;
+    border-radius: 12px;
     border: 1.5px solid $gris-200;
     background: $fondo-claro;
     font-family: $font-work-sans;
@@ -41,12 +50,10 @@
     &:focus {
       outline: none;
       border-color: $color-azul-celeste;
-      // Resplandor azul sutil pero expansivo
       box-shadow: 0 10px 25px -5px rgba($color-azul-celeste, 0.15);
       background: #fff;
     }
   }
-
 
   .botones-top {
     display: flex;
@@ -54,7 +61,7 @@
 
     .btn-tabla {
       padding: 0.85rem 1.75rem;
-      border-radius: 16px; // Redondeo armonizado con el buscador
+      border-radius: 16px;
       border: none;
       font-weight: 700;
       font-size: 0.95rem;
@@ -94,35 +101,59 @@
 }
 
 /* =========================
-   FILAS (TARJETAS CON SOMBRA NOTORIA)
+   CONTENEDOR DE SCROLL
+========================= */
+.tabla-scroll {
+  flex: 1; 
+  overflow-y: auto; 
+  padding-bottom: 2rem; 
+  
+  margin: 0 -1.5rem; 
+  padding-left: 1.5rem; 
+  padding-right: 1.5rem;
+
+  &::-webkit-scrollbar { width: 0px; background: transparent; }
+}
+
+/* =========================
+   FILAS Y TABLA
 ========================= */
 table {
   width: 100%;
   min-width: 850px;
   border-collapse: separate;
-  border-spacing: 0 1.25rem; // Más espacio para que las sombras respiren
+  border-spacing: 0 1.25rem; 
 }
 
 thead th {
-  padding: 0 2rem;
+  /* === MAGIA STICKY === */
+  position: sticky;
+  top: 0;
+  
+  /* [CORRECCIÓN CRÍTICA] Z-index reducido de 50 a 5 */
+  /* Solo necesita ser mayor que las filas (1), no que el modal (100+) */
+  z-index: 5; 
+  
+  background-color: #f4f6f9; 
+  padding: 1rem 2rem; 
   text-align: left;
   font-size: 0.8rem;
   font-weight: 700;
   color: $texto-terciario;
   text-transform: uppercase;
   letter-spacing: 1.5px;
+  box-shadow: 0 4px 6px -2px rgba(0,0,0,0.02);
 }
 
 tbody tr {
   background: $fondo-claro;
   position: relative;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  
-  // Sombra base más profunda y azulada
   box-shadow: 0 8px 25px rgba($color-azul-oscuro, 0.07);
+  z-index: 1; /* Nivel base */
 
   td:first-child { 
-    border-top-left-radius: 22px; // Bordes más redondeados
+    border-top-left-radius: 22px; 
     border-bottom-left-radius: 22px; 
     padding-left: 2rem;
     border-left: 4px solid transparent;
@@ -134,15 +165,14 @@ tbody tr {
   }
 
   &:hover {
-    z-index: 10;
-    // Efecto de elevación más marcado
+    /* [CORRECCIÓN] Bajamos de 10 a 2. Solo necesita superar a otras filas */
+    z-index: 2; 
     transform: translateY(-5px) scale(1.01);
-    // Sombra muy notoria con matiz azul de marca
     box-shadow: 0 20px 40px rgba($color-azul-oscuro, 0.12), 
                 0 0 15px rgba($color-azul-celeste, 0.05);
     
     td:first-child {
-      border-left-color: $color-dorado; // Detalle dorado más grueso
+      border-left-color: $color-dorado;
     }
   }
 }
@@ -154,7 +184,7 @@ tbody td {
 }
 
 /* =========================
-   ACCIONES (ESTILO REFINADO)
+   ACCIONES
 ========================= */
 .acciones-container {
   display: flex;
@@ -165,14 +195,13 @@ tbody td {
     padding: 0.6rem 1.2rem;
     font-size: 0.8rem;
     font-weight: 700;
-    border-radius: 12px; // Más redondeados
+    border-radius: 12px;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
-    // Mejora para táctil móvil
-    min-height: 44px; // Área mínima para toque
-    min-width: 44px; // Área mínima para toque
+    min-height: 44px;
+    min-width: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -182,7 +211,7 @@ tbody td {
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 5px 12px rgba($color-azul-celeste, 0.3); // Sombrita azul
+      box-shadow: 0 5px 12px rgba($color-azul-celeste, 0.3);
     }
 
     &.primary, &[class*="Editar"] {
@@ -206,157 +235,204 @@ tbody td {
   }
 }
 
-/* RESPONSIVE MANTENIDO Y AJUSTADO */
-/* ============================================================
-   RESPONSIVIDAD TOTAL (WEB, TABLET Y MÓVIL)
-   ============================================================ */
-
-// 1. LAPTOPS Y PANTALLAS MEDIANAS (1100px o menos)
+/* =========================
+   RESPONSIVIDAD
+========================= */
 @media (max-width: 1100px) {
-  .tabla-wrapper { 
-    padding: 1.5rem 2rem; // Reduce aire lateral para ganar espacio de tabla
-  }
-  
-  .tabla-header .input-busqueda { 
-    min-width: 350px; // Estiliza el buscador a un tamaño medio
-  }
+  .tabla-wrapper { padding: 1.5rem 2rem; }
+  .tabla-header .input-busqueda { min-width: 350px; }
 }
 
-// 2. TABLETS Y MÓVILES GRANDES (768px o menos)
 @media (max-width: 768px) {
-  .tabla-wrapper { 
-    padding: 1rem; 
-  }
+  .tabla-wrapper { padding: 1rem; }
 
-  // Header en columna para evitar colisión entre buscador y botones
   .tabla-header { 
     flex-direction: column; 
     align-items: stretch; 
     gap: 1.5rem;
 
     .input-busqueda {
-      min-width: 100%; // Buscador ocupa todo el ancho
-      padding: 0.8rem 1.2rem; // Más padding para área táctil
-      font-size: 1rem; // Texto más grande en móvil
+      min-width: 100%;
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
     }
 
     .botones-top {
-      justify-content: center; // Centra botones de acción principales
-      
-      .btn-tabla {
-        flex: 1; // Botones crecen para facilitar toque táctil
-        justify-content: center;
-        padding: 1.2rem 1.5rem; // Más padding para mejor área táctil
-        font-size: 1.1rem; // Texto más grande en móvil
-        min-height: 52px; // Área táctil más grande
-      }
-    }
-  }
-
-  // Gestión crítica de la tabla para no romper el layout
-  .tabla-scroll, 
-  table {
-    display: block;
-    width: 100%;
-    overflow-x: auto; // Permite scroll horizontal solo en los datos
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 1rem;
-    
-    // Mantiene un ancho mínimo para que las filas no se amontonen
-    min-width: 600px; // Reducido drásticamente para móviles
-  }
-  
-  // Ajustes para filas en móvil
-  tbody tr {
-    td {
-      padding: 1rem 0.6rem; // Padding más generoso para mejor espaciado
-      font-size: 1rem; // Texto más grande y legible
-      line-height: 1.4; // Altura de línea mejor para legibilidad
-      
-      .cell-text {
-        max-width: 120px; // Ancho más generoso para contenido
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
-    
-    td:first-child {
-      padding-left: 1rem; // Padding más generoso
-    }
-    
-    td:last-child {
-      padding-right: 1rem; // Padding más generoso
-    }
-  }
-  
-  // Acciones más compactas en móvil
-  .acciones-container {
-    flex-direction: column;
-    gap: 0.75rem; // Más espacio entre botones
-    
-    .btn-accion-fila {
-      width: 100%;
-      padding: 1rem 1.2rem; // Más padding para mejor área táctil
-      font-size: 0.9rem; // Texto más grande
-      text-align: center;
-      min-height: 52px; // Área táctil más grande
       justify-content: center;
-      align-items: center;
-    }
-  }
-
-// 3. MÓVILES PEQUEÑOS (480px o menos)
-@media (max-width: 480px) {
-  .tabla-wrapper {
-    padding: 0.5rem;
-  }
-
-  .tabla-header {
-    .botones-top {
-      flex-direction: column; // Botones uno sobre otro para máxima comodidad
-      
       .btn-tabla {
-        width: 100%;
+        flex: 1;
+        justify-content: center;
+        padding: 1.2rem 1.5rem;
+        font-size: 1.1rem;
+        min-height: 52px;
       }
     }
   }
 
-  // Estiliza el scrollbar para dispositivos móviles
   .tabla-scroll::-webkit-scrollbar {
     height: 4px;
+    width: 4px;
     background: transparent;
   }
-  
   .tabla-scroll::-webkit-scrollbar-thumb {
     background: $gris-300;
     border-radius: 10px;
   }
-  
-  // Headers más compactos
-  thead th {
-    padding: 0 1rem;
-    font-size: 0.7rem;
+
+  .tabla-scroll, table {
+    display: block;
+    width: 100%;
+    min-width: 600px; 
   }
   
-  // Filas más compactas
-  tbody tr {
-    td {
-      padding: 0.8rem 0.3rem;
-      font-size: 0.8rem;
-      
-      .cell-text {
-        max-width: 80px; // Más estrecho en móviles pequeños
-      }
-    }
-    
-    td:first-child {
-      padding-left: 0.5rem;
-    }
-    
-    td:last-child {
-      padding-right: 0.5rem;
-    }
+  tbody tr td {
+    padding: 1rem 0.6rem;
+    font-size: 1rem;
+    line-height: 1.4;
+    .cell-text { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  }
+  tbody tr td:first-child { padding-left: 1rem; }
+  tbody tr td:last-child { padding-right: 1rem; }
+  
+  .acciones-container {
+    flex-direction: column;
+    gap: 0.75rem;
+    .btn-accion-fila { width: 100%; padding: 1rem 1.2rem; font-size: 0.9rem; min-height: 52px; }
   }
 }
+
+/* =========================================================
+   MÓVIL "RISKLESS" PREMIUM (Sticky Right + Clean UI)
+========================================================= */
+@media (max-width: 480px) {
+
+  .tabla-wrapper {
+    padding: 0; 
+    height: 100vh; 
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tabla-header {
+    position: sticky;
+    top: 0;
+    /* [CORRECCIÓN CRÍTICA] Z-index reducido de 100 a 10 */
+    /* Suficiente para estar sobre la tabla, pero bajo el modal (normalmente z-1000) */
+    z-index: 10; 
+    background: #fff; 
+    padding: 0.8rem 1rem;
+    margin-bottom: 0;
+    
+    flex-direction: row; 
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+    .input-busqueda {
+      min-width: unset;
+      width: 100%;
+      flex: 1; 
+      padding: 0.7rem 1rem;
+      font-size: 0.95rem;
+      height: 44px; 
+    }
+
+    .botones-top {
+      flex: 0 0 auto;
+      
+      .btn-tabla.primary {
+        font-size: 0 !important; 
+        padding: 0;
+        width: 44px;  
+        height: 44px; 
+        border-radius: 12px;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        &::after {
+          content: '+';
+          font-size: 2rem;
+          line-height: 0; 
+          font-weight: 300;
+          color: $color-dorado;
+          margin-top: -2px; 
+        }
+      }
+    }
+  }
+
+  .tabla-scroll {
+    padding: 0.5rem 0 4rem 0; 
+    
+    table {
+      min-width: 650px; 
+    }
+  }
+
+  /* 3. COLUMNA DE ACCIONES (STICKY DERECHA "FLOTANTE") */
+  thead th:last-child,
+  tbody td:last-child {
+    position: sticky;
+    right: 0;
+    width: 80px; 
+    min-width: 80px;
+    
+    background-color: #fff; 
+    box-shadow: -6px 0 12px -4px rgba(0,0,0,0.08); 
+    /* [CORRECCIÓN] Z-index seguro para sticky lateral */
+    z-index: 6; 
+    
+    border-left: 1px solid rgba(0,0,0,0.03);
+    display: table-cell; 
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  thead th:last-child {
+    background-color: #f4f6f9; 
+    /* [CORRECCIÓN] Z-index superior a filas pero inferior a modal */
+    z-index: 7; 
+  }
+
+  .acciones-container {
+    flex-direction: column; 
+    gap: 6px;
+    width: 100%;
+    align-items: center;
+    padding: 0 4px;
+
+    .btn-accion-fila {
+      width: 100%;
+      min-width: unset;
+      min-height: unset;
+      padding: 6px 4px;
+      font-size: 0.65rem; 
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border-radius: 6px;
+      height: 28px; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  thead th {
+    padding: 0.8rem 1rem;
+    font-size: 0.75rem;
+  }
+
+  tbody tr td {
+    padding: 1rem 1rem; 
+    
+    .cell-text {
+      max-width: 140px; 
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }

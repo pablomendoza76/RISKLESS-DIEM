@@ -1,12 +1,8 @@
-// ============================================
 // IMPORTS
-// ============================================
 @use '../../shared/styles/colores' as *;
 @use '../../shared/styles/tipografia' as *;
 
-// ============================================
 // LAYOUT GENERAL
-// ============================================
 .dashboard-container {
   padding: 1.5rem;
   min-height: 100vh;
@@ -20,9 +16,7 @@
   }
 }
 
-// ============================================
 // HEADER
-// ============================================
 .dashboard-header {
   background: linear-gradient(135deg, $color-azul-oscuro 0%, darken($color-azul-oscuro, 5%) 100%);
   border-radius: 16px;
@@ -143,9 +137,7 @@
   to { transform: rotate(360deg); }
 }
 
-// ============================================
 // LOADER
-// ============================================
 .main-loader {
   display: flex;
   flex-direction: column;
@@ -174,9 +166,7 @@
   to { transform: rotate(360deg); }
 }
 
-// ============================================
 // SECCIONES
-// ============================================
 .kpi-section,
 .charts-section,
 .stats-section {
@@ -202,9 +192,7 @@
   }
 }
 
-// ============================================
 // KPI GRID
-// ============================================
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -215,9 +203,7 @@
   }
 }
 
-// ============================================
 // KPI CARDS
-// ============================================
 .kpi-card {
   background: $fondo-claro;
   border-radius: 12px;
@@ -403,9 +389,7 @@
   &.red .kpi-icon { background: $rojo-50; color: $rojo-600; }
 }
 
-// ============================================
 // CHARTS SECTION
-// ============================================
 .charts-grid-main {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -427,9 +411,7 @@
   }
 }
 
-// ============================================
 // CHART CARDS
-// ============================================
 .chart-card {
   background: $fondo-claro;
   border-radius: 12px;
@@ -485,9 +467,7 @@
   }
 }
 
-// ============================================
 // STATS SECTION
-// ============================================
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -545,9 +525,7 @@
   }
 }
 
-// ============================================
 // ANIMATIONS
-// ============================================
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -575,9 +553,7 @@
   }
 }
 
-// ============================================
 // RESPONSIVE ADJUSTMENTS
-// ============================================
 @media (max-width: 1024px) {
   .dashboard-container {
     padding: 1.5rem;

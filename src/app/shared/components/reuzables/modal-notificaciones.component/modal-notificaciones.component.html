@@ -1,0 +1,84 @@
+<div class="overlay" *ngIf="isOpen">
+  <div class="modal animate-pop">
+
+    <div class="header">
+      <div class="title-group">
+        <h2>Notificaciones</h2>
+        <span class="badge" *ngIf="mapper.total > 0">{{ mapper.total }}</span>
+      </div>
+      <button class="close-btn" (click)="cerrar()">
+        <mat-icon>close</mat-icon> </button>
+    </div>
+
+    <div class="body custom-scroll">
+
+      <div *ngIf="cargando" class="state-container">
+        <div class="spinner"></div>
+        <p>Cargando...</p>
+      </div>
+
+      <ng-container *ngIf="!cargando">
+        
+        <section *ngIf="mapper.pedidos.length">
+          <h3 class="section-title">📦 Pedidos</h3>
+          <div class="card-list">
+            <div class="notification-card" *ngFor="let n of mapper.pedidos; trackBy: trackById" (click)="marcarLeida(n)">
+              <div class="card-content">
+                <span class="card-title">{{ n.titulo }}</span>
+                <p class="card-message">{{ n.mensaje }}</p>
+              </div>
+              <div class="status-dot" [ngClass]="n.prioridad"></div>
+            </div>
+          </div>
+        </section>
+
+        <section *ngIf="mapper.polizas.length">
+          <h3 class="section-title">📄 Pólizas</h3>
+          <div class="card-list">
+            <div class="notification-card" *ngFor="let n of mapper.polizas; trackBy: trackById" (click)="marcarLeida(n)">
+              <div class="card-content">
+                <span class="card-title">{{ n.titulo }}</span>
+                <p class="card-message">{{ n.mensaje }}</p>
+              </div>
+              <div class="status-dot" [ngClass]="n.prioridad"></div>
+            </div>
+          </div>
+        </section>
+
+        <section *ngIf="mapper.siniestros.length">
+          <h3 class="section-title">⚠️ Siniestros</h3>
+          <div class="card-list">
+            <div class="notification-card" *ngFor="let n of mapper.siniestros; trackBy: trackById" (click)="marcarLeida(n)">
+              <div class="card-content">
+                <span class="card-title">{{ n.titulo }}</span>
+                <p class="card-message">{{ n.mensaje }}</p>
+              </div>
+              <div class="status-dot" [ngClass]="n.prioridad"></div>
+            </div>
+          </div>
+        </section>
+
+        <section *ngIf="mapper.facturacion.length">
+          <h3 class="section-title">💰 Facturación</h3>
+          <div class="card-list">
+            <div class="notification-card" *ngFor="let n of mapper.facturacion; trackBy: trackById" (click)="marcarLeida(n)">
+              <div class="card-content">
+                <span class="card-title">{{ n.titulo }}</span>
+                <p class="card-message">{{ n.mensaje }}</p>
+              </div>
+              <div class="status-dot" [ngClass]="n.prioridad"></div>
+            </div>
+          </div>
+        </section>
+
+        <div *ngIf="mapper.total === 0" class="state-container empty">
+          <div class="icon-placeholder">🎉</div>
+          <p>Estás al día</p>
+          <small>No tienes notificaciones pendientes</small>
+        </div>
+
+      </ng-container>
+    </div>
+    
+    </div>
+</div>

@@ -1,10 +1,19 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { ModalNotificacionesComponent } from '../modal-notificaciones.component/modal-notificaciones.component';
+
+// IMPORTA EL MODAL
+
 
 @Component({
   selector: 'app-admin-topbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    ModalNotificacionesComponent
+  ],
   templateUrl: './admin-topbar.component.html',
   styleUrls: ['./admin-topbar.component.scss'],
   encapsulation: ViewEncapsulation.Emulated
@@ -19,18 +28,25 @@ export class AdminTopbarComponent {
   @Output() logout = new EventEmitter<void>();
 
   mostrarLogout = false;
+  mostrarNotificaciones = false;
 
   toggleLogout() {
     this.mostrarLogout = !this.mostrarLogout;
-    console.log('Mostrar logout:', this.mostrarLogout);
+  }
+
+  toggleNotificaciones() {
+    this.mostrarNotificaciones = !this.mostrarNotificaciones;
   }
 
   cerrarModalLogout() {
     this.mostrarLogout = false;
   }
 
+  cerrarModalNotificaciones() {
+    this.mostrarNotificaciones = false;
+  }
+
   confirmarLogout() {
-    console.log('Confirmar logout clicked');
     this.logout.emit();
     this.mostrarLogout = false;
   }

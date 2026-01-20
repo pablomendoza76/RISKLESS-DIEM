@@ -1,40 +1,53 @@
 @use '../../shared/styles/colores' as *;
 @use '../../shared/styles/tipografia' as *;
 
+/* ==============================================
+   LAYOUT TIPO APP (SIN SCROLL GLOBAL)
+   ============================================== */
+
 .home-layout {
   display: grid;
-  grid-template-columns: 260px 1fr; // sidebar + contenido
-  height: 100vh;
-  overflow: hidden;
+  grid-template-columns: 260px 1fr;
+  /* IMPORTANTE: Altura fija exacta de la pantalla */
+  height: 100vh; 
+  width: 100vw;
+  /* IMPORTANTE: Prohibido el scroll aquí */
+  overflow: hidden; 
 }
 
 /* SIDEBAR */
 .sidebar-area {
   grid-column: 1 / 2;
-  height: 100vh;
+  height: 100%; /* Ocupa todo el alto disponible */
+  overflow: hidden; /* El sidebar no scrollea (o tiene su propio scroll interno si quieres) */
 }
 
 /* COLUMNA DERECHA */
 .main-area {
   grid-column: 2 / 3;
-  display: grid;
-  grid-template-rows: auto 1fr; // topbar + contenido
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Altura fija */
+  overflow: hidden; /* Prohibido el scroll aquí también */
   background: #f6f7fb;
 }
 
 /* TOPBAR */
 .topbar-area {
-  grid-row: 1 / 2;
+  flex: 0 0 auto; /* No crece, altura fija según contenido */
   z-index: 10;
   position: relative;
 }
 
-/* CONTENIDO */
+/* CONTENIDO (Donde va la tabla) */
 .content-area {
-  grid-row: 2 / 3;
-  overflow-y: auto;
+  flex: 1; /* Ocupa TODO el espacio sobrante */
+  overflow: hidden; /* ¡CRÍTICO! Cortamos el contenido si se pasa */
   padding: 1.5rem;
+  
+  /* Esto ayuda a que el componente hijo (la tabla) se estire al 100% */
+  display: flex;
+  flex-direction: column;
 }
 
 /* ================= RESPONSIVIDAD ================= */
@@ -49,28 +62,28 @@
 // Móvil
 @media (max-width: 768px) {
   .home-layout {
-    grid-template-columns: 1fr; // Solo contenido, sidebar se vuelve overlay
-    grid-template-rows: 70px 1fr; // Espacio para header móvil + contenido
+    grid-template-columns: 1fr;
+    grid-template-rows: 70px 1fr;
   }
 
   .sidebar-area {
-    grid-column: 1 / -1; // Ocupa todo el ancho
-    grid-row: 1 / 2; // Posición en la primera fila
-    height: 70px;
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+    height: 100%;
     z-index: 1000;
   }
 
   .main-area {
     grid-column: 1 / -1;
-    grid-row: 2 / 3; // Se mueve a la segunda fila
-    margin-top: 0; // Sin margen extra
+    grid-row: 2 / 3;
+    height: 100%;
+    overflow: hidden;
   }
 
-  .topbar-area {
-    display: none; // Ocultar topbar original en móvil
-  }
-
-  .content-area {
-    padding: 1rem;
+  .topbar-area { display: none; }
+  
+  .content-area { 
+    padding: 1rem; 
+    height: 100%; /* Asegura altura en móvil */
   }
 }
