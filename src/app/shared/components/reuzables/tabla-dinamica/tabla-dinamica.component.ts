@@ -16,63 +16,69 @@ export interface ColumnaTabla {
 
 export interface BotonTabla {
   texto: string;
-  // Añadimos 'activate' y 'success' para soportar los estilos iOS/Riskless
-  tipo?: 'primary' | 'secondary' | 'danger' | 'activate' | 'success'; 
+  // Estilos soportados por Riskless
+  tipo?: 'primary' | 'secondary' | 'danger' | 'activate' | 'success';
   evento: string;
 }
 
 @Component({
   selector: 'app-tabla-dinamica',
-  standalone: true, // Asegura compatibilidad con imports
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './tabla-dinamica.component.html',
   styleUrls: ['./tabla-dinamica.component.scss'],
 })
 export class TablaDinamicaComponent implements OnChanges {
 
+  /* ================= INPUTS ================= */
   @Input() columnas: ColumnaTabla[] = [];
   @Input() data: any[] = [];
   @Input() botones: BotonTabla[] = [];
 
+  /* ================= OUTPUT ================= */
   @Output() accion = new EventEmitter<{
     evento: string;
     fila?: any;
   }>();
 
+  /* ================= STATE ================= */
   textoBusqueda = '';
   dataFiltrada: any[] = [];
 
-  // Propiedades para separar los botones visualmente en el HTML
   botonesGlobales: BotonTabla[] = [];
   botonesAccion: BotonTabla[] = [];
 
+  /* ================= LIFECYCLE ================= */
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data']) {
       this.dataFiltrada = [...this.data];
     }
-    
-    // Clasificamos los botones cada vez que cambian
+
     if (changes['botones']) {
       this.clasificarBotones();
     }
   }
 
+  /* ================= BOTONES ================= */
+
   /**
-   * Clasifica los botones según su texto para decidir dónde se muestran.
-   * Si el texto es "Editar", "Activar" o "Desactivar", va a la tabla.
-   * Cualquier otro (como "+ Nuevo") va al header.
+   * Clasifica botones:
+   * - Acciones por fila → tabla
+   * - Acciones globales → header
    */
   private clasificarBotones(): void {
     const palabrasAccion = ['editar', 'desactivar', 'activar', 'eliminar'];
 
-    this.botonesGlobales = this.botones.filter(btn => 
+    this.botonesGlobales = this.botones.filter(btn =>
       !palabrasAccion.includes(btn.texto.toLowerCase())
     );
 
-    this.botonesAccion = this.botones.filter(btn => 
+    this.botonesAccion = this.botones.filter(btn =>
       palabrasAccion.includes(btn.texto.toLowerCase())
     );
   }
+
+  /* ================= BUSQUEDA ================= */
 
   buscar(): void {
     const texto = this.textoBusqueda.toLowerCase().trim();
@@ -91,7 +97,64 @@ export class TablaDinamicaComponent implements OnChanges {
     );
   }
 
+  /* ================= EMIT ================= */
+
   emitir(evento: string, fila?: any): void {
     this.accion.emit({ evento, fila });
+  }
+
+  /* ================= ESTADOS (COLORES) ================= */
+
+  /**
+   * Clase para el badge de estado
+   */
+  estadoClass(estado: string): string {
+    switch (estado?.toLowerCase()) {
+
+      case 'activa':
+      case 'abierto':
+        return 'estado-activo';
+
+      case 'en proceso':
+        return 'estado-proceso';
+
+      case 'aprobado':
+        return 'estado-exito';
+
+      case 'vencida':
+      case 'rechazado':
+        return 'estado-critico';
+
+      case 'cancelada':
+        return 'estado-inactivo';
+
+      case 'cerrado':
+        return 'estado-cerrado';
+
+      default:
+        return 'estado-default';
+    }
+  }
+
+  /**
+   * (Opcional) Clase para resaltar la fila
+   */
+  estadoFilaClass(estado: string): string {
+    switch (estado?.toLowerCase()) {
+
+      case 'activa':
+      case 'abierto':
+        return 'fila-activa';
+
+      case 'en proceso':
+        return 'fila-proceso';
+
+      case 'vencida':
+      case 'rechazado':
+        return 'fila-critica';
+
+      default:
+        return '';
+    }
   }
 }

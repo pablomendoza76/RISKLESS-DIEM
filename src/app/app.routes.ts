@@ -11,6 +11,7 @@ import { SiniestrosComponent } from './pages/home-asesor/opciones/siniestros/sin
 import { PolizaFormComponent } from './pages/home-asesor/opciones/poliza-form/poliza-form.component';
 import { FacturacionComponent } from './pages/home-asesor/opciones/facturacion/facturacion.component';
 import { PedidosAseguradoComponent } from './pages/pedidos-asegurado/pedidos-asegurado.component';
+import { DashboardAsesorComponent } from './pages/home-asesor/opciones/dashboard-asesor/dashboard-asesor.component';
 
 export const routes: Routes = [
   // DEFAULT
@@ -45,7 +46,8 @@ export const routes: Routes = [
     component: HomeAsesorComponent,
     data: { rol: 'Asesor' },
     children: [
-      { path: '', redirectTo: 'asegurados', pathMatch: 'full' },
+      { path: '', redirectTo: 'asegurados', pathMatch: 'full' },  
+      { path: 'dashboard', component: DashboardAsesorComponent },
       { path: 'asegurados', component: AseguradosComponent },
       { path: 'bienes', component: BienesComponent },
       { path: 'polizas', component: PolizasComponent },

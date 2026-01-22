@@ -3,7 +3,10 @@ import { FormGroup } from '@angular/forms';
 
 import { AseguradosService } from '../services/asegurados.service';
 import { DynamicField } from '../shared/components/reuzables/dynamic-form/dynamic-form.component';
-import { ColumnaTabla, BotonTabla } from '../shared/components/reuzables/tabla-dinamica/tabla-dinamica.component';
+import {
+  ColumnaTabla,
+  BotonTabla
+} from '../shared/components/reuzables/tabla-dinamica/tabla-dinamica.component';
 import { Asegurado } from '../interfaces/asegurado.model';
 
 @Injectable({ providedIn: 'root' })
@@ -17,8 +20,6 @@ export class AseguradosMapper {
 
   cargando = false;
   error: string | null = null;
-  aseguradosFiltrados: Asegurado[] = [];
-
 
   /* =========================
      FORMULARIO
@@ -33,14 +34,15 @@ export class AseguradosMapper {
   fields: DynamicField[] = [];
 
   /* =========================
-     TABLA
+     TABLA (ESTÁNDAR RISKLESS)
+     🔥 CLAVE: key = 'estado'
   ========================= */
   columnas: ColumnaTabla[] = [
     { key: 'nombre', label: 'Nombre' },
     { key: 'apellido', label: 'Apellido' },
     { key: 'cedula', label: 'Cédula' },
     { key: 'correo', label: 'Correo' },
-    { key: 'estadoTexto', label: 'Estado' },
+    { key: 'estado', label: 'Estado' }, // 👈 CLAVE
   ];
 
   botones: BotonTabla[] = [
@@ -86,9 +88,12 @@ export class AseguradosMapper {
 
       this.totalAsegurados = data.length;
 
+      /* =====================================
+         MAPEO ESTÁNDAR DE ESTADO (🔥 CLAVE)
+      ===================================== */
       this.asegurados = data.map(a => ({
         ...a,
-        estadoTexto: a.activo ? 'Activo' : 'Inactivo',
+        estado: a.activo ? 'Activo' : 'Inactivo', // 👈 CONTRATO VISUAL
       }));
 
     } catch (err) {
@@ -99,7 +104,11 @@ export class AseguradosMapper {
     }
   }
 
+  /* =========================
+     ACCIONES DE TABLA
+  ========================= */
   manejarAccion(e: { evento: string; fila?: any }): void {
+
     if (e.evento === 'crear') {
       this.crearAsegurado();
       return;
@@ -107,11 +116,24 @@ export class AseguradosMapper {
 
     if (!e.fila) return;
 
-    if (e.evento === 'editar') this.editarAsegurado(e.fila);
-    if (e.evento === 'desactivar') this.desactivarAsegurado(e.fila);
-    if (e.evento === 'activar') this.activarAsegurado(e.fila);
+    switch (e.evento) {
+      case 'editar':
+        this.editarAsegurado(e.fila);
+        break;
+
+      case 'desactivar':
+        this.desactivarAsegurado(e.fila);
+        break;
+
+      case 'activar':
+        this.activarAsegurado(e.fila);
+        break;
+    }
   }
 
+  /* =========================
+     FORMULARIO ACTIONS
+  ========================= */
   crearAsegurado(): void {
     this.modoFormulario = 'crear';
     this.aseguradoSeleccionado = null;
@@ -153,6 +175,9 @@ export class AseguradosMapper {
     }
   }
 
+  /* =========================
+     ACTIVAR / DESACTIVAR
+  ========================= */
   async desactivarAsegurado(asegurado: Asegurado): Promise<void> {
     await this.aseguradosService.editar(asegurado.id, { activo: false });
     await this.cargarAsegurados();
@@ -162,12 +187,4 @@ export class AseguradosMapper {
     await this.aseguradosService.editar(asegurado.id, { activo: true });
     await this.cargarAsegurados();
   }
-
-  filtrarAsegurados(filtro: { activos: boolean; inactivos: boolean }) {
-  this.aseguradosFiltrados = this.asegurados.filter(a =>
-    (filtro.activos && a.activo) ||
-    (filtro.inactivos && !a.activo)
-  );
-}
-
 }

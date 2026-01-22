@@ -52,7 +52,7 @@ export class HomeAsesorComponent implements OnInit {
     {
       label: 'Inicio',
       icon: 'home',
-      route: '/asesor'
+      route: '/asesor/dashboard'
     },
 
     {

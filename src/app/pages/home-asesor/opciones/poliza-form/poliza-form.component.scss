@@ -1,14 +1,39 @@
 @use '../../../../shared/styles/colores' as *;
 @use '../../../../shared/styles/tipografia' as *;
 
+/* Ajuste del host para centrar verticalmente si sobra espacio */
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centra el formulario en la pantalla */
+  height: 100%;
+  overflow: hidden; 
+}
+
 .poliza-form-container {
-  padding: 2rem 3rem;
+  /* =========================================================
+     CAMBIO CLAVE: ALTURA FIJA PARA FORZAR SCROLL INTERNO
+     ========================================================= */
+  height: 85vh; /* Ocupa el 85% de la altura de la pantalla siempre */
+  width: 100%;  /* O el ancho que prefieras */
+  
+  /* Tus estilos originales se mantienen: */
+  display: flex;
+  flex-direction: column; 
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 3rem; 
+  
+  /* Agregamos esto para que el scroll no se salga de los bordes si tienes radios */
+  overflow: hidden; 
 
-  /* ================= HEADER ================= */
+  /* ================= HEADER FIJO (Tu estilo original) ================= */
   .header-form {
-    margin-bottom: 2rem;
+    flex: 0 0 auto; 
+    padding-top: 2rem;
+    padding-bottom: 1.5rem;
+    background: #f6f7fb; 
+    z-index: 10;
 
     h2 {
       font-family: $font-poppins;
@@ -27,7 +52,25 @@
     }
   }
 
-  /* ================= SECTIONS ================= */
+  /* ================= FORMULARIO CON SCROLL (Tu estilo original) ================= */
+  form {
+    flex: 1;            /* Ocupa el resto de los 85vh */
+    overflow-y: auto;   /* Activa el scroll aquí */
+    padding-bottom: 2rem;
+    padding-right: 5px; 
+
+    /* === SCROLLBAR INVISIBLE === */
+    scrollbar-width: none;  
+    -ms-overflow-style: none; 
+    
+    &::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+      display: none; 
+    }
+  }
+
+  /* ================= SECTIONS (Estilos Visuales - INTACTOS) ================= */
   .section-card {
     background: $fondo-claro;
     border-radius: 20px;
@@ -57,7 +100,7 @@
     }
   }
 
-  /* ================= FORM GRID ================= */
+  /* ================= FORM GRID (INTACTO) ================= */
   .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -75,9 +118,7 @@
       color: $color-azul-oscuro;
     }
 
-    input,
-    select,
-    textarea {
+    input, select, textarea {
       padding: 0.75rem 1rem;
       border-radius: 12px;
       border: 1.5px solid $gris-200;
@@ -91,13 +132,10 @@
         box-shadow: 0 0 0 4px rgba($color-azul-celeste, 0.08);
       }
     }
-
-    textarea {
-      resize: vertical;
-    }
+    textarea { resize: vertical; }
   }
 
-  /* ================= CLÁUSULAS ================= */
+  /* ================= CLÁUSULAS (INTACTO) ================= */
   .clausulas-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -113,14 +151,11 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    position: relative;
-
-    .btn-danger {
-      align-self: flex-end;
-    }
+    
+    .btn-danger { align-self: flex-end; }
   }
 
-  /* ================= DOCUMENTOS ================= */
+  /* ================= DOCUMENTOS (INTACTO) ================= */
   .upload-box {
     border: 2px dashed $gris-300;
     border-radius: 16px;
@@ -129,99 +164,53 @@
     background: $gris-50;
     transition: all 0.25s ease;
 
-    &:hover {
-      background: #fff;
-      border-color: $color-azul-celeste;
-    }
-
-    input {
-      cursor: pointer;
-    }
+    &:hover { background: #fff; border-color: $color-azul-celeste; }
+    input { cursor: pointer; }
   }
 
   .documentos-list {
-    list-style: none;
-    padding: 0;
-    margin-top: 1rem;
-
+    list-style: none; padding: 0; margin-top: 1rem;
     li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.6rem 0;
-      font-size: 0.9rem;
-      border-bottom: 1px dashed $gris-200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.6rem 0; font-size: 0.9rem; border-bottom: 1px dashed $gris-200;
     }
-
-    .empty {
-      text-align: center;
-      color: $texto-terciario;
-      font-size: 0.85rem;
-      padding: 1rem 0;
-    }
+    .empty { text-align: center; color: $texto-terciario; font-size: 0.85rem; padding: 1rem 0; }
   }
 
-  /* ================= BOTONES ================= */
+  /* ================= BOTONES (INTACTO) ================= */
   .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 2rem;
+    display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;
   }
 
   button {
-    border-radius: 12px;
-    padding: 0.7rem 1.4rem;
-    font-weight: 700;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    border: 1.5px solid transparent;
+    border-radius: 12px; padding: 0.7rem 1.4rem; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; transition: all 0.25s ease; border: 1.5px solid transparent;
   }
-
   .btn-primary {
-    background: $color-azul-oscuro;
-    color: $color-dorado;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 25px rgba($color-azul-celeste, 0.3);
-    }
+    background: $color-azul-oscuro; color: $color-dorado;
+    &:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba($color-azul-celeste, 0.3); }
   }
-
   .btn-secondary {
-    background: #fff;
-    border-color: $gris-200;
-    color: $texto-principal;
-
-    &:hover {
-      background: $gris-50;
-    }
+    background: #fff; border-color: $gris-200; color: $texto-principal;
+    &:hover { background: $gris-50; }
   }
-
   .btn-danger {
-    background: #fff;
-    color: #c0392b;
-    border-color: rgba(#c0392b, 0.3);
-
-    &:hover {
-      background: rgba(#c0392b, 0.08);
-    }
+    background: #fff; color: #c0392b; border-color: rgba(#c0392b, 0.3);
+    &:hover { background: rgba(#c0392b, 0.08); }
   }
-
-  .btn-small {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
-  }
+  .btn-small { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
 }
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
   .poliza-form-container {
-    padding: 1.2rem;
-
-    .form-grid {
-      grid-template-columns: 1fr;
+    height: 92vh; /* En móvil usamos un poco más de altura */
+    padding: 0 1rem; 
+    
+    .form-grid { grid-template-columns: 1fr; }
+    
+    .header-form {
+        padding-top: 1.5rem; 
     }
   }
 }

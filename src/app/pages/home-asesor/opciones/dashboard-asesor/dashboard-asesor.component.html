@@ -1,0 +1,83 @@
+<div class="dashboard-asesor" *ngIf="!loading; else cargando">
+
+  <!-- ================= KPIs ================= -->
+  <section class="kpi-grid">
+    <div class="kpi-card primary">
+      <p class="kpi-label">Asegurados</p>
+      <h3 class="kpi-value">{{ totalAsegurados }}</h3>
+    </div>
+
+    <div class="kpi-card success">
+      <p class="kpi-label">Pólizas activas</p>
+      <h3 class="kpi-value">{{ polizasActivas }}</h3>
+    </div>
+
+    <div class="kpi-card warning">
+      <p class="kpi-label">Siniestros en proceso</p>
+      <h3 class="kpi-value">{{ siniestrosEnProceso }}</h3>
+    </div>
+
+    <div class="kpi-card gold">
+      <p class="kpi-label">Pedidos abiertos</p>
+      <h3 class="kpi-value">{{ pedidosAbiertos }}</h3>
+    </div>
+  </section>
+
+  <!-- ================= GRÁFICOS ================= -->
+  <section class="charts-grid">
+
+    <!-- 📈 GRÁFICO DE LÍNEAS -->
+    <div class="chart-card large">
+      <h4>Pedidos realizados vs abiertos</h4>
+      <canvas
+        baseChart
+        [data]="pedidosLineChart"
+        [options]="chartOptions"
+        chartType="line">
+      </canvas>
+    </div>
+
+    <!-- 🥧 GRÁFICO DE PASTEL (PIE – SIN HUECO) -->
+    <div class="chart-card">
+      <h4>Estado de pedidos</h4>
+      <canvas
+        baseChart
+        [data]="pedidosEstadoChart"
+        [options]="chartOptions"
+        chartType="pie">
+      </canvas>
+    </div>
+
+    <!-- 📊 GRÁFICO DE BARRAS -->
+    <div class="chart-card">
+      <h4>Siniestros por estado</h4>
+      <canvas
+        baseChart
+        [data]="siniestrosEstadoChart"
+        [options]="chartOptions"
+        chartType="bar">
+      </canvas>
+    </div>
+
+    <!-- 📊 GRÁFICO DE BARRAS -->
+    <div class="chart-card">
+      <h4>Pólizas activas vs vencidas</h4>
+      <canvas
+        baseChart
+        [data]="polizasChart"
+        [options]="chartOptions"
+        chartType="bar">
+      </canvas>
+    </div>
+
+  </section>
+
+</div>
+
+<!-- ================= LOADING ================= -->
+<ng-template #cargando>
+  <div class="dashboard-loading">
+    <div class="spinner"></div>
+    <p>Cargando dashboard del asesor...</p>
+  </div>
+</ng-template>

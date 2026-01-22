@@ -1,4 +1,6 @@
 <div class="tabla-wrapper">
+
+  <!-- ================= HEADER ================= -->
   <div class="tabla-header">
     <div class="busqueda-wrapper">
       <input
@@ -12,7 +14,7 @@
 
     <div class="botones-top">
       <button
-        *ngFor="let btn of botonesGlobales" 
+        *ngFor="let btn of botonesGlobales"
         class="btn-tabla primary"
         (click)="emitir(btn.evento)"
       >
@@ -21,25 +23,54 @@
     </div>
   </div>
 
+  <!-- ================= SCROLL ================= -->
   <div class="tabla-scroll">
     <table>
+
+      <!-- ===== HEADER TABLA ===== -->
       <thead>
         <tr>
-          <th *ngFor="let col of columnas">{{ col.label }}</th>
+          <th *ngFor="let col of columnas">
+            {{ col.label }}
+          </th>
           <th class="text-right"></th>
         </tr>
       </thead>
-      
+
+      <!-- ===== CUERPO ===== -->
       <tbody>
-        <tr *ngFor="let fila of dataFiltrada">
+        <tr
+          *ngFor="let fila of dataFiltrada"
+          [ngClass]="estadoFilaClass?.(fila.estado)"
+        >
+
+          <!-- ===== CELDAS DINÁMICAS ===== -->
           <td *ngFor="let col of columnas">
-            <span class="cell-text">{{ fila[col.key] }}</span>
+
+            <!-- COLUMNA ESTADO -->
+            <ng-container *ngIf="col.key === 'estado'; else celdaNormal">
+              <span
+                class="estado-badge"
+                [ngClass]="estadoClass(fila[col.key])"
+              >
+                {{ fila[col.key] }}
+              </span>
+            </ng-container>
+
+            <!-- COLUMNA NORMAL -->
+            <ng-template #celdaNormal>
+              <span class="cell-text">
+                {{ fila[col.key] }}
+              </span>
+            </ng-template>
+
           </td>
 
+          <!-- ===== ACCIONES ===== -->
           <td class="text-right">
             <div class="acciones-container">
               <button
-                *ngFor="let btn of botonesAccion" 
+                *ngFor="let btn of botonesAccion"
                 class="btn-accion-fila"
                 [ngClass]="btn.tipo"
                 (click)="emitir(btn.evento, fila)"
@@ -48,8 +79,10 @@
               </button>
             </div>
           </td>
+
         </tr>
       </tbody>
+
     </table>
   </div>
 </div>
