@@ -1,69 +1,88 @@
-/*  COLORES BASE – RISKLESS*/
+/*  COLORES BASE – MODERN RISKLESS (AdvisorPro Theme) */
 /*  Colores primarios de marca */
-$color-dorado: #C6AF6B;
-$color-azul-oscuro: #062140;
-$color-azul-celeste: #3891F4;
+// $color-dorado: #C6AF6B; // OLD
+// $color-azul-oscuro: #062140; // OLD
+
+/* =========================
+   NUEVA PALETA "MIDNIGHT"
+========================= */
+$color-azul-oscuro: #0f172a; // Fondo Sidebar (Dark Navy)
+$color-dorado: #38bdf8; // Reemplazamos Dorado por Cyan Brillante (Active State)
+$color-azul-celeste: #4f46e5; // Indigo/Royal Blue para acentos fuertes
+
+/* =========================
+   GRADIENTES PRO
+========================= */
+$gradiente-sidebar: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+$gradiente-card-blue: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+$gradiente-card-cyan: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+$gradiente-card-purple: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
 
 /* TEXTO*/
-$texto-principal: #2b2b2b;        /* Texto principal */
-$texto-secundario: #5a5a5a;       /* Texto secundario */
-$texto-terciario: #6d6d6d;        /* Texto terciario */
-$texto-deshabilitado: #9e9e9e;    /* Texto deshabilitado */
-$texto-claro: #f6f6f6;            /* Texto sobre fondo oscuro */
+$texto-principal: #1e293b;
+/* Slate 800 */
+$texto-secundario: #475569;
+/* Slate 600 */
+$texto-terciario: #94a3b8;
+/* Slate 400 */
+$texto-deshabilitado: #cbd5e1;
+/* Slate 300 */
+$texto-claro: #f8fafc;
+/* Slate 50 */
 
 /* FONDOS*/
 $fondo-claro: #ffffff;
-$fondo-claro-80: rgba(255, 255, 255, 0.8);
-$fondo-claro-20: rgba(255, 255, 255, 0.2); 
-$fondo-gris-suave: #f8f8f8;
+$fondo-claro-80: rgba(255, 255, 255, 0.95); // Más opaco para efecto glass
+$fondo-claro-20: rgba(255, 255, 255, 0.1);
+$fondo-gris-suave: #f1f5f9; // Slate 100 (Fondo General App mejorado)
 
-$fondo-oscuro: #000000;
-$fondo-oscuro-70: rgba(0, 0, 0, 0.7);
+$fondo-oscuro: #020617;
+$fondo-oscuro-70: rgba(15, 23, 42, 0.8);
 
-/* GRISES (NEUTROS)*/
-$gris-50: #fafafa;
-$gris-100: #f5f5f5;
-$gris-200: #eeeeee;
-$gris-300: #e0e0e0;
-$gris-400: #bdbdbd;
-$gris-500: #9e9e9e;
-$gris-600: #757575;
-$gris-700: #616161;
-$gris-800: #424242;
-$gris-900: #212121;
+/* GRISES (NEUTROS - Slate Palette)*/
+$gris-50: #f8fafc;
+$gris-100: #f1f5f9;
+$gris-200: #e2e8f0;
+$gris-300: #cbd5e1;
+$gris-400: #94a3b8;
+$gris-500: #64748b;
+$gris-600: #475569;
+$gris-700: #334155;
+$gris-800: #1e293b;
+$gris-900: #0f172a;
 
 /* ROJO – ERROR / ALERTA*/
-$rojo-950: #4a0d14;
-$rojo-700: #b71c1c;
-$rojo-600: #c62828;
-$rojo-50: #fde7e9;
+$rojo-950: #450a0a;
+$rojo-700: #b91c1c;
+$rojo-600: #dc2626;
+$rojo-50: #fef2f2;
 
 /* VERDE – ÉXITO*/
-$verde-700: #1b5e20;
-$verde-600: #2e7d32;
-$verde-500: #388e3c;
-$verde-50: #e6f5e9;
+$verde-700: #15803d;
+$verde-600: #16a34a;
+$verde-500: #22c55e;
+$verde-50: #f0fdf4;
 
 /* AZUL – INFORMATIVO*/
-$azul-800: #0d47a1;
-$azul-600: #1565c0;
-$azul-500: #1976d2;
-$azul-50: #e0f2fd;
+$azul-800: #1e40af;
+$azul-600: #2563eb;
+$azul-500: #3b82f6;
+$azul-50: #eff6ff;
 
 /* AMARILLO – ADVERTENCIA*/
-$amarillo-800: #e65100;
-$amarillo-700: #f57f17;
-$amarillo-600: #fbc02d;
-$amarillo-50: #fff8e1;
+$amarillo-800: #9a3412; // Orange-800
+$amarillo-700: #c2410c; // Orange-700
+$amarillo-600: #ea580c; // Orange-600
+$amarillo-50: #fff7ed;
 
 /* MORADO – ETIQUETAS*/
-$morado-800: #4a148c;
-$morado-600: #6a1b9a;
-$morado-500: #8e24aa;
-$morado-50: #f3e5f5;
+$morado-800: #6b21a8;
+$morado-600: #9333ea;
+$morado-500: #a855f7;
+$morado-50: #faf5ff;
 
 /*  AQUA – ACENTOS*/
-$aqua-800: #006064;
-$aqua-500: #00acc1;
-$aqua-400: #26c6da;
-$aqua-50: #e0f7fa;
+$aqua-800: #155e75;
+$aqua-500: #06b6d4;
+$aqua-400: #22d3ee;
+$aqua-50: #ecfeff;

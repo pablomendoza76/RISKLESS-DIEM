@@ -1,29 +1,51 @@
 @use '../../../styles/colores' as *;
 @use '../../../styles/tipografia' as *;
 
-/* REGLAS DE ORO RISKLESS REFINADAS (CON MOTOR DE SCROLL MEJORADO) */
+/* =========================================================
+   TABLA "ADVISOR PRO" - RISKLESS MODERN
+========================================================= */
 
 .tabla-wrapper {
   width: 100%;
-  height: 90%;
-  /* Ocupa el alto disponible */
-  max-height: 80vh;
-  /* Límite para activar el scroll */
-  padding: 2.5rem 5rem;
+  height: 100%;
+  padding: 2rem 3rem; // Espaciado generoso
   box-sizing: border-box;
-  background-color: transparent;
-
-  /* === CAMBIO ESTRUCTURAL: FLEX PARA EL STICKY === */
+  background-color: transparent; // El fondo lo pone la página
   display: flex;
   flex-direction: column;
-
-  /* IMPORTANTE: Crear contexto de apilamiento bajo para no pelear con modales */
   position: relative;
   z-index: 1;
+
+  .tabla-titulo-seccion {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $texto-principal;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: $color-azul-celeste; // Acento vertical
+      border-radius: 4px;
+      display: inline-block;
+    }
+  }
+
+  .tabla-subtitulo {
+    margin-left: 1rem;
+    color: $texto-terciario;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
 }
 
 /* =========================
-   HEADER (BUSCADOR XL + BOTONES TOP)
+   HEADER (BUSCADOR Y ACCIONES)
 ========================= */
 .tabla-header {
   flex-shrink: 0;
@@ -31,30 +53,39 @@
   justify-content: space-between;
   align-items: center;
   gap: 2rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 2;
-  /* Apenas por encima del wrapper base */
+  margin-bottom: 1.5rem;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); // Card flotante para el header
+
+  .busqueda-wrapper {
+    flex: 1;
+    max-width: 500px;
+    position: relative;
+  }
 
   .input-busqueda {
-    flex: 2;
-    min-width: 450px;
-    padding: 0.7rem 1.5rem;
+    width: 100%;
+    padding: 0.8rem 1.2rem 0.8rem 3rem; // Espacio para icono lupa (simulado)
     border-radius: 12px;
-    border: 1.5px solid $gris-200;
-    background: $fondo-claro;
-    font-family: $font-work-sans;
+    border: 1px solid #e2e8f0; // Slate 200
+    background: #f8fafc; // Slate 50
     font-size: 0.95rem;
     color: $texto-principal;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    box-shadow: 0 2px 6px rgba($color-azul-oscuro, 0.03);
+    transition: all 0.3s ease;
+
+    // Icono lupa simulado con background-image o pseudo en wrapper seria ideal, 
+    // pero aqui usamos estilo simple limpio.
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8' width='18px' height='18px'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 12px center;
 
     &:focus {
       outline: none;
-      border-color: $color-azul-celeste;
-      box-shadow: 0 10px 25px -5px rgba($color-azul-celeste, 0.15);
-      background: #fff;
+      background-color: #fff;
+      border-color: $color-dorado; // Acento Cyan
+      box-shadow: 0 0 0 3px rgba($color-dorado, 0.1);
     }
   }
 
@@ -63,40 +94,32 @@
     gap: 1rem;
 
     .btn-tabla {
-      padding: 0.85rem 1.75rem;
-      border-radius: 16px;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
       border: none;
-      font-weight: 700;
-      font-size: 0.95rem;
+      font-weight: 600;
+      font-size: 0.9rem;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
 
+      // BOTÓN NUEVO REGISTRO (Estilo Imagen 1 - Azul Brillante)
       &.primary {
-        background: $color-azul-oscuro;
-        color: $color-dorado;
-        border: 1px solid rgba($color-dorado, 0.4);
-        box-shadow: 0 6px 15px rgba($color-azul-celeste, 0.3);
+        background: linear-gradient(135deg, $color-azul-celeste, $azul-600);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba($color-azul-celeste, 0.3);
 
         &:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 10px 25px rgba($color-azul-celeste, 0.45);
-          border-color: $color-dorado;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba($color-azul-celeste, 0.4);
         }
-      }
 
-      &.secondary {
-        background: $gris-100;
-        color: $texto-secundario;
-        border: 1.5px solid $gris-300;
-
-        &:hover {
-          background: $fondo-claro;
-          color: $color-azul-oscuro;
-          border-color: $color-azul-celeste;
-          box-shadow: 0 6px 15px rgba($color-azul-celeste, 0.15);
+        &::before {
+          content: '+';
+          font-size: 1.2rem;
+          line-height: 1;
         }
       }
     }
@@ -104,267 +127,184 @@
 }
 
 /* =========================
-   CONTENEDOR DE SCROLL
+   CONTENEDOR SCROLL
 ========================= */
 .tabla-scroll {
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 2rem;
+  border-radius: 20px;
+  background: #fff; // Fondo blanco tarjeta gigante
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  padding: 1rem;
 
-  margin: 0 -1.5rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  // Header Sticky
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #fff; // Blanco puro
+    padding: 1.25rem 2rem;
+    text-align: left;
 
-  &::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #94a3b8; // Slate 400
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    border-bottom: 2px solid #f1f5f9; // Separador sutil
   }
 
-  /* =========================================================
-   BADGE DE ESTADO – RISKLESS (ESTILO "SOFT GLOW" iOS)
-========================================================= */
+  /* Filas */
+  tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f1f5f9;
 
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: #f8fafc; // Hover muy sutil
+    }
+  }
+
+  tbody td {
+    padding: 1.5rem 2rem;
+    color: #334155; // Slate 700
+    font-size: 0.95rem;
+    vertical-align: middle;
+
+    // Foto o Avatar (si hubiera)
+    .avatar-placeholder {
+      width: 40px;
+      height: 40px;
+      background: #e2e8f0;
+      border-radius: 50%;
+    }
+  }
+
+  /* =========================
+     BADGES (ESTILO IMAGEN 1)
+  ========================= */
   .estado-badge {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-
-    /* 1. MÁS GRANDE (Más aire para que respire) */
-    padding: 0.55rem 1.1rem;
-    min-width: 100px;
-    /* Opcional: para uniformidad */
-
-    /* Forma de pastilla perfecta */
+    padding: 0.4rem 1rem; // Pill compacta
     border-radius: 999px;
-
-    /* Tipografía más presente pero estilizada */
-    font-size: 0.8rem;
-    /* Un pelín más grande */
+    font-size: 0.75rem;
     font-weight: 700;
-    /* Peso fuerte para contraste */
     letter-spacing: 0.5px;
-    line-height: 1;
-    white-space: nowrap;
-
-    /* 2. SIN BORDES */
-    border: none;
-
-    /* Transición suave para efectos hover si quisieras */
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
-
-  /* ================= ESTADOS CON SOMBRAS DE COLOR ================= */
-
-  /* ACTIVO / ABIERTO (Verde Vibrante) */
-  .estado-activo {
-    background-color: #e0f2f1;
-    /* Verde muy suave (Teal 50 aprox) */
-    color: #00695c;
-    /* Texto oscuro para contraste */
-    /* 3. SOMBRA DE COLOR (Glow) */
-    box-shadow: 0 4px 15px rgba(0, 105, 92, 0.15);
-  }
-
-  /* EN PROCESO (Azul Cálido) */
-  .estado-proceso {
-    background-color: #e3f2fd;
-    /* Azul suave */
-    color: #1565c0;
-    /* Azul fuerte */
-    box-shadow: 0 4px 15px rgba(21, 101, 192, 0.15);
-  }
-
-  /* APROBADO / ÉXITO (Verde Lima/Puro) */
-  .estado-exito {
-    background-color: #f1f8e9;
-    color: #33691e;
-    box-shadow: 0 4px 15px rgba(51, 105, 30, 0.15);
-  }
-
-  /* RECHAZADO / VENCIDO (Rojo Suave) */
-  .estado-critico {
-    background-color: #fce4ec;
-    /* Rosa/Rojo muy pálido */
-    color: #c62828;
-    /* Rojo intenso */
-    box-shadow: 0 4px 15px rgba(198, 40, 40, 0.15);
-  }
-
-  /* CANCELADO / INACTIVO (Gris Elevado) */
-  .estado-inactivo {
-    background-color: #f5f5f5;
-    color: #616161;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    /* Sombra gris neutra */
-  }
-
-  /* CERRADO (Oscuro Profundo) */
-  .estado-cerrado {
-    background-color: #37474f;
-    /* Fondo oscuro */
-    color: #eceff1;
-    /* Texto claro */
-    box-shadow: 0 4px 15px rgba(55, 71, 79, 0.3);
-    /* Sombra más fuerte */
-  }
-
-  /* POR DEFECTO */
-  .estado-default {
-    background-color: #ffffff;
-    color: #757575;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-}
-
-/* =========================
-   FILAS Y TABLA
-========================= */
-table {
-  width: 100%;
-  min-width: 850px;
-  border-collapse: separate;
-  border-spacing: 0 1.25rem;
-}
-
-thead th {
-  /* === MAGIA STICKY === */
-  position: sticky;
-  top: 0;
-
-  /* [CORRECCIÓN CRÍTICA] Z-index reducido de 50 a 5 */
-  /* Solo necesita ser mayor que las filas (1), no que el modal (100+) */
-  z-index: 5;
-
-  background-color: #f4f6f9;
-  padding: 1rem 2rem;
-  text-align: left;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: $texto-terciario;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-}
-
-tbody tr {
-  background: $fondo-claro;
-  position: relative;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  box-shadow: 0 8px 25px rgba($color-azul-oscuro, 0.07);
-  z-index: 1;
-  /* Nivel base */
-
-  td:first-child {
-    border-top-left-radius: 22px;
-    border-bottom-left-radius: 22px;
-    padding-left: 2rem;
-    border-left: 4px solid transparent;
-  }
-
-  td:last-child {
-    border-top-right-radius: 22px;
-    border-bottom-right-radius: 22px;
-    padding-right: 2rem;
-  }
-
-  &:hover {
-    /* [CORRECCIÓN] Bajamos de 10 a 2. Solo necesita superar a otras filas */
-    z-index: 2;
-    transform: translateY(-5px) scale(1.01);
-    box-shadow: 0 20px 40px rgba($color-azul-oscuro, 0.12),
-      0 0 15px rgba($color-azul-celeste, 0.05);
-
-    td:first-child {
-      border-left-color: $color-dorado;
-    }
-  }
-}
-
-tbody td {
-  padding: 1.5rem 1rem;
-  font-size: 1rem;
-  color: $texto-principal;
-}
-
-/* =========================
-   ACCIONES
-========================= */
-.acciones-container {
-  display: flex;
-  gap: 0.8rem;
-  justify-content: flex-end;
-
-  .btn-accion-fila {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
     text-transform: uppercase;
-    min-height: 44px;
-    min-width: 44px;
+
+    // Indicador circular (dot)
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 8px;
+      background-color: currentColor; // Hereda color texto
+    }
+  }
+
+  // VARIACIONES DE COLOR (Estilo Moderno)
+  .estado-activo,
+  .estado-exito {
+    background-color: #dcfce7; // Verde muy claro
+    color: #166534; // Verde oscuro
+  }
+
+  .estado-proceso,
+  .estado-warning {
+    background-color: #e0f2fe; // Azul cielo claro
+    color: #0369a1; // Azul oceano
+  }
+
+  .estado-critico,
+  .estado-error {
+    background-color: #fee2e2; // Rojo claro
+    color: #991b1b; // Rojo sangre
+  }
+
+  .estado-inactivo {
+    background-color: #f1f5f9; // Gris
+    color: #64748b; // Slate
+  }
+
+  /* =========================
+     BOTONES ACCIÓN
+  ========================= */
+  .acciones-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
+    gap: 8px;
 
-    background: $gris-200;
-    color: $texto-secundario;
+    .btn-accion-fila {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-size: 0; // Ocultar texto
 
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 12px rgba($color-azul-celeste, 0.3);
-    }
+      // Icono simulado (usando first letter o pseudoelemento si no hay icono real)
+      // Asumimos que el texto es "Editar", "Eliminar"
 
-    &.primary,
-    &[class*="Editar"] {
-      background: $color-azul-oscuro;
-      color: $fondo-claro;
+      // EDITAR (Icono Lápiz)
+      &[class*="Editar"],
+      &.primary {
+        &:hover {
+          background: #eff6ff;
+          color: $color-azul-celeste;
+        }
 
-      &:hover {
-        background: $color-azul-celeste;
-        color: white;
+        &::after {
+          content: '✎'; // Caracter unicode simple por si acaso no carga mat-icon
+          font-size: 1.2rem;
+        }
       }
-    }
 
-    &.success,
-    &[class*="Activar"] {
-      background: $verde-50;
-      color: $verde-700;
+      // ELIMINAR (Icono Basura)
+      &[class*="Eliminar"],
+      &.danger {
+        &:hover {
+          background: #fef2f2;
+          color: $rojo-600;
+        }
 
-      &:hover {
-        background: $verde-600;
-        color: white;
+        &::after {
+          content: '🗑';
+          font-size: 1.1rem;
+        }
       }
-    }
 
-    &.danger,
-    &[class*="Desactivar"] {
-      background: $rojo-50;
-      color: $rojo-700;
+      // Default (Ojo / Ver)
+      &.secondary {
+        &:hover {
+          background: #f8fafc;
+          color: $texto-principal;
+        }
 
-      &:hover {
-        background: $rojo-600;
-        color: white;
+        &::after {
+          content: '👁';
+          font-size: 1.1rem;
+        }
       }
     }
   }
 }
 
 /* =========================
-   RESPONSIVIDAD
+   RESPONSIVE
 ========================= */
-@media (max-width: 1100px) {
-  .tabla-wrapper {
-    padding: 1.5rem 2rem;
-  }
-
-  .tabla-header .input-busqueda {
-    min-width: 350px;
-  }
-}
-
 @media (max-width: 768px) {
   .tabla-wrapper {
     padding: 1rem;
@@ -372,212 +312,31 @@ tbody td {
 
   .tabla-header {
     flex-direction: column;
-    align-items: stretch;
-    gap: 1.5rem;
+    padding: 1rem;
+    gap: 1rem;
 
+    .busqueda-wrapper,
     .input-busqueda {
-      min-width: 100%;
-      padding: 0.8rem 1.2rem;
-      font-size: 1rem;
+      width: 100%;
+      max-width: none;
     }
 
     .botones-top {
-      justify-content: center;
+      width: 100%;
 
       .btn-tabla {
         flex: 1;
         justify-content: center;
-        padding: 1.2rem 1.5rem;
-        font-size: 1.1rem;
-        min-height: 52px;
       }
     }
   }
 
-  .tabla-scroll::-webkit-scrollbar {
-    height: 4px;
-    width: 4px;
-    background: transparent;
-  }
-
-  .tabla-scroll::-webkit-scrollbar-thumb {
-    background: $gris-300;
-    border-radius: 10px;
-  }
-
-  .tabla-scroll,
-  table {
-    display: block;
-    width: 100%;
-    min-width: 600px;
-  }
-
-  tbody tr td {
-    padding: 1rem 0.6rem;
-    font-size: 1rem;
-    line-height: 1.4;
-
-    .cell-text {
-      max-width: 120px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-
-  tbody tr td:first-child {
-    padding-left: 1rem;
-  }
-
-  tbody tr td:last-child {
-    padding-right: 1rem;
-  }
-
-  .acciones-container {
-    flex-direction: column;
-    gap: 0.75rem;
-
-    .btn-accion-fila {
-      width: 100%;
-      padding: 1rem 1.2rem;
-      font-size: 0.9rem;
-      min-height: 52px;
-    }
-  }
-}
-
-/* =========================================================
-   MÓVIL "RISKLESS" PREMIUM (Sticky Right + Clean UI)
-========================================================= */
-@media (max-width: 480px) {
-
-  .tabla-wrapper {
-    padding: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tabla-header {
-    position: sticky;
-    top: 0;
-    /* [CORRECCIÓN CRÍTICA] Z-index reducido de 100 a 10 */
-    /* Suficiente para estar sobre la tabla, pero bajo el modal (normalmente z-1000) */
-    z-index: 10;
-    background: #fff;
-    padding: 0.8rem 1rem;
-    margin-bottom: 0;
-
-    flex-direction: row;
-    align-items: center;
-    gap: 0.8rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-    .input-busqueda {
-      min-width: unset;
-      width: 100%;
-      flex: 1;
-      padding: 0.7rem 1rem;
-      font-size: 0.95rem;
-      height: 44px;
-    }
-
-    .botones-top {
-      flex: 0 0 auto;
-
-      .btn-tabla.primary {
-        font-size: 0 !important;
-        padding: 0;
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &::after {
-          content: '+';
-          font-size: 2rem;
-          line-height: 0;
-          font-weight: 300;
-          color: $color-dorado;
-          margin-top: -2px;
-        }
-      }
-    }
-  }
-
+  // Tabla responsive con scroll horizontal
   .tabla-scroll {
-    padding: 0.5rem 0 4rem 0;
+    overflow-x: auto;
 
     table {
-      min-width: 650px;
-    }
-  }
-
-  /* 3. COLUMNA DE ACCIONES (STICKY DERECHA "FLOTANTE") */
-  thead th:last-child,
-  tbody td:last-child {
-    position: sticky;
-    right: 0;
-    width: 80px;
-    min-width: 80px;
-
-    background-color: #fff;
-    box-shadow: -6px 0 12px -4px rgba(0, 0, 0, 0.08);
-    /* [CORRECCIÓN] Z-index seguro para sticky lateral */
-    z-index: 6;
-
-    border-left: 1px solid rgba(0, 0, 0, 0.03);
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-  }
-
-  thead th:last-child {
-    background-color: #f4f6f9;
-    /* [CORRECCIÓN] Z-index superior a filas pero inferior a modal */
-    z-index: 7;
-  }
-
-  .acciones-container {
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
-    align-items: center;
-    padding: 0 4px;
-
-    .btn-accion-fila {
-      width: 100%;
-      min-width: unset;
-      min-height: unset;
-      padding: 6px 4px;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      border-radius: 6px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-
-  thead th {
-    padding: 0.8rem 1rem;
-    font-size: 0.75rem;
-  }
-
-  tbody tr td {
-    padding: 1rem 1rem;
-
-    .cell-text {
-      max-width: 140px;
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      min-width: 600px;
     }
   }
 }

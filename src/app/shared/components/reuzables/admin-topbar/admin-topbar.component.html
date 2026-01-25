@@ -1,8 +1,11 @@
 <div class="admin-topbar">
 
-  <!-- IZQUIERDA -->
+  <!-- IZQUIERDA (Saludo estilizado) -->
   <div class="topbar-left">
-    <span class="role-label">
+    <span class="role-label" *ngIf="mensaje === 'Bienvenido al sistema'">
+      {{ mensaje }} <!-- Mantener lógica original -->
+    </span>
+    <span class="role-label" *ngIf="mensaje !== 'Bienvenido al sistema'">
       {{ mensaje }}
     </span>
   </div>
@@ -13,27 +16,30 @@
     <!-- ================= CAMPANA NOTIFICACIONES ================= -->
     <div class="notification-wrapper">
 
-      <div
-        class="notification clickable"
-        title="Notificaciones"
-        (click)="toggleNotificaciones()">
+      <div class="notification clickable" title="Notificaciones" (click)="toggleNotificaciones()">
 
-        <mat-icon>notifications</mat-icon>
+        <mat-icon>notifications_none</mat-icon> <!-- Icono outline más moderno -->
       </div>
 
-      <!-- MODAL NOTIFICACIONES -->
-      <div
-        class="notifications-dropdown"
-        *ngIf="mostrarNotificaciones">
+      <!-- MODAL NOTIFICACIONES (Dropdown absoluto) -->
+      <div class="notifications-dropdown" *ngIf="mostrarNotificaciones">
 
-        <app-modal-notificaciones
-          [isOpen]="mostrarNotificaciones">
+        <app-modal-notificaciones [isOpen]="mostrarNotificaciones">
         </app-modal-notificaciones>
 
       </div>
 
     </div>
     <!-- ================= FIN NOTIFICACIONES ================= -->
+
+    <!-- SEPARADOR VERTICAL (Opcional, si queremos separar notificaciones de usuario) -->
+    <div style="width: 1px; height: 24px; background: #e2e8f0; margin: 0 4px;"></div>
+
+    <!-- USUARIO -->
+    <div class="user-info text-right">
+      <span class="user-name">{{ nombre }}</span>
+      <span class="user-role">{{ rol }}</span>
+    </div>
 
     <!-- AVATAR -->
     <div class="avatar clickable" (click)="toggleLogout()">
@@ -42,34 +48,20 @@
       </span>
     </div>
 
-    <!-- INFO -->
-    <div class="user-info">
-      <span class="user-name">{{ nombre }}</span>
-      <span class="user-role">{{ rol }}</span>
-    </div>
-
     <!-- ================= MODAL LOGOUT ================= -->
-    <div
-      class="logout-backdrop"
-      *ngIf="mostrarLogout">
+    <div class="logout-backdrop" *ngIf="mostrarLogout">
 
       <div class="logout-modal">
         <h3>Cerrar sesión</h3>
-        <p>¿Deseas cerrar sesión y volver al inicio?</p>
+        <p>¿Estás seguro de que deseas salir de tu cuenta?</p>
 
         <div class="logout-actions">
-          <button
-            class="btn-cancel"
-            type="button"
-            (click)="cerrarModalLogout()">
+          <button class="btn-cancel" type="button" (click)="cerrarModalLogout()">
             Cancelar
           </button>
 
-          <button
-            class="btn-danger"
-            type="button"
-            (click)="confirmarLogout()">
-            Cerrar sesión
+          <button class="btn-danger" type="button" (click)="confirmarLogout()">
+            Salir
           </button>
         </div>
       </div>

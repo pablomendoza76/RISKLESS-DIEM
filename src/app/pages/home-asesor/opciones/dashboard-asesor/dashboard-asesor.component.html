@@ -2,71 +2,77 @@
 
   <!-- ================= KPIs ================= -->
   <section class="kpi-grid">
+
+    <!-- TOTAL ASEGURADOS (Azul) -->
     <div class="kpi-card primary">
-      <p class="kpi-label">Asegurados</p>
-      <h3 class="kpi-value">{{ totalAsegurados }}</h3>
+      <div class="kpi-icon-wrapper"></div>
+      <span class="badge-trend text-success"></span>
+      <div>
+        <p class="kpi-label">Total Asegurados</p>
+        <h3 class="kpi-value">{{ totalAsegurados }}</h3>
+      </div>
     </div>
 
+    <!-- PÓLIZAS ACTIVAS (Cyan) -->
     <div class="kpi-card success">
-      <p class="kpi-label">Pólizas activas</p>
-      <h3 class="kpi-value">{{ polizasActivas }}</h3>
+      <div class="kpi-icon-wrapper"></div>
+      <span class="badge-trend"></span>
+      <div>
+        <p class="kpi-label">Pólizas Activas</p>
+        <h3 class="kpi-value">{{ polizasActivas }}</h3>
+      </div>
     </div>
 
-    <div class="kpi-card warning">
-      <p class="kpi-label">Siniestros en proceso</p>
-      <h3 class="kpi-value">{{ siniestrosEnProceso }}</h3>
-    </div>
-
+    <!-- PEDIDOS (Purple) -->
     <div class="kpi-card gold">
-      <p class="kpi-label">Pedidos abiertos</p>
-      <h3 class="kpi-value">{{ pedidosAbiertos }}</h3>
+      <div class="kpi-icon-wrapper"></div>
+      <span class="badge-trend"></span>
+      <div>
+        <p class="kpi-label">Ingresos / Pedidos</p>
+        <h3 class="kpi-value">{{ pedidosAbiertos }}</h3>
+      </div>
     </div>
+
+    <!-- SINIESTROS (Dark/Warning) -->
+    <div class="kpi-card warning">
+      <div class="kpi-icon-wrapper"></div>
+      <span class="badge-trend"></span>
+      <div>
+        <p class="kpi-label">Siniestros Activos</p>
+        <h3 class="kpi-value">{{ siniestrosEnProceso }}</h3>
+      </div>
+    </div>
+
   </section>
 
   <!-- ================= GRÁFICOS ================= -->
   <section class="charts-grid">
 
-    <!-- 📈 GRÁFICO DE LÍNEAS -->
+    <!-- 📈 GRÁFICO 1: LINE -->
     <div class="chart-card large">
-      <h4>Pedidos realizados vs abiertos</h4>
-      <canvas
-        baseChart
-        [data]="pedidosLineChart"
-        [options]="chartOptions"
-        chartType="line">
+      <h4>Rendimiento de Pedidos</h4>
+      <canvas baseChart [data]="pedidosLineChart" [options]="chartOptions" chartType="line">
       </canvas>
     </div>
 
-    <!-- 🥧 GRÁFICO DE PASTEL (PIE – SIN HUECO) -->
+    <!-- 🥧 GRÁFICO 2: PIE -->
     <div class="chart-card">
-      <h4>Estado de pedidos</h4>
-      <canvas
-        baseChart
-        [data]="pedidosEstadoChart"
-        [options]="chartOptions"
-        chartType="pie">
+      <h4>Distribución por Estado</h4>
+      <canvas baseChart [data]="pedidosEstadoChart" [options]="chartOptions" chartType="pie">
       </canvas>
     </div>
 
-    <!-- 📊 GRÁFICO DE BARRAS -->
+    <!-- 📊 GRÁFICO 3: BAR -->
     <div class="chart-card">
-      <h4>Siniestros por estado</h4>
-      <canvas
-        baseChart
-        [data]="siniestrosEstadoChart"
-        [options]="chartOptions"
-        chartType="bar">
+      <h4>Siniestralidad</h4>
+      <canvas baseChart [data]="siniestrosEstadoChart" [options]="chartOptions" chartType="bar">
       </canvas>
     </div>
 
-    <!-- 📊 GRÁFICO DE BARRAS -->
+    <!-- 📊 GRÁFICO 4: BAR -->
     <div class="chart-card">
-      <h4>Pólizas activas vs vencidas</h4>
-      <canvas
-        baseChart
-        [data]="polizasChart"
-        [options]="chartOptions"
-        chartType="bar">
+      <h4>Cartera de Pólizas</h4>
+      <canvas baseChart [data]="polizasChart" [options]="chartOptions" chartType="bar">
       </canvas>
     </div>
 
@@ -78,6 +84,6 @@
 <ng-template #cargando>
   <div class="dashboard-loading">
     <div class="spinner"></div>
-    <p>Cargando dashboard del asesor...</p>
+    <p>Cargando información del sistema...</p>
   </div>
 </ng-template>

@@ -3,21 +3,12 @@
   <!-- ================= HEADER ================= -->
   <div class="tabla-header">
     <div class="busqueda-wrapper">
-      <input
-        type="text"
-        placeholder="Buscar..."
-        [(ngModel)]="textoBusqueda"
-        (input)="buscar()"
-        class="input-busqueda"
-      />
+      <input type="text" placeholder="Buscar..." [(ngModel)]="textoBusqueda" (input)="buscar()"
+        class="input-busqueda" />
     </div>
 
     <div class="botones-top">
-      <button
-        *ngFor="let btn of botonesGlobales"
-        class="btn-tabla primary"
-        (click)="emitir(btn.evento)"
-      >
+      <button *ngFor="let btn of botonesGlobales" class="btn-tabla primary" (click)="emitir(btn.evento)">
         {{ btn.texto }}
       </button>
     </div>
@@ -39,20 +30,14 @@
 
       <!-- ===== CUERPO ===== -->
       <tbody>
-        <tr
-          *ngFor="let fila of dataFiltrada"
-          [ngClass]="estadoFilaClass?.(fila.estado)"
-        >
+        <tr *ngFor="let fila of dataFiltrada" [ngClass]="estadoFilaClass(fila.estado)">
 
           <!-- ===== CELDAS DINÁMICAS ===== -->
           <td *ngFor="let col of columnas">
 
             <!-- COLUMNA ESTADO -->
             <ng-container *ngIf="col.key === 'estado'; else celdaNormal">
-              <span
-                class="estado-badge"
-                [ngClass]="estadoClass(fila[col.key])"
-              >
+              <span class="estado-badge" [ngClass]="estadoClass(fila[col.key])">
                 {{ fila[col.key] }}
               </span>
             </ng-container>
@@ -69,12 +54,8 @@
           <!-- ===== ACCIONES ===== -->
           <td class="text-right">
             <div class="acciones-container">
-              <button
-                *ngFor="let btn of botonesAccion"
-                class="btn-accion-fila"
-                [ngClass]="btn.tipo"
-                (click)="emitir(btn.evento, fila)"
-              >
+              <button *ngFor="let btn of botonesAccion" class="btn-accion-fila" [ngClass]="btn.tipo"
+                (click)="emitir(btn.evento, fila)">
                 {{ btn.texto }}
               </button>
             </div>

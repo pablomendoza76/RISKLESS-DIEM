@@ -2,10 +2,7 @@
 
   <!-- COLUMNA IZQUIERDA -->
   <aside class="sidebar-area">
-    <app-sidebar
-      [title]="sidebarTitle"
-      [items]="sidebarItems"
-      (logout)="cerrarSesion()">
+    <app-sidebar [title]="sidebarTitle" [items]="sidebarItems" (logout)="cerrarSesion()">
     </app-sidebar>
   </aside>
 
@@ -14,12 +11,8 @@
 
     <!-- FILA SUPERIOR -->
     <header class="topbar-area">
-      <app-admin-topbar
-        mensaje="¡ BIENVENIDO AL PANEL DE ASESOR !"
-        [nombre]="nombreUsuario"
-        [rol]="rolUsuario"
-        [iniciales]="inicialesUsuario"
-        (logout)="cerrarSesion()">
+      <app-admin-topbar mensaje="BIENVENIDO AL PANEL DE GESTIÓN" [nombre]="nombreUsuario" [rol]="rolUsuario"
+        [iniciales]="inicialesUsuario" (logout)="cerrarSesion()">
       </app-admin-topbar>
     </header>
 
