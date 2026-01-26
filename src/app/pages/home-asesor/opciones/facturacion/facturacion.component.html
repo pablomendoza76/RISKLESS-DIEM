@@ -25,6 +25,7 @@
   <!-- ================= TABLA ================= -->
   <div class="table-wrapper">
     <app-tabla-dinamica [columnas]="mapper.columnas" [data]="mapper.facturas" [botones]="mapper.botones"
+      [placeholder]="'Buscar por Factura, Fecha, Monto, etc...'" [itemsPorPagina]="6" [layout]="'fixed'"
       (accion)="mapper.manejarAccion($event)">
     </app-tabla-dinamica>
 

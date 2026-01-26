@@ -8,10 +8,12 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 export interface ColumnaTabla {
   key: string;
   label: string;
+  width?: string;
 }
 
 export interface BotonTabla {
@@ -24,7 +26,7 @@ export interface BotonTabla {
 @Component({
   selector: 'app-tabla-dinamica',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatIconModule],
   templateUrl: './tabla-dinamica.component.html',
   styleUrls: ['./tabla-dinamica.component.scss'],
 })
@@ -34,6 +36,9 @@ export class TablaDinamicaComponent implements OnChanges {
   @Input() columnas: ColumnaTabla[] = [];
   @Input() data: any[] = [];
   @Input() botones: BotonTabla[] = [];
+  @Input() placeholder = 'Buscar...';
+  @Input() itemsPorPagina = 4;
+  @Input() layout: 'auto' | 'fixed' = 'auto';
 
   /* ================= OUTPUT ================= */
   @Output() accion = new EventEmitter<{
@@ -44,6 +49,16 @@ export class TablaDinamicaComponent implements OnChanges {
   /* ================= STATE ================= */
   textoBusqueda = '';
   dataFiltrada: any[] = [];
+  dataPaginada: any[] = [];
+
+  // Paginación
+  paginaActual = 1;
+  totalPaginas = 1;
+  paginasTotales: number[] = [];
+
+  totalRegistros = 0;
+  inicioRegistro = 0;
+  finRegistro = 0;
 
   botonesGlobales: BotonTabla[] = [];
   botonesAccion: BotonTabla[] = [];
@@ -51,12 +66,16 @@ export class TablaDinamicaComponent implements OnChanges {
   /* ================= LIFECYCLE ================= */
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data']) {
-      this.dataFiltrada = [...this.data];
+      this.actualizarTabla();
     }
 
     if (changes['botones']) {
       this.clasificarBotones();
     }
+  }
+
+  private actualizarTabla(): void {
+    this.buscar();
   }
 
   /* ================= BOTONES ================= */
@@ -85,16 +104,46 @@ export class TablaDinamicaComponent implements OnChanges {
 
     if (!texto) {
       this.dataFiltrada = [...this.data];
-      return;
+    } else {
+      this.dataFiltrada = this.data.filter(item =>
+        Object.values(item).some(valor =>
+          valor !== null &&
+          valor !== undefined &&
+          valor.toString().toLowerCase().includes(texto)
+        )
+      );
     }
 
-    this.dataFiltrada = this.data.filter(item =>
-      Object.values(item).some(valor =>
-        valor !== null &&
-        valor !== undefined &&
-        valor.toString().toLowerCase().includes(texto)
-      )
-    );
+    this.paginaActual = 1;
+    this.calcularPaginacion();
+  }
+
+  /* ================= PAGINACION LOGIC ================= */
+
+  calcularPaginacion(): void {
+    this.totalRegistros = this.dataFiltrada.length;
+    this.totalPaginas = Math.ceil(this.totalRegistros / this.itemsPorPagina) || 1;
+
+    // Generar array de páginas [1, 2, 3...]
+    this.paginasTotales = Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
+
+    this.aplicarPaginacion();
+  }
+
+  aplicarPaginacion(): void {
+    const inicio = (this.paginaActual - 1) * this.itemsPorPagina;
+    const fin = inicio + this.itemsPorPagina;
+
+    this.dataPaginada = this.dataFiltrada.slice(inicio, fin);
+
+    this.inicioRegistro = this.totalRegistros > 0 ? inicio + 1 : 0;
+    this.finRegistro = Math.min(fin, this.totalRegistros);
+  }
+
+  cambiarPagina(p: number): void {
+    if (p < 1 || p > this.totalPaginas) return;
+    this.paginaActual = p;
+    this.aplicarPaginacion();
   }
 
   /* ================= EMIT ================= */
@@ -111,9 +160,16 @@ export class TablaDinamicaComponent implements OnChanges {
   estadoClass(estado: string): string {
     switch (estado?.toLowerCase()) {
 
+      case 'activo':
       case 'activa':
       case 'abierto':
         return 'estado-activo';
+
+      case 'inactivo':
+      case 'inactiva':
+      case 'desactivada':
+      case 'cancelada':
+        return 'estado-inactivo';
 
       case 'en proceso':
         return 'estado-proceso';
@@ -124,9 +180,6 @@ export class TablaDinamicaComponent implements OnChanges {
       case 'vencida':
       case 'rechazado':
         return 'estado-critico';
-
-      case 'cancelada':
-        return 'estado-inactivo';
 
       case 'cerrado':
         return 'estado-cerrado';

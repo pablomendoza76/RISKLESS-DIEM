@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartConfiguration } from 'chart.js';
 
@@ -92,11 +93,16 @@ export class DashboardAsesorComponent implements OnInit {
   };
 
   constructor(
+    private router: Router,
     private aseguradosSvc: AseguradosService,
     private pedidosSvc: PedidosService,
     private polizasSvc: PolizasService,
     private siniestrosSvc: SiniestrosService
-  ) {}
+  ) { }
+
+  navegar(ruta: string) {
+    this.router.navigate([ruta]);
+  }
 
   async ngOnInit(): Promise<void> {
     await this.cargarDashboard();
@@ -146,7 +152,7 @@ export class DashboardAsesorComponent implements OnInit {
       const pedidosMes = pedidos.filter(p => {
         const f = new Date(p.created_at);
         return f.getMonth() === fecha.getMonth() &&
-               f.getFullYear() === fecha.getFullYear();
+          f.getFullYear() === fecha.getFullYear();
       });
 
       realizados.push(pedidosMes.length);

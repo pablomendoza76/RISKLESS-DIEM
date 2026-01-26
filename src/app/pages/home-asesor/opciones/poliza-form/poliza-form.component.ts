@@ -30,9 +30,9 @@ export class PolizaFormComponent implements OnInit {
 
   // ===== Archivos =====
   archivos: File[] = [];
+  isDragging = false;
 
-  async ngOnInit(): Promise<void> {
-
+  ngOnInit(): void {
     this.form = this.fb.group({
       num_poliza: ['', Validators.required],
       aseguradora: ['', Validators.required],
@@ -40,8 +40,6 @@ export class PolizaFormComponent implements OnInit {
       estado: ['Activa', Validators.required],
       fecha_inicio: ['', Validators.required],
       fecha_fin: ['', Validators.required],
-
-      // 🔹 Cláusulas NUEVAS
       clausulas: this.fb.array([])
     });
   }
@@ -75,12 +73,36 @@ export class PolizaFormComponent implements OnInit {
   onFilesSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
-
-    for (let i = 0; i < input.files.length; i++) {
-      this.archivos.push(input.files[i]);
-    }
-
+    this.agregarArchivos(input.files);
     input.value = '';
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragging = true;
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragging = false;
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragging = false;
+
+    if (event.dataTransfer?.files) {
+      this.agregarArchivos(event.dataTransfer.files);
+    }
+  }
+
+  private agregarArchivos(fileList: FileList): void {
+    for (let i = 0; i < fileList.length; i++) {
+      this.archivos.push(fileList[i]);
+    }
   }
 
   quitarArchivo(file: File): void {
@@ -91,7 +113,6 @@ export class PolizaFormComponent implements OnInit {
      GUARDAR
   ========================= */
   async guardar(): Promise<void> {
-
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

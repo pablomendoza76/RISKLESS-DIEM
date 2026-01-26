@@ -11,13 +11,16 @@
   padding: 2rem;
   background: rgba($color-azul-oscuro, 0.4);
   backdrop-filter: blur(10px);
-  
+
   // Animación de Entrada
   animation: overlayFadeIn 0.3s ease-out forwards;
 
   &.is-closing {
     animation: overlayFadeOut 0.3s ease-in forwards;
-    form { animation: formSlideOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    form {
+      animation: formSlideOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
   }
 
   form {
@@ -28,10 +31,10 @@
     box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: column;
-    
+
     // --- AJUSTE PARA SCROLL ---
-    max-height: calc(100vh - 4rem); 
-    overflow: hidden; 
+    max-height: calc(100vh - 4rem);
+    overflow: hidden;
     // --------------------------
 
     animation: formSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -66,7 +69,11 @@
         justify-content: center;
         color: $color-azul-oscuro;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        svg, i { font-size: 1.1rem; }
+
+        svg,
+        i {
+          font-size: 1.1rem;
+        }
       }
 
       .title-group {
@@ -77,6 +84,7 @@
           color: $color-azul-oscuro;
           letter-spacing: -0.3px;
         }
+
         p {
           margin: 2px 0 0;
           font-size: 0.85rem;
@@ -96,13 +104,18 @@
       row-gap: 1.25rem;
 
       // Scrollbar minimalista para no dañar la estética
-      &::-webkit-scrollbar { width: 6px; }
-      &::-webkit-scrollbar-thumb { 
-        background: $gris-200; 
-        border-radius: 10px; 
+      &::-webkit-scrollbar {
+        width: 6px;
       }
 
-      .full-width { grid-column: span 2; }
+      &::-webkit-scrollbar-thumb {
+        background: $gris-200;
+        border-radius: 10px;
+      }
+
+      .full-width {
+        grid-column: span 2;
+      }
     }
 
     .form-field {
@@ -117,12 +130,14 @@
         margin-left: 2px;
       }
 
-     .input-wrapper {
+      .input-wrapper {
         position: relative;
         display: flex;
         align-items: center;
 
-        input, select, textarea {
+        input,
+        select,
+        textarea {
           width: 100%;
           padding: 0.8rem 1rem;
           border-radius: 12px;
@@ -130,7 +145,8 @@
           background: #fff;
           font-size: 0.95rem;
           transition: all 0.3s ease;
-          font-family: inherit; /* IMPORTANTE: Para que textarea use la misma fuente */
+          font-family: inherit;
+          /* IMPORTANTE: Para que textarea use la misma fuente */
 
           &:focus {
             outline: none;
@@ -141,10 +157,14 @@
 
         /* --- ESTILOS ESPECÍFICOS PARA TEXTAREA --- */
         textarea {
-          min-height: 120px;      /* Altura inicial más cómoda */
-          resize: vertical;       /* Usuario solo puede estirar hacia abajo */
-          line-height: 1.5;       /* Mejora la lectura de párrafos */
-          padding-bottom: 1.8rem; /* Espacio extra abajo para que no tape el contador */
+          min-height: 120px;
+          /* Altura inicial más cómoda */
+          resize: vertical;
+          /* Usuario solo puede estirar hacia abajo */
+          line-height: 1.5;
+          /* Mejora la lectura de párrafos */
+          padding-bottom: 1.8rem;
+          /* Espacio extra abajo para que no tape el contador */
         }
 
         /* --- CONTADOR FLOTANTE (DENTRO DEL WRAPPER) --- */
@@ -154,34 +174,93 @@
           right: 12px;
           font-size: 0.75rem;
           color: $texto-terciario;
-          background: rgba(255, 255, 255, 0.9); /* Fondo suave por si hay texto debajo */
+          background: rgba(255, 255, 255, 0.9);
+          /* Fondo suave por si hay texto debajo */
           padding: 0 4px;
           border-radius: 4px;
-          pointer-events: none; /* Permite hacer clic a través del contador */
+          pointer-events: none;
+          /* Permite hacer clic a través del contador */
         }
       }
-      
+
     }
 
-    /* UPLOAD AREA */
-    /* UPLOAD AREA */
+    /* UPLOAD AREA (MODERNA) */
     .upload-area {
-      // grid-column: span 2;  <--- BORRA ESTA LÍNEA
       border: 2px dashed $gris-300;
-      border-radius: 18px;
-      padding: 2rem;
+      border-radius: 20px;
+      padding: 3rem 2rem;
       text-align: center;
-      background: $gris-50;
-      transition: all 0.3s ease;
-      width: 100%; // <--- AGREGA ESTA LÍNEA por seguridad
+      background: #fafafa;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
 
       &:hover {
         background: #fff;
         border-color: $color-azul-celeste;
+        box-shadow: 0 10px 30px -10px rgba($color-azul-celeste, 0.15);
         transform: translateY(-2px);
+
+        .upload-icon-container {
+          background: rgba($color-azul-celeste, 0.15);
+          transform: scale(1.1);
+        }
+
+        .btn-choose-files {
+          background: darken($color-azul-celeste, 5%);
+        }
       }
-      
-      // ... resto del contenido igual
+
+      .upload-icon-container {
+        width: 64px;
+        height: 64px;
+        background: rgba($color-azul-celeste, 0.08);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $color-azul-celeste;
+        transition: all 0.3s ease;
+
+        span {
+          font-size: 2.5rem;
+        }
+      }
+
+      .upload-title {
+        margin: 0.5rem 0 0.25rem;
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: $color-azul-oscuro;
+        font-family: 'Outfit', sans-serif;
+      }
+
+      .upload-subtitle {
+        margin: 0;
+        font-size: 0.85rem;
+        color: $texto-terciario;
+        font-weight: 400;
+        max-width: 80%;
+      }
+
+      .btn-choose-files {
+        margin-top: 1rem;
+        background: $color-azul-celeste;
+        color: #fff;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 12px rgba($color-azul-celeste, 0.3);
+        transition: all 0.2s ease;
+        pointer-events: none; // Permite que el click pase al area
+      }
     }
 
     /* ACCIONES (FIJAS AL FINAL) */
@@ -194,7 +273,10 @@
       border-top: 1px solid $gris-100;
       background: $fondo-claro; // Evita transparencia al scrollear detrás
 
-      .left-group { display: flex; gap: 0.75rem; }
+      .left-group {
+        display: flex;
+        gap: 0.75rem;
+      }
 
       button {
         padding: 0.8rem 1.5rem;
@@ -210,7 +292,10 @@
         background: #fff;
         color: $texto-principal;
         border-color: $gris-200;
-        &:hover { background: $gris-50; }
+
+        &:hover {
+          background: $gris-50;
+        }
       }
 
       .btn-submit {
@@ -230,10 +315,49 @@
 }
 
 /* KEYFRAMES (SIN CAMBIOS) */
-@keyframes overlayFadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes overlayFadeOut { from { opacity: 1; } to { opacity: 0; } }
-@keyframes formSlideIn { from { opacity: 0; transform: scale(0.96) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-@keyframes formSlideOut { from { opacity: 1; transform: scale(1) translateY(0); } to { opacity: 0; transform: scale(0.96) translateY(20px); } }
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes overlayFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes formSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes formSlideOut {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.96) translateY(20px);
+  }
+}
 
 /* ================= RESPONSIVIDAD ================= */
 
@@ -251,53 +375,56 @@
 @media (max-width: 768px) {
   .dynamic-form {
     padding: 1rem;
-    
+
     form {
       max-width: 100%;
       margin: 0;
       border-radius: 16px;
       max-height: calc(100vh - 2rem);
-      
+
       .form-header {
         padding: 1.5rem 1.5rem 1rem;
-        
+
         .title-group {
           .form-title {
             font-size: 1.1rem;
           }
-          
+
           p {
             font-size: 0.8rem;
           }
         }
       }
-      
+
       .form-body {
         padding: 1rem 1.5rem;
         grid-template-columns: 1fr; // Una columna en móvil
         gap: 1rem;
-        
+
         .form-field {
-          .full-width { 
-            grid-column: span 1; 
+          .full-width {
+            grid-column: span 1;
           }
-          
+
           label {
             font-size: 0.85rem;
             margin-bottom: 0.25rem;
           }
-          
+
           .input-wrapper {
-            input, select, textarea {
+
+            input,
+            select,
+            textarea {
               padding: 0.75rem 0.875rem;
               font-size: 0.9rem;
             }
-            
+
             textarea {
               min-height: 100px;
               line-height: 1.4;
             }
-            
+
             .char-counter {
               bottom: 8px;
               right: 10px;
@@ -306,12 +433,12 @@
           }
         }
       }
-      
+
       .form-actions {
         padding: 1rem 1.5rem;
         flex-direction: column;
         gap: 0.75rem;
-        
+
         button {
           width: 100%;
           padding: 0.875rem 1.25rem;
@@ -326,52 +453,55 @@
 @media (max-width: 480px) {
   .dynamic-form {
     padding: 0.75rem;
-    
+
     form {
       .form-header {
         padding: 1rem 1rem 0.75rem;
-        
+
         .icon-container {
           width: 36px;
           height: 36px;
         }
-        
+
         .title-group {
           .form-title {
             font-size: 1rem;
           }
-          
+
           p {
             font-size: 0.75rem;
           }
         }
       }
-      
+
       .form-body {
         padding: 0.75rem 1rem;
         gap: 0.75rem;
-        
+
         .form-field {
           label {
             font-size: 0.8rem;
           }
-          
+
           .input-wrapper {
-            input, select, textarea {
+
+            input,
+            select,
+            textarea {
               padding: 0.625rem 0.75rem;
               font-size: 0.85rem;
             }
-            
+
             textarea {
               min-height: 80px;
             }
           }
         }
       }
-      
+
       .form-actions {
         padding: 0.75rem 1rem;
-        
+
         button {
           padding: 0.75rem 1rem;
           font-size: 0.85rem;
@@ -401,7 +531,11 @@
   font-size: 0.85rem;
   color: $texto-principal;
   transition: all 0.2s ease;
-  &:hover { background: #fff; border-color: $color-azul-celeste; }
+
+  &:hover {
+    background: #fff;
+    border-color: $color-azul-celeste;
+  }
 }
 
 .file-name {
@@ -427,8 +561,9 @@
   font-weight: 700;
   color: $texto-terciario;
   transition: all 0.2s ease;
-  &:hover { background: rgba($color-azul-oscuro, 0.08); color: $color-azul-oscuro; }
+
+  &:hover {
+    background: rgba($color-azul-oscuro, 0.08);
+    color: $color-azul-oscuro;
+  }
 }
-
-
-

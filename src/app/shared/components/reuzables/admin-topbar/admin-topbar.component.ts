@@ -24,6 +24,7 @@ export class AdminTopbarComponent {
   @Input() nombre = '';
   @Input() rol = '';
   @Input() iniciales = '';
+  @Input() subtitulo = ''; // Nuevo: para "Resumen a [fecha]"
 
   @Output() logout = new EventEmitter<void>();
 

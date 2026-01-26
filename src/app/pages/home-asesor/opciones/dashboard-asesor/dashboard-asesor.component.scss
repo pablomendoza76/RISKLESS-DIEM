@@ -11,7 +11,7 @@ $transition-base: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 .dashboard-asesor {
   // Layout fluido
   height: 100%; // Ajuste para ocupar espacio del router-outlet
-  padding: 2rem 3rem;
+  padding: 0.5rem 3rem 2rem 3rem;
 
   // Fondo base (ya está en global, pero nos aseguramos)
   background-color: transparent;
@@ -20,17 +20,6 @@ $transition-base: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   flex-direction: column;
   gap: 2.5rem;
   font-family: 'Outfit', sans-serif;
-
-  // Título de la vista (simulado "Good morning" style)
-  &::before {
-    content: 'Panel de Analítica';
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: $texto-principal;
-    letter-spacing: -1px;
-    margin-bottom: -1rem;
-    display: block;
-  }
 }
 
 /* ===============================
@@ -236,13 +225,23 @@ $transition-base: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     justify-content: space-between;
     align-items: center;
 
-    // View All Link (Simulado)
-    &::after {
-      content: 'Ver detalles';
+    .btn-detalles {
       font-size: 0.8rem;
       color: $color-azul-celeste;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.2s;
+      padding: 4px 8px;
+      border-radius: 6px;
+
+      &:hover {
+        background: rgba($color-azul-celeste, 0.08);
+        text-decoration: underline;
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
     }
   }
 

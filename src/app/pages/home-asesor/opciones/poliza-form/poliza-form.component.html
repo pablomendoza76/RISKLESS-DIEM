@@ -60,7 +60,7 @@
 
       <div class="clausulas-grid" formArrayName="clausulas">
         <div class="clausula-card" *ngFor="let clausula of clausulas.controls; let i = index" [formGroupName]="i">
-          
+
           <div class="form-group">
             <label>Título</label>
             <input type="text" formControlName="titulo" placeholder="Ej: Cobertura total" />
@@ -88,11 +88,23 @@
         Puede subir contratos, anexos, informes u otros documentos relacionados.
       </p>
 
-      <div class="upload-box">
-        <input type="file" multiple (change)="onFilesSelected($event)" />
-        <p style="margin-top: 10px; font-size: 0.85rem; color: #888;">
-          (Haga clic o arrastre archivos aquí)
+      <div class="upload-box" (click)="fileInput.click()" (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" [class.dragging]="isDragging">
+
+        <div class="upload-icon-container">
+          <span class="material-icons">cloud_upload</span>
+        </div>
+
+        <h4 class="upload-title">Arrastra y suelta tus archivos aquí</h4>
+        <p class="upload-subtitle">
+          O haz clic para explorar en tu equipo. Formatos permitidos: PDF, JPG, PNG, DOCX.
         </p>
+
+        <button type="button" class="btn-choose-files">
+          Elegir archivos
+        </button>
+
+        <input #fileInput type="file" multiple (change)="onFilesSelected($event)" hidden />
       </div>
 
       <ul class="documentos-list">

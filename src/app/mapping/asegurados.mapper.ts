@@ -38,14 +38,16 @@ export class AseguradosMapper {
      🔥 CLAVE: key = 'estado'
   ========================= */
   columnas: ColumnaTabla[] = [
-    { key: 'nombre', label: 'Nombre' },
-    { key: 'apellido', label: 'Apellido' },
-    { key: 'cedula', label: 'Cédula' },
-    { key: 'correo', label: 'Correo' },
-    { key: 'estado', label: 'Estado' }, // 👈 CLAVE
+    { key: 'id_display', label: 'ID', width: '60px' },
+    { key: 'nombre', label: 'NOMBRE', width: '150px' },
+    { key: 'apellido', label: 'APELLIDO', width: '150px' },
+    { key: 'cedula', label: 'CÉDULA', width: '130px' },
+    { key: 'correo', label: 'CORREO ELECTRÓNICO', width: '250px' },
+    { key: 'estado', label: 'ESTADO', width: '120px' },
   ];
 
   botones: BotonTabla[] = [
+    { texto: 'Filtros', tipo: 'secondary', evento: 'filtros' },
     { texto: '+ Nuevo asegurado', tipo: 'success', evento: 'crear' },
     { texto: 'Editar', tipo: 'primary', evento: 'editar' },
     { texto: 'Desactivar', tipo: 'danger', evento: 'desactivar' },
@@ -54,7 +56,7 @@ export class AseguradosMapper {
 
   constructor(
     private aseguradosService: AseguradosService
-  ) {}
+  ) { }
 
   /* =========================
      INIT
@@ -91,8 +93,10 @@ export class AseguradosMapper {
       /* =====================================
          MAPEO ESTÁNDAR DE ESTADO (🔥 CLAVE)
       ===================================== */
-      this.asegurados = data.map(a => ({
+      this.asegurados = data.map((a, index) => ({
         ...a,
+        id_display: (index + 1).toString().padStart(2, '0'),
+        inicial: a.nombre ? a.nombre.charAt(0).toUpperCase() : '',
         estado: a.activo ? 'Activo' : 'Inactivo', // 👈 CONTRATO VISUAL
       }));
 

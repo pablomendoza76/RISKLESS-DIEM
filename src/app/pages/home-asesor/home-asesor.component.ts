@@ -29,19 +29,33 @@ export class HomeAsesorComponent implements OnInit {
   nombreUsuario = 'Juan Pérez';
   rolUsuario = 'Asesor';
   inicialesUsuario = 'JP';
+  subtituloFecha = '';
 
   constructor(
     private auth: AuthService,
     private router: Router,
     private notificacionesService: NotificacionesService,
     private alert: AlertService
-  ) {}
+  ) { }
 
   // ===============================
   // INIT
   // ===============================
   async ngOnInit(): Promise<void> {
+    this.actualizarFecha();
     await this.verificarNotificacionesPendientes();
+  }
+
+  private actualizarFecha(): void {
+    const ahora = new Date();
+    const opciones: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    };
+    const fechaFormateada = ahora.toLocaleDateString('es-ES', opciones);
+    this.subtituloFecha = `Resumen a ${fechaFormateada}`;
   }
 
   // ===============================

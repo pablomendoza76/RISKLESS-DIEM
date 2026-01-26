@@ -27,6 +27,7 @@
   <!-- ================= TABLA ================= -->
   <div class="table-wrapper">
     <app-tabla-dinamica [columnas]="mapper.columnas" [data]="mapper.asegurados" [botones]="mapper.botones"
+      [placeholder]="'Buscar por cédula, nombre, apellido o correo...'" [layout]="'fixed'" [itemsPorPagina]="4"
       (accion)="mapper.manejarAccion($event)">
     </app-tabla-dinamica>
   </div>

@@ -10,11 +10,11 @@
 
   /* ================= HEADER SECCIÓN ================= */
   .header-seccion {
-    padding: 2.5rem 3rem 1.5rem; // Padding generoso arriba
+    padding: 0.5rem 3rem 1.5rem; // Restaurado padding inferior para dar aire
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; // Alineación superior para que la tarjeta no estire el título
-    margin-bottom: 1rem;
+    align-items: center;
+    margin-bottom: 1rem; // Restaurado margen inferior
 
     .title-group {
       display: flex;

@@ -169,15 +169,20 @@ $riskless-blue-dark: #172554; // Para sombras
       color: #fff;
     }
 
-    // === ESTADO ACTIVO (Glassy Overlay) ===
-    // Fondo azul claro translúcido que cubre todo el ancho del padding
+    // === ESTADO ACTIVO (Solid White Background) ===
     &.active {
-      background: rgba(255, 255, 255, 0.15); // Glassy
-      color: #fff;
+      background: #ffffff;
+      color: $riskless-blue; // Color azul oscuro
       font-weight: 700;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
       .icon {
+        color: $riskless-blue;
+        opacity: 1;
+      }
+
+      .arrow {
+        color: $riskless-blue;
         opacity: 1;
       }
     }
@@ -210,8 +215,9 @@ $riskless-blue-dark: #172554; // Para sombras
 
     &.active {
       color: #fff;
-      background: rgba(255, 255, 255, 0.1);
-      font-weight: 600;
+      background: rgba(255, 255, 255, 0.2);
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
   }
 

@@ -3,12 +3,16 @@
   <!-- ================= HEADER ================= -->
   <div class="tabla-header">
     <div class="busqueda-wrapper">
-      <input type="text" placeholder="Buscar..." [(ngModel)]="textoBusqueda" (input)="buscar()"
+      <mat-icon class="search-icon">search</mat-icon>
+      <input type="text" [placeholder]="placeholder" [(ngModel)]="textoBusqueda" (input)="buscar()"
         class="input-busqueda" />
     </div>
 
     <div class="botones-top">
-      <button *ngFor="let btn of botonesGlobales" class="btn-tabla primary" (click)="emitir(btn.evento)">
+      <button *ngFor="let btn of botonesGlobales" class="btn-tabla" [ngClass]="btn.tipo || 'primary'"
+        (click)="emitir(btn.evento)">
+        <mat-icon *ngIf="btn.texto.toLowerCase().includes('filtros')">filter_list</mat-icon>
+        <mat-icon *ngIf="btn.texto.toLowerCase().includes('nuevo')">person_add</mat-icon>
         {{ btn.texto }}
       </button>
     </div>
@@ -16,21 +20,21 @@
 
   <!-- ================= SCROLL ================= -->
   <div class="tabla-scroll">
-    <table>
+    <table [class.layout-fixed]="layout === 'fixed'">
 
       <!-- ===== HEADER TABLA ===== -->
       <thead>
         <tr>
-          <th *ngFor="let col of columnas">
+          <th *ngFor="let col of columnas" [style.width]="col.width">
             {{ col.label }}
           </th>
-          <th class="text-right"></th>
+          <th class="text-center" style="width: 100px;">ACCIONES</th>
         </tr>
       </thead>
 
       <!-- ===== CUERPO ===== -->
       <tbody>
-        <tr *ngFor="let fila of dataFiltrada" [ngClass]="estadoFilaClass(fila.estado)">
+        <tr *ngFor="let fila of dataPaginada" [ngClass]="estadoFilaClass(fila.estado)">
 
           <!-- ===== CELDAS DINÁMICAS ===== -->
           <td *ngFor="let col of columnas">
@@ -44,19 +48,39 @@
 
             <!-- COLUMNA NORMAL -->
             <ng-template #celdaNormal>
-              <span class="cell-text">
-                {{ fila[col.key] }}
-              </span>
+              <ng-container [ngSwitch]="col.key">
+                <!-- ID -->
+                <span *ngSwitchCase="'id_display'" class="id-text">{{ fila[col.key] }}</span>
+
+                <!-- NOMBRE CON AVATAR -->
+                <div *ngSwitchCase="'nombre'" class="name-cell">
+                  <div class="initial-avatar" [attr.data-letter]="fila['inicial']">
+                    {{ fila['inicial'] }}
+                  </div>
+                  <span class="bold-text">{{ fila[col.key] }}</span>
+                </div>
+
+                <!-- CORREO ELECTRÓNICO -->
+                <span *ngSwitchCase="'correo'" class="email-link">{{ fila[col.key] }}</span>
+
+                <!-- DEFAULT -->
+                <span *ngSwitchDefault class="cell-text">
+                  {{ fila[col.key] }}
+                </span>
+              </ng-container>
             </ng-template>
 
           </td>
 
           <!-- ===== ACCIONES ===== -->
-          <td class="text-right">
+          <td class="text-center">
             <div class="acciones-container">
               <button *ngFor="let btn of botonesAccion" class="btn-accion-fila" [ngClass]="btn.tipo"
                 (click)="emitir(btn.evento, fila)">
-                {{ btn.texto }}
+                <mat-icon *ngIf="btn.texto.toLowerCase() === 'editar'">edit</mat-icon>
+                <mat-icon
+                  *ngIf="btn.texto.toLowerCase() === 'eliminar' || btn.texto.toLowerCase() === 'desactivar'">delete</mat-icon>
+                <mat-icon *ngIf="btn.texto.toLowerCase() === 'activar'">check_circle</mat-icon>
               </button>
             </div>
           </td>
@@ -65,5 +89,30 @@
       </tbody>
 
     </table>
+  </div>
+
+  <!-- ================= PAGINACIÓN ================= -->
+  <div class="tabla-footer">
+    <div class="info-paginacion">
+      Mostrando <strong>{{ inicioRegistro }} a {{ finRegistro }}</strong> de <strong>{{ totalRegistros }}</strong>
+      resultados
+    </div>
+
+    <div class="controles-paginacion">
+      <button class="btn-page" [disabled]="paginaActual === 1" (click)="cambiarPagina(paginaActual - 1)">
+        Anterior
+      </button>
+
+      <div class="paginas-list">
+        <button *ngFor="let p of paginasTotales" class="btn-page-num" [class.active]="p === paginaActual"
+          (click)="cambiarPagina(p)">
+          {{ p }}
+        </button>
+      </div>
+
+      <button class="btn-page" [disabled]="paginaActual === totalPaginas" (click)="cambiarPagina(paginaActual + 1)">
+        Siguiente
+      </button>
+    </div>
   </div>
 </div>

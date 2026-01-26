@@ -23,8 +23,8 @@
 
     <div class="menu-item" *ngFor="let item of items; let i = index">
       <!-- ITEM PRINCIPAL -->
-      <div class="menu-main" [class.active]="activeIndex === i"
-        (click)="item.children ? toggle(i) : navigateAndClose(item.route)"
+      <div class="menu-main" [class.active]="activeIndex === i" routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}" (click)="item.children ? toggle(i) : navigateAndClose(item.route)"
         [routerLink]="!item.children ? item.route : null">
         <mat-icon class="icon">{{ item.icon }}</mat-icon>
         <span class="label">{{ item.label }}</span>

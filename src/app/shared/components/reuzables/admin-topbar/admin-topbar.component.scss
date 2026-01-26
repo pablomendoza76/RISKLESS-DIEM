@@ -14,12 +14,37 @@
 }
 
 .topbar-left {
+  .topbar-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
   .role-label {
     font-family: 'Outfit', sans-serif;
     font-weight: 700;
     font-size: 1.5rem;
     color: $texto-principal; // Color oscuro fuerte
     letter-spacing: -0.5px;
+  }
+
+  .subtitle-date {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: $texto-terciario;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    .subtitle-icon {
+      font-size: 1.1rem;
+      width: 1.1rem;
+      height: 1.1rem;
+      color: $texto-terciario;
+      opacity: 0.8;
+    }
   }
 }
 

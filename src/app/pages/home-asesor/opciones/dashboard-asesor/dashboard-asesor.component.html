@@ -50,28 +50,40 @@
 
     <!-- 📈 GRÁFICO 1: LINE -->
     <div class="chart-card large">
-      <h4>Rendimiento de Pedidos</h4>
+      <h4>
+        Rendimiento de Pedidos
+        <span class="btn-detalles" (click)="navegar('/asesor/pedidos')">Ver detalles</span>
+      </h4>
       <canvas baseChart [data]="pedidosLineChart" [options]="chartOptions" chartType="line">
       </canvas>
     </div>
 
     <!-- 🥧 GRÁFICO 2: PIE -->
     <div class="chart-card">
-      <h4>Distribución por Estado</h4>
+      <h4>
+        Distribución por Estado
+        <span class="btn-detalles" (click)="navegar('/asesor/pedidos')">Ver detalles</span>
+      </h4>
       <canvas baseChart [data]="pedidosEstadoChart" [options]="chartOptions" chartType="pie">
       </canvas>
     </div>
 
     <!-- 📊 GRÁFICO 3: BAR -->
     <div class="chart-card">
-      <h4>Siniestralidad</h4>
+      <h4>
+        Siniestralidad
+        <span class="btn-detalles" (click)="navegar('/asesor/sinistros')">Ver detalles</span>
+      </h4>
       <canvas baseChart [data]="siniestrosEstadoChart" [options]="chartOptions" chartType="bar">
       </canvas>
     </div>
 
     <!-- 📊 GRÁFICO 4: BAR -->
     <div class="chart-card">
-      <h4>Cartera de Pólizas</h4>
+      <h4>
+        Cartera de Pólizas
+        <span class="btn-detalles" (click)="navegar('/asesor/polizas')">Ver detalles</span>
+      </h4>
       <canvas baseChart [data]="polizasChart" [options]="chartOptions" chartType="bar">
       </canvas>
     </div>

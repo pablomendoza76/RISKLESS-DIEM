@@ -25,7 +25,8 @@
   <!-- ================= TABLA ================= -->
   <div class="table-wrapper">
     <app-tabla-dinamica [columnas]="mapper.columnas" [data]="mapper.bienes" [botones]="mapper.botones"
-      (accion)="mapper.manejarAccion($event)">
+      [placeholder]="'Buscar por N°Serie, Tipo, Año Fabricación o Antiguedad...'" [itemsPorPagina]="6"
+      [layout]="'fixed'" (accion)="mapper.manejarAccion($event)">
     </app-tabla-dinamica>
   </div>
 

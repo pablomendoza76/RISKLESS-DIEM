@@ -2,12 +2,18 @@
 
   <!-- IZQUIERDA (Saludo estilizado) -->
   <div class="topbar-left">
-    <span class="role-label" *ngIf="mensaje === 'Bienvenido al sistema'">
-      {{ mensaje }} <!-- Mantener lógica original -->
-    </span>
-    <span class="role-label" *ngIf="mensaje !== 'Bienvenido al sistema'">
-      {{ mensaje }}
-    </span>
+    <div class="topbar-messages">
+      <span class="role-label" *ngIf="mensaje === 'Bienvenido al sistema'">
+        {{ mensaje }} <!-- Mantener lógica original -->
+      </span>
+      <span class="role-label" *ngIf="mensaje !== 'Bienvenido al sistema'">
+        {{ mensaje }}
+      </span>
+      <span class="subtitle-date" *ngIf="subtitulo">
+        <mat-icon class="subtitle-icon">calendar_today</mat-icon>
+        {{ subtitulo }}
+      </span>
+    </div>
   </div>
 
   <!-- DERECHA -->

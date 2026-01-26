@@ -7,8 +7,10 @@
 
 .tabla-wrapper {
   width: 100%;
+  max-width: 1400px;
+  margin: 0 auto; // Centrar el contenedor
   height: 100%;
-  padding: 2rem 3rem; // Espaciado generoso
+  padding: 0 3rem 2rem; // Eliminado padding superior
   box-sizing: border-box;
   background-color: transparent; // El fondo lo pone la página
   display: flex;
@@ -52,40 +54,44 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 2rem;
-  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem; // Reducido el espacio con la tabla
   background: #fff;
-  padding: 1.5rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); // Card flotante para el header
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
 
   .busqueda-wrapper {
     flex: 1;
-    max-width: 500px;
+    max-width: 600px;
     position: relative;
+    display: flex;
+    align-items: center;
+
+    .search-icon {
+      position: absolute;
+      left: 1.2rem;
+      color: #94a3b8;
+      font-size: 1.3rem;
+    }
   }
 
   .input-busqueda {
     width: 100%;
-    padding: 0.8rem 1.2rem 0.8rem 3rem; // Espacio para icono lupa (simulado)
+    padding: 0.85rem 1rem 0.85rem 3.2rem;
     border-radius: 12px;
-    border: 1px solid #e2e8f0; // Slate 200
-    background: #f8fafc; // Slate 50
+    border: 1px solid #f1f5f9;
+    background: #f8fafc;
     font-size: 0.95rem;
     color: $texto-principal;
     transition: all 0.3s ease;
-
-    // Icono lupa simulado con background-image o pseudo en wrapper seria ideal, 
-    // pero aqui usamos estilo simple limpio.
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8' width='18px' height='18px'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: 12px center;
+    font-family: 'Outfit', sans-serif;
 
     &:focus {
       outline: none;
       background-color: #fff;
-      border-color: $color-dorado; // Acento Cyan
-      box-shadow: 0 0 0 3px rgba($color-dorado, 0.1);
+      border-color: $azul-600;
+      box-shadow: 0 0 0 4px rgba($azul-600, 0.05);
     }
   }
 
@@ -94,32 +100,45 @@
     gap: 1rem;
 
     .btn-tabla {
-      padding: 0.75rem 1.5rem;
+      padding: 0.75rem 1.4rem;
       border-radius: 10px;
-      border: none;
-      font-weight: 600;
+      border: 1px solid transparent;
+      font-weight: 700;
       font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.2s;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      font-family: 'Outfit', sans-serif;
 
-      // BOTÓN NUEVO REGISTRO (Estilo Imagen 1 - Azul Brillante)
-      &.primary {
-        background: linear-gradient(135deg, $color-azul-celeste, $azul-600);
-        color: #fff;
-        box-shadow: 0 4px 12px rgba($color-azul-celeste, 0.3);
+      mat-icon {
+        font-size: 1.2rem;
+        width: 1.2rem;
+        height: 1.2rem;
+      }
+
+      &.secondary {
+        background: #f8fafc;
+        color: #475569;
+        border-color: #f1f5f9;
 
         &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 16px rgba($color-azul-celeste, 0.4);
+          background: #ebeef2;
+          border-color: #e2e8f0;
         }
+      }
 
-        &::before {
-          content: '+';
-          font-size: 1.2rem;
-          line-height: 1;
+      &.success,
+      &.primary {
+        background: $azul-600;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba($azul-600, 0.25);
+
+        &:hover {
+          background: darken($azul-600, 5%);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba($azul-600, 0.35);
         }
       }
     }
@@ -132,171 +151,297 @@
 .tabla-scroll {
   flex: 1;
   overflow-y: auto;
-  border-radius: 20px;
-  background: #fff; // Fondo blanco tarjeta gigante
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-  padding: 1rem;
+  border-radius: 15px;
+  background: #fff;
+  border: 1px solid #f1f5f9;
+  padding: 0.5rem;
 
-  // Header Sticky
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+
+    &.layout-fixed {
+      table-layout: fixed;
+    }
+  }
+
   thead th {
     position: sticky;
     top: 0;
     z-index: 10;
-    background-color: #fff; // Blanco puro
-    padding: 1.25rem 2rem;
-    text-align: left;
+    background-color: #fff;
+    padding: 1.2rem 1rem;
+    text-align: center; // Centrado solicitado
 
-    font-family: 'Outfit', sans-serif;
+    // Distribución simétrica (si se usa layout-fixed)
+    white-space: nowrap;
+    min-width: 60px;
+
+    font-family: 'Outfit',
+      sans-serif;
     font-size: 0.75rem;
     font-weight: 700;
-    color: #94a3b8; // Slate 400
+    color: #94a3b8;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
-    border-bottom: 2px solid #f1f5f9; // Separador sutil
+    letter-spacing: 0.8px;
+    border-bottom: 2px solid #f8fafc;
   }
 
-  /* Filas */
   tbody tr {
     transition: all 0.2s ease;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f8fafc;
 
     &:last-child {
       border-bottom: none;
     }
 
     &:hover {
-      background-color: #f8fafc; // Hover muy sutil
+      background-color: rgba($azul-600, 0.02);
     }
   }
 
   tbody td {
-    padding: 1.5rem 2rem;
-    color: #334155; // Slate 700
+    padding: 1.25rem 1rem;
+    color: #475569;
     font-size: 0.95rem;
     vertical-align: middle;
+    font-family: 'Outfit', sans-serif;
+    text-align: center; // Centrado horizontal
 
-    // Foto o Avatar (si hubiera)
-    .avatar-placeholder {
-      width: 40px;
-      height: 40px;
-      background: #e2e8f0;
-      border-radius: 50%;
+    // Contenedor flex para asegurar centrado total de elementos complejos
+    &>.cell-content,
+    &>.acciones-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .id-text {
+      color: #cbd5e1;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: block; // Ocupe el ancho para centrarse con text-align
+    }
+
+    .name-cell {
+      display: grid;
+      grid-template-columns: 32px 1fr; // Ancho fijo para el avatar garantiza alineación vertical
+      align-items: center;
+      gap: 12px;
+      width: 140px; // Ancho fijo para alineación vertical perfecta
+      margin: 0 auto; // Centra el bloque en la celda
+      text-align: left;
+
+      .initial-avatar {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+
+        &[data-letter="P"] {
+          background-color: #eff6ff;
+          color: #3b82f6;
+        }
+
+        &[data-letter="F"] {
+          background-color: #f5f3ff;
+          color: #8b5cf6;
+        }
+
+        &[data-letter="J"] {
+          background-color: #fff7ed;
+          color: #f97316;
+        }
+
+        &[data-letter="A"] {
+          background-color: #ecfdf5;
+          color: #10b981;
+        }
+
+        &[data-letter="R"] {
+          background-color: #f8fafc;
+          color: #475569;
+        }
+
+        // Añadido para Rodrigo
+      }
+
+      .bold-text {
+        white-space: nowrap;
+      }
+    }
+
+    .bold-text {
+      font-weight: 700;
+      color: $texto-principal;
+    }
+
+    .email-link {
+      color: #64748b;
+      text-decoration: underline;
+      cursor: pointer;
+      display: inline-block;
+
+      &:hover {
+        color: $azul-600;
+      }
+    }
+
+    .estado-badge {
+      display: inline-flex;
     }
   }
 
+  .text-center {
+    text-align: center !important;
+  }
+
   /* =========================
-     BADGES (ESTILO IMAGEN 1)
+     BADGES (Mockup Style)
   ========================= */
   .estado-badge {
     display: inline-flex;
     align-items: center;
-    padding: 0.4rem 1rem; // Pill compacta
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+    padding: 0.3rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 900;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 
-    // Indicador circular (dot)
     &::before {
       content: '';
       display: inline-block;
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      margin-right: 8px;
-      background-color: currentColor; // Hereda color texto
+      margin-right: 6px;
+      background-color: currentColor;
     }
   }
 
-  // VARIACIONES DE COLOR (Estilo Moderno)
-  .estado-activo,
-  .estado-exito {
-    background-color: #dcfce7; // Verde muy claro
-    color: #166534; // Verde oscuro
-  }
-
-  .estado-proceso,
-  .estado-warning {
-    background-color: #e0f2fe; // Azul cielo claro
-    color: #0369a1; // Azul oceano
-  }
-
-  .estado-critico,
-  .estado-error {
-    background-color: #fee2e2; // Rojo claro
-    color: #991b1b; // Rojo sangre
+  .estado-activo {
+    background-color: #ecfdf5; // Emerald 50
+    color: #10b981; // Emerald 500
   }
 
   .estado-inactivo {
-    background-color: #f1f5f9; // Gris
-    color: #64748b; // Slate
+    background-color: #f1f5f9; // Slate 100
+    color: #94a3b8; // Slate 400
   }
 
   /* =========================
-     BOTONES ACCIÓN
+     ACCIONES (Centrado)
   ========================= */
   .acciones-container {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 8px;
 
     .btn-accion-fila {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
       border: none;
       background: transparent;
-      color: #94a3b8;
+      color: #cbd5e1;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.2s;
-      font-size: 0; // Ocultar texto
 
-      // Icono simulado (usando first letter o pseudoelemento si no hay icono real)
-      // Asumimos que el texto es "Editar", "Eliminar"
-
-      // EDITAR (Icono Lápiz)
-      &[class*="Editar"],
-      &.primary {
-        &:hover {
-          background: #eff6ff;
-          color: $color-azul-celeste;
-        }
-
-        &::after {
-          content: '✎'; // Caracter unicode simple por si acaso no carga mat-icon
-          font-size: 1.2rem;
-        }
+      mat-icon {
+        font-size: 1.2rem;
       }
 
-      // ELIMINAR (Icono Basura)
-      &[class*="Eliminar"],
-      &.danger {
-        &:hover {
-          background: #fef2f2;
-          color: $rojo-600;
-        }
+      &:hover {
+        background: #f1f5f9;
+        color: $azul-600;
+      }
+    }
+  }
+}
 
-        &::after {
-          content: '🗑';
-          font-size: 1.1rem;
-        }
+/* =========================
+   FOOTER (PAGINACIÓN)
+========================= */
+.tabla-footer {
+  margin-top: 1.5rem;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Outfit', sans-serif;
+
+  .info-paginacion {
+    font-size: 0.85rem;
+    color: #94a3b8;
+
+    strong {
+      color: #475569;
+    }
+  }
+
+  .controles-paginacion {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .paginas-list {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-page {
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #f1f5f9;
+      background: #fff;
+      color: #64748b;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover:not(:disabled) {
+        border-color: #cbd5e1;
+        background: #f8fafc;
       }
 
-      // Default (Ojo / Ver)
-      &.secondary {
-        &:hover {
-          background: #f8fafc;
-          color: $texto-principal;
-        }
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
 
-        &::after {
-          content: '👁';
-          font-size: 1.1rem;
-        }
+    .btn-page-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: #64748b;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &.active {
+        background: $azul-600;
+        color: #fff;
+        box-shadow: 0 4px 10px rgba($azul-600, 0.2);
+      }
+
+      &:hover:not(.active) {
+        background: #f1f5f9;
       }
     }
   }
@@ -306,19 +451,13 @@
    RESPONSIVE
 ========================= */
 @media (max-width: 768px) {
-  .tabla-wrapper {
-    padding: 1rem;
-  }
-
   .tabla-header {
     flex-direction: column;
-    padding: 1rem;
-    gap: 1rem;
+    padding: 1.5rem;
 
-    .busqueda-wrapper,
-    .input-busqueda {
-      width: 100%;
+    .busqueda-wrapper {
       max-width: none;
+      width: 100%;
     }
 
     .botones-top {
@@ -331,12 +470,9 @@
     }
   }
 
-  // Tabla responsive con scroll horizontal
-  .tabla-scroll {
-    overflow-x: auto;
-
-    table {
-      min-width: 600px;
-    }
+  .tabla-footer {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
   }
 }

@@ -25,6 +25,7 @@
   <!-- ================= TABLA ================= -->
   <div class="table-wrapper">
     <app-tabla-dinamica [columnas]="mapper.columnas" [data]="mapper.siniestros" [botones]="mapper.botones"
+      [placeholder]="'Buscar por Pedido, Fecha, Estado, etc...'" [itemsPorPagina]="6" [layout]="'fixed'"
       (accion)="mapper.manejarAccion($event)">
     </app-tabla-dinamica>
   </div>

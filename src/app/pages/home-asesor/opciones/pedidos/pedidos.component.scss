@@ -9,11 +9,11 @@
 
   /* ================= HEADER SECCIÓN ================= */
   .header-seccion {
-    padding: 2.5rem 3rem 1.5rem;
+    padding: 0.5rem 3rem 1.5rem; // Reducido el padding arriba
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
+    align-items: center; // Centrado vertical
+    margin-bottom: 0.5rem; // Reducido margen inferior
 
     .title-group {
       display: flex;
