@@ -46,7 +46,7 @@ export const routes: Routes = [
     component: HomeAsesorComponent,
     data: { rol: 'Asesor' },
     children: [
-      { path: '', redirectTo: 'asegurados', pathMatch: 'full' },  
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardAsesorComponent },
       { path: 'asegurados', component: AseguradosComponent },
       { path: 'bienes', component: BienesComponent },
