@@ -54,7 +54,7 @@ export class SiniestrosMapper {
   ];
 
   botones: BotonTabla[] = [
-    { texto: '+ Nuevo siniestro', tipo: 'success', evento: 'crear' },
+    { texto: 'Nuevo siniestro', tipo: 'success', evento: 'crear' },
     { texto: 'Editar', tipo: 'primary', evento: 'editar' },
     { texto: 'Eliminar', tipo: 'danger', evento: 'eliminar' },
   ];

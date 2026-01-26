@@ -47,8 +47,7 @@ export class AseguradosMapper {
   ];
 
   botones: BotonTabla[] = [
-    { texto: 'Filtros', tipo: 'secondary', evento: 'filtros' },
-    { texto: '+ Nuevo asegurado', tipo: 'success', evento: 'crear' },
+    { texto: 'Nuevo asegurado', tipo: 'success', evento: 'crear' },
     { texto: 'Editar', tipo: 'primary', evento: 'editar' },
     { texto: 'Desactivar', tipo: 'danger', evento: 'desactivar' },
     { texto: 'Activar', tipo: 'activate', evento: 'activar' },

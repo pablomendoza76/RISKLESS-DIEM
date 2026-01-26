@@ -37,25 +37,25 @@ export class AlertService {
      TOASTS GENERALES
   ========================= */
 
-  success(message: string, title: string = 'Éxito'): void {
+  success(message: string, title: string = ''): void {
     this.toastr.success(message, title, {
       progressBar: true,
     });
   }
 
-  error(message: string, title: string = 'Error'): void {
+  error(message: string, title: string = ''): void {
     this.toastr.error(message, title, {
       progressBar: true,
     });
   }
 
-  warning(message: string, title: string = 'Advertencia'): void {
+  warning(message: string, title: string = ''): void {
     this.toastr.warning(message, title, {
       progressBar: true,
     });
   }
 
-  info(message: string, title: string = 'Información'): void {
+  info(message: string, title: string = ''): void {
     this.toastr.info(message, title, {
       progressBar: true,
     });

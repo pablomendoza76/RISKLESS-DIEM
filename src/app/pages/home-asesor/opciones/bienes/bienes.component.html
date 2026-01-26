@@ -34,7 +34,7 @@
   <app-dynamic-form *ngIf="mapper.mostrarFormulario"
     [titulo]="mapper.modoFormulario === 'crear' ? 'Nuevo bien' : 'Editar bien'" [fields]="mapper.fields"
     [initialData]="mapper.bienSeleccionado" (formSubmit)="mapper.recibirFormulario($event)"
-    (cancelar)="mapper.cerrarFormulario()">
+    (cancelar)="mapper.cerrarFormulario()" (valueChange)="mapper.manejarCambioFormulario($event)">
   </app-dynamic-form>
 
 </div>

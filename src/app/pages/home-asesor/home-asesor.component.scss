@@ -9,19 +9,17 @@
   display: grid;
   grid-template-columns: 260px 1fr;
   /* IMPORTANTE: Altura fija exacta de la pantalla */
-  height: 100vh;
+  height: 100vh; 
   width: 100vw;
   /* IMPORTANTE: Prohibido el scroll aquí */
-  overflow: hidden;
+  overflow: hidden; 
 }
 
 /* SIDEBAR */
 .sidebar-area {
   grid-column: 1 / 2;
-  height: 100%;
-  /* Ocupa todo el alto disponible */
-  overflow: hidden;
-  /* El sidebar no scrollea (o tiene su propio scroll interno si quieres) */
+  height: 100%; /* Ocupa todo el alto disponible */
+  overflow: hidden; /* El sidebar no scrollea (o tiene su propio scroll interno si quieres) */
 }
 
 /* COLUMNA DERECHA */
@@ -29,29 +27,24 @@
   grid-column: 2 / 3;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  /* Altura fija */
-  overflow: hidden;
-  /* Prohibido el scroll aquí también */
+  height: 100%; /* Altura fija */
+  overflow: hidden; /* Prohibido el scroll aquí también */
   background: #f6f7fb;
 }
 
 /* TOPBAR */
 .topbar-area {
-  flex: 0 0 auto;
-  /* No crece, altura fija según contenido */
+  flex: 0 0 auto; /* No crece, altura fija según contenido */
   z-index: 10;
   position: relative;
 }
 
 /* CONTENIDO (Donde va la tabla) */
 .content-area {
-  flex: 1;
-  /* Ocupa TODO el espacio sobrante */
-  overflow-y: auto;
-  /* PERMITIR SCROLL si el contenido es largo */
+  flex: 1; /* Ocupa TODO el espacio sobrante */
+  overflow: hidden; /* ¡CRÍTICO! Cortamos el contenido si se pasa */
   padding: 1.5rem;
-
+  
   /* Esto ayuda a que el componente hijo (la tabla) se estire al 100% */
   display: flex;
   flex-direction: column;
@@ -87,13 +80,10 @@
     overflow: hidden;
   }
 
-  .topbar-area {
-    display: none;
-  }
-
-  .content-area {
-    padding: 1rem;
-    height: 100%;
-    /* Asegura altura en móvil */
+  .topbar-area { display: none; }
+  
+  .content-area { 
+    padding: 1rem; 
+    height: 100%; /* Asegura altura en móvil */
   }
 }

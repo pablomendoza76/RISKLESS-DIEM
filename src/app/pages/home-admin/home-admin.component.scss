@@ -3,9 +3,23 @@
 
 .admin-container {
   width: 100%;
-  min-height: 100vh;
+  // 1. SCROLL FIX: Altura fija a la ventana
+  height: 100vh; 
+  
+  // 2. SCROLL FIX: El scroll ocurre DENTRO de este div, no en el body
+  overflow-y: auto; 
+  overflow-x: hidden;
+
+  // 3. Estilos Base
   background-color: $fondo-gris-suave;
   font-family: $font-work-sans;
+
+  // 4. TRUCO: Ocultar barra de scroll (pero sigue funcionando)
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE/Edge
+  &::-webkit-scrollbar {
+    display: none; // Chrome/Safari
+  }
 
   // ================= HEADER SUPERIOR (TOPBAR) =================
   .admin-topbar {
@@ -16,6 +30,11 @@
     background: $fondo-claro;
     border-bottom: 1px solid $gris-200;
     box-shadow: 0 2px 10px rgba($color-azul-oscuro, 0.05);
+    
+    // Evita que la topbar se encoja al hacer scroll
+    position: sticky;
+    top: 0;
+    z-index: 100;
 
     .admin-role {
       .role-label {
@@ -31,7 +50,7 @@
       display: flex;
       align-items: center;
       gap: 1rem;
-      position: relative; // CRUCIAL: Para que el modal se posicione respecto a este contenedor
+      position: relative; 
 
       .avatar {
         width: 45px;
@@ -42,7 +61,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer; // Indica que es interactivo
+        cursor: pointer;
 
         .avatar-initials {
           font-family: $font-poppins;
@@ -74,25 +93,25 @@
     }
   }
 
-  // ================= HEADER CONTENIDO =================
+  // ================= HEADER CONTENIDO (Título + Botón) =================
   .admin-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-end; // Alineados abajo en escritorio
     padding: 3rem 3rem 2rem;
     gap: 1.5rem;
 
     .title-section {
       h2 {
         font-family: $font-poppins;
-        font-size: $fs-h2;
+        font-size: 2rem; // Tamaño escritorio
         font-weight: 600;
         color: $color-azul-oscuro;
         margin: 0;
       }
 
       .subtitle {
-        font-size: $fs-subtitle;
+        font-size: 1rem;
         color: $texto-terciario;
         margin-top: 0.4rem;
         display: block;
@@ -137,11 +156,11 @@
   }
 }
 
-/* ================= LOGOUT DROPDOWN (AJUSTADO) ================= */
+/* ================= LOGOUT DROPDOWN / MODAL ================= */
 
 .logout-backdrop {
   position: absolute;
-  top: calc(100% + 12px); // Posición exacta debajo del avatar/info
+  top: calc(100% + 12px);
   right: 0;
   z-index: 1000;
 }
@@ -155,7 +174,7 @@
   box-shadow: 0 12px 30px rgba($color-azul-oscuro, 0.15);
   animation: dropdownFade 0.2s ease-out;
 
-  // Pequeño triángulo indicador (opcional, estilo iOS)
+  // Triángulo decorativo (Desktop)
   &::before {
     content: '';
     position: absolute;
@@ -204,39 +223,34 @@
       background: $fondo-gris-suave;
       border: 1px solid $gris-200;
       color: $texto-principal;
-
-      &:hover {
-        background: darken($fondo-gris-suave, 3%);
-      }
+      &:hover { background: darken($fondo-gris-suave, 3%); }
     }
 
     .btn-danger {
       background: rgba($color-dorado, 0.1);
       border: 1px solid rgba($color-dorado, 0.3);
       color: $color-azul-oscuro;
-
-      &:hover {
-        background: $color-dorado;
-        color: white;
+      &:hover { 
+        background: $color-dorado; 
+        color: white; 
       }
     }
   }
 }
 
-/* ================= ANIMACIÓN ================= */
-
+/* ================= ANIMACIONES ================= */
 @keyframes dropdownFade {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-// ================= RESPONSIVIDAD =================
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+
+/* ================= RESPONSIVIDAD (TABLET & MÓVIL) ================= */
 
 // Tablet
 @media (max-width: 992px) {
@@ -248,61 +262,102 @@
   }
 }
 
-// Móvil
+// MÓVIL (AJUSTES CLAVE AQUÍ)
 @media (max-width: 768px) {
   .admin-container {
+    
+    // 1. TOPBAR COMPACTA
     .admin-topbar {
       padding: 0.75rem 1rem;
-      .user-info { display: none; }
+      
+      .admin-role .role-label {
+        font-size: 1.2rem; 
+      }
+
+      .admin-user {
+        gap: 0;
+        .user-info { display: none; } // Ocultar info extra
+        .avatar {
+          width: 38px;
+          height: 38px;
+        }
+      }
     }
+
+    // 2. HEADER CENTRADO Y BOTÓN AJUSTADO
     .admin-header {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 2rem 1rem;
+      flex-direction: column; // Apilar verticalmente
+      align-items: center;    // CENTRAR TODO
+      text-align: center;     // Texto centrado
+      padding: 1.5rem 1rem;
       gap: 1.25rem;
-      .title-section h2 { 
-        font-family: $font-poppins;
-        font-size: $fs-title; 
+
+      .title-section {
+        h2 {
+          font-size: 1.5rem; // Título más pequeño
+          line-height: 1.2;
+        }
+        .subtitle {
+          font-size: 0.85rem;
+          margin-top: 0.25rem;
+        }
       }
-      .btn-add { 
-        width: 100%; 
+
+      .btn-add {
+        width: 100%; // Botón ancho completo (Full Width)
+        display: flex;
         justify-content: center;
-        padding: 1rem;
-        font-size: $fs-body;
+        
+        // BOTONES MENOS GRANDES ("Vones")
+        padding: 0.7rem; // Menos padding vertical
+        font-size: 0.85rem; // Letra un poco más chica
+        height: auto;
       }
     }
-    .content { 
-      padding: 0 1rem 2rem; 
+
+    // 3. CONTENIDO
+    .content {
+      padding: 0 1rem 2rem;
       
       .text-gray {
         padding: 2rem 1rem;
-        font-size: $fs-body;
+        font-size: 0.9rem;
       }
     }
   }
   
+  // 4. LOGOUT COMO POPUP CENTRADO
   .logout-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba($color-azul-oscuro, 0.5);
+    position: fixed; // Fijo a pantalla
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
-    
+    z-index: 9999;
+
     .logout-modal {
-      width: 90%;
+      width: 85%;
       max-width: 300px;
-      margin: auto;
       position: relative;
-      top: auto;
-      right: auto;
+      top: auto; right: auto; left: auto;
+      transform: none;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       
-      &::before {
-        display: none;
+      &::before { display: none; } // Sin flechita
+
+      h3, p { text-align: center; }
+      
+      .logout-actions {
+        flex-direction: row; // Botones lado a lado
+        gap: 0.8rem;
+        button {
+          padding: 0.7rem;
+          font-size: 0.85rem;
+          flex: 1; 
+        }
       }
     }
   }

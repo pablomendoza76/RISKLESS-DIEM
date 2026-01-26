@@ -90,24 +90,36 @@ export class PedidosService {
   /* =========================
      EDITAR PEDIDO
   ========================= */
-  editar(
-    id: string,
-    cambios: Partial<Pick<Pedido, 'descripcion'>>
-  ): Promise<Pedido> {
+editar(
+  id: string,
+  cambios: Partial<Pick<Pedido, 'descripcion'>>
+): Promise<Pedido> {
 
-    return this.gateway.ejecutar(async () => {
-      const res = await this.sb.client
-        .from('pedidos')
-        .update(cambios)
-        .eq('id', id)
-        .select()
-        .maybeSingle<Pedido>();
+  return this.gateway.ejecutar(async () => {
 
-      return { data: res.data, error: res.error };
-    }, {
-      successMessage: 'Pedido actualizado correctamente'
-    });
-  }
+    console.log('EDIT ID:', id);
+    console.log('EDIT CAMBIOS:', cambios);
+
+    const payload = {
+      descripcion: cambios.descripcion
+    };
+
+    const res = await this.sb.client
+      .from('pedidos')
+      .update(payload)
+      .eq('id', id)
+      .select();
+
+    return {
+      data: res.data?.[0] ?? null,
+      error: res.error
+    };
+
+  }, {
+    successMessage: 'Pedido actualizado correctamente'
+  });
+}
+
 
   /* =========================
      CAMBIAR ESTADO

@@ -18,13 +18,13 @@ import {
 import { Subscription } from 'rxjs';
 
 export interface DynamicField {
-  type: 'text' | 'number' | 'select' | 'file' | 'email' | 'password' | 'date' |'textarea';
+  type: 'text' | 'number' | 'select' | 'file' | 'email' | 'password' | 'date' | 'textarea' | 'checkbox';
   name: string;
   label: string;
   required?: boolean;
   min?: number;
   max?: number;
-  maxLength?: number; 
+  maxLength?: number;
   disabled?: boolean;
   options?: { label: string; value: any }[];
 }
@@ -44,11 +44,9 @@ export class DynamicFormComponent
   @Input() initialData: any | null = null;
   @Input() embedded = false;
 
-
   @Output() cancelar = new EventEmitter<void>();
   @Output() formSubmit = new EventEmitter<FormGroup>();
   @Output() filesSelected = new EventEmitter<File[]>();
-
 
   // emite cambios por campo
   @Output() valueChange = new EventEmitter<{
@@ -65,75 +63,76 @@ export class DynamicFormComponent
 
   constructor(private fb: FormBuilder) {}
 
-  /* init */
+  // init
   ngOnInit(): void {
     this.buildForm();
     this.listenToChanges();
   }
 
-  /* cambios externos */
+  // cambios externos
   ngOnChanges(changes: SimpleChanges): void {
 
-  // CUANDO CAMBIAN LOS CAMPOS → RECONSTRUIR FORMULARIO
-  if (changes['fields'] && this.fields?.length) {
+    // cuando cambian los campos se reconstruye el formulario
+    if (changes['fields'] && this.fields?.length) {
 
-    // limpiar subscripciones
-    this.subscriptions.forEach(s => s.unsubscribe());
-    this.subscriptions = [];
+      // limpiar subscripciones
+      this.subscriptions.forEach(s => s.unsubscribe());
+      this.subscriptions = [];
 
-    // reconstruir form
-    this.buildForm();
-    this.listenToChanges();
+      // reconstruir formulario
+      this.buildForm();
+      this.listenToChanges();
 
-    // cargar datos iniciales si existen
+      // cargar datos iniciales si existen
+      if (this.initialData) {
+        this.form.patchValue(this.initialData, { emitEvent: false });
+      }
+    }
+
+    // cargar datos iniciales en edición
+    if (changes['initialData'] && this.initialData && this.form) {
+      this.form.patchValue(this.initialData, { emitEvent: false });
+    }
+  }
+
+  // construir formulario
+  private buildForm(): void {
+    const group: any = {};
+
+    this.fields.forEach(field => {
+      const validators = [];
+
+      if (field.required) validators.push(Validators.required);
+      if (field.min !== undefined) validators.push(Validators.min(field.min));
+      if (field.max !== undefined) validators.push(Validators.max(field.max));
+      if (field.maxLength !== undefined) {
+        validators.push(Validators.maxLength(field.maxLength));
+      }
+
+      if (field.type === 'email') {
+        validators.push(
+          Validators.email,
+          Validators.pattern(/.+@.+\.com$/)
+        );
+      }
+
+      group[field.name] = [
+        {
+          value: field.type === 'checkbox' ? false : '',
+          disabled: field.disabled === true
+        },
+        validators
+      ];
+    });
+
+    this.form = this.fb.group(group);
+
     if (this.initialData) {
       this.form.patchValue(this.initialData, { emitEvent: false });
     }
   }
 
-  // edición: datos iniciales
-  if (changes['initialData'] && this.initialData && this.form) {
-    this.form.patchValue(this.initialData, { emitEvent: false });
-  }
-}
-
-
-  /* construir formulario */
-  private buildForm(): void {
-  const group: any = {};
-
-  this.fields.forEach(field => {
-    const validators = [];
-
-    if (field.required) validators.push(Validators.required);
-    if (field.min !== undefined) validators.push(Validators.min(field.min));
-    if (field.max !== undefined) validators.push(Validators.max(field.max));
-    if (field.maxLength !== undefined) {
-      validators.push(Validators.maxLength(field.maxLength));
-    }
-
-    if (field.type === 'email') {
-      validators.push(
-        Validators.email,
-        Validators.pattern(/.+@.+\.com$/)
-      );
-    }
-
-    group[field.name] = [
-      { value: '', disabled: field.disabled === true },
-      validators
-    ];
-  });
-
-  this.form = this.fb.group(group);
-
-  if (this.initialData) {
-    this.form.patchValue(this.initialData, { emitEvent: false });
-  }
-}
-
-
-  /* escuchar cambios */
+  // escuchar cambios
   private listenToChanges(): void {
     this.fields.forEach(field => {
       const control = this.form.get(field.name);
@@ -151,31 +150,30 @@ export class DynamicFormComponent
     });
   }
 
-  /* archivos */
-onFileChange(event: Event, fieldName: string): void {
-  const input = event.target as HTMLInputElement;
-  if (!input.files || input.files.length === 0) return;
+  // archivos
+  onFileChange(event: Event, fieldName: string): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
 
-  const files = Array.from(input.files);
+    const files = Array.from(input.files);
 
-  if (!this.selectedFiles[fieldName]) {
-    this.selectedFiles[fieldName] = [];
+    if (!this.selectedFiles[fieldName]) {
+      this.selectedFiles[fieldName] = [];
+    }
+
+    this.selectedFiles[fieldName].push(...files);
+
+    this.filesSelected.emit(this.selectedFiles[fieldName]);
+
+    this.form.patchValue(
+      { [fieldName]: this.selectedFiles[fieldName] },
+      { emitEvent: true }
+    );
+
+    input.value = '';
   }
 
-  this.selectedFiles[fieldName].push(...files);
-
-  // 🔥 EMITIR AL PADRE
-  this.filesSelected.emit(this.selectedFiles[fieldName]);
-
-  this.form.patchValue(
-    { [fieldName]: this.selectedFiles[fieldName] },
-    { emitEvent: true }
-  );
-
-  input.value = '';
-}
-
-  /* submit */
+  // submit
   submit(): void {
     if (this.form.valid) {
       this.formSubmit.emit(this.form);
@@ -184,12 +182,12 @@ onFileChange(event: Event, fieldName: string): void {
     }
   }
 
-  /* cancelar */
+  // cancelar
   onCancelar(): void {
     this.cancelar.emit();
   }
 
-  /* cleanup */
+  // cleanup
   ngOnDestroy(): void {
     this.subscriptions.forEach(s => s.unsubscribe());
   }

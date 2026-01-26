@@ -117,12 +117,7 @@
     }
   }
 
-  /* ================= TABLE WRAPPER ================= */
-  .table-wrapper {
-    flex: 1;
-    width: 100%;
-    // El padding y scroll lo maneja el componente app-tabla-dinamica
-  }
+  
 }
 
 /* ================= MEDIA QUERIES (RESPONSIVIDAD) ================= */
@@ -154,7 +149,7 @@
       }
 
       .total-badge-card {
-        width: 100%; // Card full width en móvil
+        width: 80%; // Card full width en móvil
         min-width: unset;
         flex-direction: row;
         justify-content: space-between;

@@ -9,19 +9,30 @@ $transition-base: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
    CONTENEDOR PRINCIPAL
 =============================== */
 .dashboard-asesor {
-  // Layout fluido
-  height: 100%; // Ajuste para ocupar espacio del router-outlet
+  // --- TUS PROPIEDADES BASE (MANTENER) ---
+  height: calc(100vh - 100px); 
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 0.5rem 3rem 2rem 3rem;
-
-  // Fondo base (ya está en global, pero nos aseguramos)
   background-color: transparent;
-
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
   font-family: 'Outfit', sans-serif;
-}
 
+  // --- CÓDIGO PARA OCULTAR LA BARRA DE SCROLL ---
+
+  // 1. Para Firefox
+  scrollbar-width: none;
+
+  // 2. Para IE y Edge (versiones antiguas)
+  -ms-overflow-style: none;
+
+  // 3. Para Chrome, Safari y Opera (Webkit)
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 /* ===============================
    KPI GRID (Tarjetas Superiores)
 =============================== */

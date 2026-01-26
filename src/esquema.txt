@@ -461,3 +461,56 @@ add column if not exists proveedor_nombre text,
 add column if not exists proveedor_direccion text,
 add column if not exists proveedor_telefono text,
 add column if not exists proveedor_correo text;
+
+
+create table custodios (
+  id uuid primary key default gen_random_uuid(),
+
+  nombre text not null,
+  apellido text not null,
+
+  correo_institucional text,
+  departamento text,
+  area text,
+
+  activo boolean not null default true,
+
+  created_at timestamp default now()
+);
+
+
+alter table bienes
+add column if not exists custodio_id uuid
+references custodios(id)
+on delete set null;
+
+alter table custodios enable row level security;
+
+-- SELECT público
+create policy custodios_select_public
+on custodios
+for select
+to public
+using (true);
+
+-- INSERT público
+create policy custodios_insert_public
+on custodios
+for insert
+to public
+with check (true);
+
+-- UPDATE público
+create policy custodios_update_public
+on custodios
+for update
+to public
+using (true)
+with check (true);
+
+-- DELETE público
+create policy custodios_delete_public
+on custodios
+for delete
+to public
+using (true);

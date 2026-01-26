@@ -36,7 +36,7 @@ export const routes: Routes = [
 
   // PEDIDO INDIVIDUAL
   {
-    path: 'pedidoAgurado',
+    path: 'pedidoAsegurado',
     component: PedidosAseguradoComponent,
   },
 
