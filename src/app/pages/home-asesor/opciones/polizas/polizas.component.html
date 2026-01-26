@@ -3,13 +3,20 @@
   <!-- ================= HEADER ================= -->
   <div class="header-seccion">
 
-    <!-- GRUPO IZQUIERDO: TÍTULO + TOTAL -->
+    <!-- GRUPO IZQUIERDO: TÍTULO -->
     <div class="title-group">
-      <h2>Listado de pólizas</h2>
+      <h2>Listado de Pólizas</h2>
+      <p class="subtitle">Gestiona las pólizas activas y vencidas de tus clientes.</p>
+    </div>
 
-      <div class="total-badge-card">
-        <span>Total</span>
+    <!-- GRUPO DERECHO: CARD TOTAL (Blue Gradient) -->
+    <div class="total-badge-card">
+      <div class="card-content">
         <strong>{{ mapper.totalPolizas }}</strong>
+        <span>Total Pólizas</span>
+      </div>
+      <div class="trend-badge">
+        <span class="material-icons">trending_up</span> +8.3%
       </div>
     </div>
 
@@ -17,21 +24,16 @@
 
   <!-- ================= TABLA ================= -->
   <div class="table-wrapper">
-    <app-tabla-dinamica
-      [columnas]="mapper.columnas"
-      [data]="mapper.polizas"
-      [botones]="mapper.botones"
+    <app-tabla-dinamica [columnas]="mapper.columnas" [data]="mapper.polizas" [botones]="mapper.botones"
+      [placeholder]="'Buscar por N°Póliza, Aseguradora, Estado, etc...'" [itemsPorPagina]="6" [layout]="'fixed'"
       (accion)="mapper.manejarAccion($event)">
     </app-tabla-dinamica>
   </div>
 
   <!-- ================= FORMULARIO ================= -->
-  <app-dynamic-form
-    *ngIf="mapper.mostrarFormulario"
-    [titulo]="mapper.modoFormulario === 'crear' ? 'Nueva póliza' : 'Editar póliza'"
-    [fields]="mapper.fields"
-    [initialData]="mapper.polizaSeleccionada"
-    (formSubmit)="mapper.recibirFormulario($event)"
+  <app-dynamic-form *ngIf="mapper.mostrarFormulario"
+    [titulo]="mapper.modoFormulario === 'crear' ? 'Nueva póliza' : 'Editar póliza'" [fields]="mapper.fields"
+    [initialData]="mapper.polizaSeleccionada" (formSubmit)="mapper.recibirFormulario($event)"
     (cancelar)="mapper.cerrarFormulario()">
   </app-dynamic-form>
 

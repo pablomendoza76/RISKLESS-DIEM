@@ -3,13 +3,20 @@
   <!-- ================= HEADER ================= -->
   <div class="header-seccion">
 
-    <!-- GRUPO IZQUIERDO: TÍTULO + TOTAL -->
+    <!-- GRUPO IZQUIERDO: TÍTULO -->
     <div class="title-group">
-      <h2>Listado de siniestros</h2>
+      <h2>Listado de Siniestros</h2>
+      <p class="subtitle">Gestiona los siniestros y reclamos en proceso.</p>
+    </div>
 
-      <div class="total-badge-card">
-        <span>Total</span>
+    <!-- GRUPO DERECHO: CARD TOTAL -->
+    <div class="total-badge-card">
+      <div class="card-content">
         <strong>{{ mapper.totalSiniestros }}</strong>
+        <span>Total Siniestros</span>
+      </div>
+      <div class="trend-badge">
+        <span class="material-icons">trending_down</span> -3.2%
       </div>
     </div>
 
@@ -18,23 +25,18 @@
   <!-- ================= TABLA ================= -->
   <div class="table-wrapper">
     <app-tabla-dinamica [columnas]="mapper.columnas" [data]="mapper.siniestros" [botones]="mapper.botones"
+      [placeholder]="'Buscar por Pedido, Fecha, Estado, etc...'" [itemsPorPagina]="6" [layout]="'fixed'"
       (accion)="mapper.manejarAccion($event)">
     </app-tabla-dinamica>
   </div>
 
   <!-- ================= FORMULARIO ================= -->
- <app-dynamic-form
-  *ngIf="mapper.mostrarFormulario"
-  [titulo]="mapper.modoFormulario === 'crear'
+  <app-dynamic-form *ngIf="mapper.mostrarFormulario" [titulo]="mapper.modoFormulario === 'crear'
     ? 'Nuevo siniestro'
-    : 'Editar siniestro'"
-  [fields]="mapper.fields"
-  [initialData]="mapper.siniestroSeleccionado"
-  (valueChange)="mapper.manejarCambioFormulario($event)"
-  (formSubmit)="mapper.recibirFormulario($event)"
-  (filesSelected)="mapper.archivos = $event"
-  (cancelar)="mapper.cerrarFormulario()">
-</app-dynamic-form>
+    : 'Editar siniestro'" [fields]="mapper.fields" [initialData]="mapper.siniestroSeleccionado"
+    (valueChange)="mapper.manejarCambioFormulario($event)" (formSubmit)="mapper.recibirFormulario($event)"
+    (filesSelected)="mapper.archivos = $event" (cancelar)="mapper.cerrarFormulario()">
+  </app-dynamic-form>
 
 
 

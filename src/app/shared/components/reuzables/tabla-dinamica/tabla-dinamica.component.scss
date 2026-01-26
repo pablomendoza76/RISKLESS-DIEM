@@ -1,60 +1,97 @@
 @use '../../../styles/colores' as *;
 @use '../../../styles/tipografia' as *;
 
-/* REGLAS DE ORO RISKLESS REFINADAS (CON MOTOR DE SCROLL MEJORADO) */
+/* =========================================================
+   TABLA "ADVISOR PRO" - RISKLESS MODERN
+========================================================= */
 
 .tabla-wrapper {
   width: 100%;
-  height: 90%;
-  /* Ocupa el alto disponible */
-  max-height: 80vh;
-  /* Límite para activar el scroll */
-  padding: 2.5rem 5rem;
+  max-width: 1400px;
+  margin: 0 auto; // Centrar el contenedor
+  height: 100%;
+  padding: 0 3rem 2rem; // Eliminado padding superior
   box-sizing: border-box;
-  background-color: transparent;
-
-  /* === CAMBIO ESTRUCTURAL: FLEX PARA EL STICKY === */
+  background-color: transparent; // El fondo lo pone la página
   display: flex;
   flex-direction: column;
-
-  /* IMPORTANTE: Crear contexto de apilamiento bajo para no pelear con modales */
   position: relative;
   z-index: 1;
+
+  .tabla-titulo-seccion {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $texto-principal;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: $color-azul-celeste; // Acento vertical
+      border-radius: 4px;
+      display: inline-block;
+    }
+  }
+
+  .tabla-subtitulo {
+    margin-left: 1rem;
+    color: $texto-terciario;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
 }
 
 /* =========================
-   HEADER (BUSCADOR XL + BOTONES TOP)
+   HEADER (BUSCADOR Y ACCIONES)
 ========================= */
 .tabla-header {
   flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 2;
-  /* Apenas por encima del wrapper base */
+  gap: 1.5rem;
+  margin-bottom: 0.5rem; // Reducido el espacio con la tabla
+  background: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+
+  .busqueda-wrapper {
+    flex: 1;
+    max-width: 600px;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .search-icon {
+      position: absolute;
+      left: 1.2rem;
+      color: #94a3b8;
+      font-size: 1.3rem;
+    }
+  }
 
   .input-busqueda {
-    flex: 2;
-    min-width: 450px;
-    padding: 0.7rem 1.5rem;
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 3.2rem;
     border-radius: 12px;
-    border: 1.5px solid $gris-200;
-    background: $fondo-claro;
-    font-family: $font-work-sans;
+    border: 1px solid #f1f5f9;
+    background: #f8fafc;
     font-size: 0.95rem;
     color: $texto-principal;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    box-shadow: 0 2px 6px rgba($color-azul-oscuro, 0.03);
+    transition: all 0.3s ease;
+    font-family: 'Outfit', sans-serif;
 
     &:focus {
       outline: none;
-      border-color: $color-azul-celeste;
-      box-shadow: 0 10px 25px -5px rgba($color-azul-celeste, 0.15);
-      background: #fff;
+      background-color: #fff;
+      border-color: $azul-600;
+      box-shadow: 0 0 0 4px rgba($azul-600, 0.05);
     }
   }
 
@@ -63,40 +100,45 @@
     gap: 1rem;
 
     .btn-tabla {
-      padding: 0.85rem 1.75rem;
-      border-radius: 16px;
-      border: none;
+      padding: 0.75rem 1.4rem;
+      border-radius: 10px;
+      border: 1px solid transparent;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s;
       display: flex;
       align-items: center;
       gap: 10px;
+      font-family: 'Outfit', sans-serif;
 
-      &.primary {
-        background: $color-azul-oscuro;
-        color: $color-dorado;
-        border: 1px solid rgba($color-dorado, 0.4);
-        box-shadow: 0 6px 15px rgba($color-azul-celeste, 0.3);
-
-        &:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 10px 25px rgba($color-azul-celeste, 0.45);
-          border-color: $color-dorado;
-        }
+      mat-icon {
+        font-size: 1.2rem;
+        width: 1.2rem;
+        height: 1.2rem;
       }
 
       &.secondary {
-        background: $gris-100;
-        color: $texto-secundario;
-        border: 1.5px solid $gris-300;
+        background: #f8fafc;
+        color: #475569;
+        border-color: #f1f5f9;
 
         &:hover {
-          background: $fondo-claro;
-          color: $color-azul-oscuro;
-          border-color: $color-azul-celeste;
-          box-shadow: 0 6px 15px rgba($color-azul-celeste, 0.15);
+          background: #ebeef2;
+          border-color: #e2e8f0;
+        }
+      }
+
+      &.success,
+      &.primary {
+        background: $azul-600;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba($azul-600, 0.25);
+
+        &:hover {
+          background: darken($azul-600, 5%);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba($azul-600, 0.35);
         }
       }
     }
@@ -104,480 +146,333 @@
 }
 
 /* =========================
-   CONTENEDOR DE SCROLL
+   CONTENEDOR SCROLL
 ========================= */
 .tabla-scroll {
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 2rem;
+  border-radius: 15px;
+  background: #fff;
+  border: 1px solid #f1f5f9;
+  padding: 0.5rem;
 
-  margin: 0 -1.5rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-
-  &::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
-  }
-
-  /* =========================================================
-   BADGE DE ESTADO – RISKLESS (ESTILO "SOFT GLOW" iOS)
-========================================================= */
-
-  .estado-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    /* 1. MÁS GRANDE (Más aire para que respire) */
-    padding: 0.55rem 1.1rem;
-    min-width: 100px;
-    /* Opcional: para uniformidad */
-
-    /* Forma de pastilla perfecta */
-    border-radius: 999px;
-
-    /* Tipografía más presente pero estilizada */
-    font-size: 0.8rem;
-    /* Un pelín más grande */
-    font-weight: 700;
-    /* Peso fuerte para contraste */
-    letter-spacing: 0.5px;
-    line-height: 1;
-    white-space: nowrap;
-
-    /* 2. SIN BORDES */
-    border: none;
-
-    /* Transición suave para efectos hover si quisieras */
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
-
-  /* ================= ESTADOS CON SOMBRAS DE COLOR ================= */
-
-  /* ACTIVO / ABIERTO (Verde Vibrante) */
-  .estado-activo {
-    background-color: #e0f2f1;
-    /* Verde muy suave (Teal 50 aprox) */
-    color: #00695c;
-    /* Texto oscuro para contraste */
-    /* 3. SOMBRA DE COLOR (Glow) */
-    box-shadow: 0 4px 15px rgba(0, 105, 92, 0.15);
-  }
-
-  /* EN PROCESO (Azul Cálido) */
-  .estado-proceso {
-    background-color: #e3f2fd;
-    /* Azul suave */
-    color: #1565c0;
-    /* Azul fuerte */
-    box-shadow: 0 4px 15px rgba(21, 101, 192, 0.15);
-  }
-
-  /* APROBADO / ÉXITO (Verde Lima/Puro) */
-  .estado-exito {
-    background-color: #f1f8e9;
-    color: #33691e;
-    box-shadow: 0 4px 15px rgba(51, 105, 30, 0.15);
-  }
-
-  /* RECHAZADO / VENCIDO (Rojo Suave) */
-  .estado-critico {
-    background-color: #fce4ec;
-    /* Rosa/Rojo muy pálido */
-    color: #c62828;
-    /* Rojo intenso */
-    box-shadow: 0 4px 15px rgba(198, 40, 40, 0.15);
-  }
-
-  /* CANCELADO / INACTIVO (Gris Elevado) */
-  .estado-inactivo {
-    background-color: #f5f5f5;
-    color: #616161;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    /* Sombra gris neutra */
-  }
-
-  /* CERRADO (Oscuro Profundo) */
-  .estado-cerrado {
-    background-color: #37474f;
-    /* Fondo oscuro */
-    color: #eceff1;
-    /* Texto claro */
-    box-shadow: 0 4px 15px rgba(55, 71, 79, 0.3);
-    /* Sombra más fuerte */
-  }
-
-  /* POR DEFECTO */
-  .estado-default {
-    background-color: #ffffff;
-    color: #757575;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-}
-
-/* =========================
-   FILAS Y TABLA
-========================= */
-table {
-  width: 100%;
-  min-width: 850px;
-  border-collapse: separate;
-  border-spacing: 0 1.25rem;
-}
-
-thead th {
-  /* === MAGIA STICKY === */
-  position: sticky;
-  top: 0;
-
-  /* [CORRECCIÓN CRÍTICA] Z-index reducido de 50 a 5 */
-  /* Solo necesita ser mayor que las filas (1), no que el modal (100+) */
-  z-index: 5;
-
-  background-color: #f4f6f9;
-  padding: 1rem 2rem;
-  text-align: left;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: $texto-terciario;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-}
-
-tbody tr {
-  background: $fondo-claro;
-  position: relative;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  box-shadow: 0 8px 25px rgba($color-azul-oscuro, 0.07);
-  z-index: 1;
-  /* Nivel base */
-
-  td:first-child {
-    border-top-left-radius: 22px;
-    border-bottom-left-radius: 22px;
-    padding-left: 2rem;
-    border-left: 4px solid transparent;
-  }
-
-  td:last-child {
-    border-top-right-radius: 22px;
-    border-bottom-right-radius: 22px;
-    padding-right: 2rem;
-  }
-
-  &:hover {
-    /* [CORRECCIÓN] Bajamos de 10 a 2. Solo necesita superar a otras filas */
-    z-index: 2;
-    transform: translateY(-5px) scale(1.01);
-    box-shadow: 0 20px 40px rgba($color-azul-oscuro, 0.12),
-      0 0 15px rgba($color-azul-celeste, 0.05);
-
-    td:first-child {
-      border-left-color: $color-dorado;
-    }
-  }
-}
-
-tbody td {
-  padding: 1.5rem 1rem;
-  font-size: 1rem;
-  color: $texto-principal;
-}
-
-/* =========================
-   ACCIONES
-========================= */
-.acciones-container {
-  display: flex;
-  gap: 0.8rem;
-  justify-content: flex-end;
-
-  .btn-accion-fila {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    min-height: 44px;
-    min-width: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: $gris-200;
-    color: $texto-secundario;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 12px rgba($color-azul-celeste, 0.3);
-    }
-
-    &.primary,
-    &[class*="Editar"] {
-      background: $color-azul-oscuro;
-      color: $fondo-claro;
-
-      &:hover {
-        background: $color-azul-celeste;
-        color: white;
-      }
-    }
-
-    &.success,
-    &[class*="Activar"] {
-      background: $verde-50;
-      color: $verde-700;
-
-      &:hover {
-        background: $verde-600;
-        color: white;
-      }
-    }
-
-    &.danger,
-    &[class*="Desactivar"] {
-      background: $rojo-50;
-      color: $rojo-700;
-
-      &:hover {
-        background: $rojo-600;
-        color: white;
-      }
-    }
-  }
-}
-
-/* =========================
-   RESPONSIVIDAD
-========================= */
-@media (max-width: 1100px) {
-  .tabla-wrapper {
-    padding: 1.5rem 2rem;
-  }
-
-  .tabla-header .input-busqueda {
-    min-width: 350px;
-  }
-}
-
-@media (max-width: 768px) {
-  .tabla-wrapper {
-    padding: 1rem;
-  }
-
-  .tabla-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1.5rem;
-
-    .input-busqueda {
-      min-width: 100%;
-      padding: 0.8rem 1.2rem;
-      font-size: 1rem;
-    }
-
-    .botones-top {
-      justify-content: center;
-
-      .btn-tabla {
-        flex: 1;
-        justify-content: center;
-        padding: 1.2rem 1.5rem;
-        font-size: 1.1rem;
-        min-height: 52px;
-      }
-    }
-  }
-
-  .tabla-scroll::-webkit-scrollbar {
-    height: 4px;
-    width: 4px;
-    background: transparent;
-  }
-
-  .tabla-scroll::-webkit-scrollbar-thumb {
-    background: $gris-300;
-    border-radius: 10px;
-  }
-
-  .tabla-scroll,
   table {
-    display: block;
     width: 100%;
-    min-width: 600px;
-  }
+    border-collapse: collapse;
+    table-layout: auto;
 
-  tbody tr td {
-    padding: 1rem 0.6rem;
-    font-size: 1rem;
-    line-height: 1.4;
-
-    .cell-text {
-      max-width: 120px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-
-  tbody tr td:first-child {
-    padding-left: 1rem;
-  }
-
-  tbody tr td:last-child {
-    padding-right: 1rem;
-  }
-
-  .acciones-container {
-    flex-direction: column;
-    gap: 0.75rem;
-
-    .btn-accion-fila {
-      width: 100%;
-      padding: 1rem 1.2rem;
-      font-size: 0.9rem;
-      min-height: 52px;
-    }
-  }
-}
-
-/* =========================================================
-   MÓVIL "RISKLESS" PREMIUM (Sticky Right + Clean UI)
-========================================================= */
-@media (max-width: 480px) {
-
-  .tabla-wrapper {
-    padding: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tabla-header {
-    position: sticky;
-    top: 0;
-    /* [CORRECCIÓN CRÍTICA] Z-index reducido de 100 a 10 */
-    /* Suficiente para estar sobre la tabla, pero bajo el modal (normalmente z-1000) */
-    z-index: 10;
-    background: #fff;
-    padding: 0.8rem 1rem;
-    margin-bottom: 0;
-
-    flex-direction: row;
-    align-items: center;
-    gap: 0.8rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-    .input-busqueda {
-      min-width: unset;
-      width: 100%;
-      flex: 1;
-      padding: 0.7rem 1rem;
-      font-size: 0.95rem;
-      height: 44px;
-    }
-
-    .botones-top {
-      flex: 0 0 auto;
-
-      .btn-tabla.primary {
-        font-size: 0 !important;
-        padding: 0;
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &::after {
-          content: '+';
-          font-size: 2rem;
-          line-height: 0;
-          font-weight: 300;
-          color: $color-dorado;
-          margin-top: -2px;
-        }
-      }
-    }
-  }
-
-  .tabla-scroll {
-    padding: 0.5rem 0 4rem 0;
-
-    table {
-      min-width: 650px;
-    }
-  }
-
-  /* 3. COLUMNA DE ACCIONES (STICKY DERECHA "FLOTANTE") */
-  thead th:last-child,
-  tbody td:last-child {
-    position: sticky;
-    right: 0;
-    width: 80px;
-    min-width: 80px;
-
-    background-color: #fff;
-    box-shadow: -6px 0 12px -4px rgba(0, 0, 0, 0.08);
-    /* [CORRECCIÓN] Z-index seguro para sticky lateral */
-    z-index: 6;
-
-    border-left: 1px solid rgba(0, 0, 0, 0.03);
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-  }
-
-  thead th:last-child {
-    background-color: #f4f6f9;
-    /* [CORRECCIÓN] Z-index superior a filas pero inferior a modal */
-    z-index: 7;
-  }
-
-  .acciones-container {
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
-    align-items: center;
-    padding: 0 4px;
-
-    .btn-accion-fila {
-      width: 100%;
-      min-width: unset;
-      min-height: unset;
-      padding: 6px 4px;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      border-radius: 6px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    &.layout-fixed {
+      table-layout: fixed;
     }
   }
 
   thead th {
-    padding: 0.8rem 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #fff;
+    padding: 1.2rem 1rem;
+    text-align: center; // Centrado solicitado
+
+    // Distribución simétrica (si se usa layout-fixed)
+    white-space: nowrap;
+    min-width: 60px;
+
+    font-family: 'Outfit',
+      sans-serif;
     font-size: 0.75rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 2px solid #f8fafc;
   }
 
-  tbody tr td {
-    padding: 1rem 1rem;
+  tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f8fafc;
 
-    .cell-text {
-      max-width: 140px;
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    &:last-child {
+      border-bottom: none;
     }
+
+    &:hover {
+      background-color: rgba($azul-600, 0.02);
+    }
+  }
+
+  tbody td {
+    padding: 1.25rem 1rem;
+    color: #475569;
+    font-size: 0.95rem;
+    vertical-align: middle;
+    font-family: 'Outfit', sans-serif;
+    text-align: center; // Centrado horizontal
+
+    // Contenedor flex para asegurar centrado total de elementos complejos
+    &>.cell-content,
+    &>.acciones-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .id-text {
+      color: #cbd5e1;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: block; // Ocupe el ancho para centrarse con text-align
+    }
+
+    .name-cell {
+      display: grid;
+      grid-template-columns: 32px 1fr; // Ancho fijo para el avatar garantiza alineación vertical
+      align-items: center;
+      gap: 12px;
+      width: 140px; // Ancho fijo para alineación vertical perfecta
+      margin: 0 auto; // Centra el bloque en la celda
+      text-align: left;
+
+      .initial-avatar {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+
+        &[data-letter="P"] {
+          background-color: #eff6ff;
+          color: #3b82f6;
+        }
+
+        &[data-letter="F"] {
+          background-color: #f5f3ff;
+          color: #8b5cf6;
+        }
+
+        &[data-letter="J"] {
+          background-color: #fff7ed;
+          color: #f97316;
+        }
+
+        &[data-letter="A"] {
+          background-color: #ecfdf5;
+          color: #10b981;
+        }
+
+        &[data-letter="R"] {
+          background-color: #f8fafc;
+          color: #475569;
+        }
+
+        // Añadido para Rodrigo
+      }
+
+      .bold-text {
+        white-space: nowrap;
+      }
+    }
+
+    .bold-text {
+      font-weight: 700;
+      color: $texto-principal;
+    }
+
+    .email-link {
+      color: #64748b;
+      text-decoration: underline;
+      cursor: pointer;
+      display: inline-block;
+
+      &:hover {
+        color: $azul-600;
+      }
+    }
+
+    .estado-badge {
+      display: inline-flex;
+    }
+  }
+
+  .text-center {
+    text-align: center !important;
+  }
+
+  /* =========================
+     BADGES (Mockup Style)
+  ========================= */
+  .estado-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 6px;
+      background-color: currentColor;
+    }
+  }
+
+  .estado-activo {
+    background-color: #ecfdf5; // Emerald 50
+    color: #10b981; // Emerald 500
+  }
+
+  .estado-inactivo {
+    background-color: #f1f5f9; // Slate 100
+    color: #94a3b8; // Slate 400
+  }
+
+  /* =========================
+     ACCIONES (Centrado)
+  ========================= */
+  .acciones-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+
+    .btn-accion-fila {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: #cbd5e1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+
+      mat-icon {
+        font-size: 1.2rem;
+      }
+
+      &:hover {
+        background: #f1f5f9;
+        color: $azul-600;
+      }
+    }
+  }
+}
+
+/* =========================
+   FOOTER (PAGINACIÓN)
+========================= */
+.tabla-footer {
+  margin-top: 1.5rem;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Outfit', sans-serif;
+
+  .info-paginacion {
+    font-size: 0.85rem;
+    color: #94a3b8;
+
+    strong {
+      color: #475569;
+    }
+  }
+
+  .controles-paginacion {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .paginas-list {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-page {
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #f1f5f9;
+      background: #fff;
+      color: #64748b;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover:not(:disabled) {
+        border-color: #cbd5e1;
+        background: #f8fafc;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .btn-page-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: #64748b;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &.active {
+        background: $azul-600;
+        color: #fff;
+        box-shadow: 0 4px 10px rgba($azul-600, 0.2);
+      }
+
+      &:hover:not(.active) {
+        background: #f1f5f9;
+      }
+    }
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .tabla-header {
+    flex-direction: column;
+    padding: 1.5rem;
+
+    .busqueda-wrapper {
+      max-width: none;
+      width: 100%;
+    }
+
+    .botones-top {
+      width: 100%;
+
+      .btn-tabla {
+        flex: 1;
+        justify-content: center;
+      }
+    }
+  }
+
+  .tabla-footer {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
   }
 }

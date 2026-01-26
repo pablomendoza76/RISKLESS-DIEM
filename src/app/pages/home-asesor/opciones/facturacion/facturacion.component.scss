@@ -2,162 +2,161 @@
 @use '../../../../shared/styles/tipografia' as *;
 
 .facturacion-container {
-  padding: 2rem 3rem;
+  padding: 0;
   min-height: 100vh;
-  background-color: transparent;
+  display: flex;
+  flex-direction: column;
 
   /* ================= HEADER SECCIÓN ================= */
   .header-seccion {
+    padding: 0.5rem 3rem 1.5rem; // Reducido el padding arriba
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    margin-left: 0; // Eliminar margen izquierdo globalmente
+    align-items: center; // Centrado vertical
+    margin-bottom: 0.5rem; // Reducido margen inferior
 
     .title-group {
       display: flex;
-      align-items: center;
-      gap: 1.25rem;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
 
       h2 {
-        font-family: $font-poppins;
-        font-size: 2rem;
-        font-weight: 700;
-        color: $color-azul-oscuro;
+        font-family: 'Outfit', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: $texto-principal;
         margin: 0;
-        letter-spacing: -0.8px;
+        letter-spacing: -1px;
+        line-height: 1;
       }
 
-      /* Tarjeta Total */
-      .total-badge-card {
-        background: $fondo-claro;
-        padding: 0.4rem 1.2rem;
-        border-radius: 999px;
-        border: 1px solid $gris-200;
-        box-shadow: 0 4px 12px rgba($color-azul-oscuro, 0.04);
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        height: fit-content;
+      .subtitle {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1rem;
+        color: $texto-terciario;
+        font-weight: 400;
+        margin: 0;
+      }
+    }
 
-        span {
-          font-family: $font-work-sans;
-          font-size: 0.85rem;
-          color: $texto-terciario;
-          font-weight: 500;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
+    /* Tarjeta de Total (Emerald/Green para Facturación - coherente) */
+    .total-badge-card {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%); // Emerald 500 -> 600
+      padding: 1.2rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 260px;
+      color: #fff;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(16, 185, 129, 0.5);
+      }
+
+      .card-content {
+        display: flex;
+        flex-direction: column;
+        z-index: 1;
 
         strong {
-          color: $color-azul-celeste;
-          font-family: $font-poppins;
-          font-size: 1.1rem;
-          font-weight: 800;
+          color: #fff;
+          font-family: 'Outfit', sans-serif;
+          font-size: 3rem;
+          font-weight: 700;
+          line-height: 1;
+          margin-bottom: 0.2rem;
         }
+
+        span {
+          font-family: 'Outfit', sans-serif;
+          font-size: 0.75rem;
+          color: rgba(255, 255, 255, 0.8);
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+        }
+      }
+
+      .trend-badge {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        backdrop-filter: blur(4px);
+
+        .material-icons {
+          font-size: 14px;
+        }
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        right: -20px;
+        top: -20px;
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+        border-radius: 50%;
       }
     }
   }
 
   /* ================= TABLE WRAPPER ================= */
   .table-wrapper {
+    flex: 1;
     width: 100%;
-    background: transparent;
-    border-radius: 16px;
-    overflow-x: auto; // Permite scroll horizontal sin afectar layout
-    -webkit-overflow-scrolling: touch; // Mejora scroll táctil
-    padding-bottom: 1rem; // Espacio para scroll táctil
-    
-    // Asegura que la tabla tenga ancho mínimo para scroll
-    ::ng-deep app-tabla-dinamica {
-      display: block;
-      min-width: 900px; 
-    }
   }
 }
 
-/* ================= RESPONSIVE ================= */
+/* ================= MEDIA QUERIES ================= */
 
-// Tablets
 @media (max-width: 1024px) {
-  .facturacion-container {
-    padding: 1.5rem 2rem;
+  .facturacion-container .header-seccion {
+    padding: 1.5rem 2rem 0;
 
-    .header-seccion {
-      margin-bottom: 2rem;
-
-      .title-group h2 {
-        font-size: 1.6rem;
-      }
+    .title-group h2 {
+      font-size: 1.8rem;
     }
   }
 }
 
-// Móviles
 @media (max-width: 768px) {
   .facturacion-container {
-    padding: 1rem;
-
     .header-seccion {
+      padding: 1rem 1rem 0;
       flex-direction: column;
       align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      margin-left: 0; // Eliminar margen izquierdo en móvil
+      gap: 1.5rem;
 
       .title-group {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-        width: 100%; // Ocupa todo el ancho disponible
+        width: 100%;
 
         h2 {
-          font-size: 1.4rem;
-          line-height: 1.2;
-        }
-
-        .total-badge-card {
-          padding: 0.3rem 0.8rem;
-
-          span {
-            font-size: 0.75rem;
-          }
-
-          strong {
-            font-size: 0.9rem;
-          }
+          font-size: 1.5rem;
         }
       }
-    }
 
-    .table-wrapper {
-      padding: 0 1rem 1rem; // Padding horizontal para evitar que los botones se peguen al borde
-      border-radius: 12px;
-      background: $fondo-claro;
-    }
-  }
-}
+      .total-badge-card {
+        width: 100%;
+        min-width: unset;
+        flex-direction: row;
+        justify-content: space-between;
 
-// Móviles pequeños
-@media (max-width: 480px) {
-  .facturacion-container {
-    padding: 0.75rem;
-
-    .header-seccion {
-      .title-group {
-        h2 {
-          font-size: 1.25rem;
+        strong {
+          font-size: 2rem;
         }
-      }
-    }
-
-    .table-wrapper {
-      padding: 0 0.75rem 0.75rem;
-      overflow-x: auto; // Scroll horizontal para móviles pequeños
-      -webkit-overflow-scrolling: touch; // Scroll táctil mejorado
-      
-      ::ng-deep app-tabla-dinamica {
-        min-width: 600px; // Reducir aún más para móviles pequeños
       }
     }
   }

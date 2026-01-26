@@ -3,30 +3,29 @@
   <!-- HEADER -->
   <div class="sidebar-header">
     <!-- Botón Hamburguesa (solo visible en móvil) -->
-    <mat-icon 
-      class="mobile-toggle" 
-      *ngIf="isMobileView"
-      (click)="toggleMobileMenu()">
+    <mat-icon class="mobile-toggle" *ngIf="isMobileView" (click)="toggleMobileMenu()">
       {{ isMobileMenuOpen ? 'close' : 'menu' }}
     </mat-icon>
-    
-    <span class="sidebar-title">{{ title }}</span>
+
+    <div class="brand-container">
+      <div class="logo-box">
+        <mat-icon>layers</mat-icon>
+      </div>
+      <div class="brand-text">
+        <span class="company-name">RISKLESS</span>
+        <span class="company-tagline">GESTIÓN DE RIESGOS</span>
+      </div>
+    </div>
   </div>
 
   <!-- MENU -->
   <nav class="sidebar-menu">
 
-    <div
-      class="menu-item"
-      *ngFor="let item of items; let i = index"
-    >
+    <div class="menu-item" *ngFor="let item of items; let i = index">
       <!-- ITEM PRINCIPAL -->
-      <div
-        class="menu-main"
-        [class.active]="activeIndex === i"
-        (click)="item.children ? toggle(i) : navigateAndClose(item.route)"
-        [routerLink]="!item.children ? item.route : null"
-      >
+      <div class="menu-main" [class.active]="activeIndex === i" routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}" (click)="item.children ? toggle(i) : navigateAndClose(item.route)"
+        [routerLink]="!item.children ? item.route : null">
         <mat-icon class="icon">{{ item.icon }}</mat-icon>
         <span class="label">{{ item.label }}</span>
 
@@ -37,13 +36,8 @@
 
       <!-- SUBMENU -->
       <div class="submenu" *ngIf="item.children && activeIndex === i">
-        <a
-          class="submenu-item"
-          *ngFor="let child of item.children"
-          [routerLink]="child.route"
-          routerLinkActive="active"
-          (click)="closeMobileMenu()"
-        >
+        <a class="submenu-item" *ngFor="let child of item.children" [routerLink]="child.route" routerLinkActive="active"
+          (click)="closeMobileMenu()">
           <mat-icon>{{ child.icon }}</mat-icon>
           <span>{{ child.label }}</span>
         </a>
@@ -52,13 +46,15 @@
 
   </nav>
 
+
+
   <!-- ================= CERRAR SESIÓN ================= -->
-<div class="sidebar-footer">
-  <div class="logout-item" (click)="logout.emit()">
-    <mat-icon class="icon-logout">logout</mat-icon>
-    <span>Cerrar sesión</span>
+  <div class="sidebar-footer">
+    <div class="logout-item" (click)="logout.emit()">
+      <mat-icon class="icon-logout">logout</mat-icon>
+      <span>Cerrar sesión</span>
+    </div>
   </div>
-</div>
 
 
 </aside>

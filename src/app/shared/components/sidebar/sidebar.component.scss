@@ -1,229 +1,292 @@
 @use '../../styles/colores' as *;
 @use '../../styles/tipografia' as *;
 
-// Variables de Control Responsivo
-$sidebar-width: 260px;
+// Variables
+$sidebar-width: 270px;
 $sidebar-mobile-height: 70px;
+
+// COLOR EXACTO "RISKLESS BLUE" (Tono Azul Cobalto Profundo)
+$riskless-blue: #1e3a8a; // Base sólida
+$riskless-blue-light: #254586; // Un poco más claro para active
+$riskless-blue-dark: #172554; // Para sombras
 
 .sidebar {
   width: $sidebar-width;
   height: 100vh;
   max-height: 100vh;
-  background: $color-azul-oscuro; // Color primario Riskless
+  background-color: $riskless-blue; // Color sólido dominante
+  // Gradiente muy sutil para dar cuerpo
+  background: linear-gradient(180deg, #1e3a8a 0%, #172554 100%);
+
   display: flex;
   flex-direction: column;
-  color: $texto-claro;
+  color: #fff;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0;
   overflow: hidden;
-  position: fixed; // Fijo para control responsivo
+  position: fixed;
   left: 0;
   top: 0;
   z-index: 1000;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
 
   /* ================= HEADER ================= */
   .sidebar-header {
-    padding: 1.5rem;
+    padding: 2.5rem 1.8rem;
     display: flex;
-    align-items: center;
-    gap: 12px;
+    align-items: flex-start;
+    gap: 1rem;
     flex-shrink: 0;
-    position: relative;
 
     .mobile-toggle {
       display: none;
       cursor: pointer;
-      font-size: 1.5rem;
-      color: $color-dorado;
-      padding: 0.5rem;
-      border-radius: 8px;
-      transition: all 0.3s ease;
+      color: #fff;
+    }
 
-      &:hover {
-        background: rgba($color-dorado, 0.1);
+    .brand-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem; // Espacio entre icono y texto
+    }
+
+    .logo-box {
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.15); // Glassy box
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
       }
     }
 
-    .sidebar-title {
-      font-family: $font-poppins;
-      font-size: 1.1rem;
-      font-weight: 700;
-      line-height: 1.1;
-      color: $texto-claro;
-      position: relative;
-      flex: 1;
-      
-      &::before {
-        content: 'U';
-        font-family: $font-poppins;
-        background: $color-dorado;
-        color: $color-azul-oscuro;
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        font-weight: 700;
-        margin-right: 12px;
-        vertical-align: middle;
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+
+      .company-name {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 800; // Extra Bold
+        line-height: 1;
+        letter-spacing: -0.5px;
       }
-      
-      &::after {
-        content: 'SEGUROS';
-        display: block;
+
+      .company-tagline {
         font-size: 0.65rem;
-        font-weight: 400;
-        opacity: 0.7;
-        color: $color-dorado;
-        letter-spacing: 1px;
-        margin-top: 0.2rem;
+        font-weight: 500;
+        opacity: 0.6;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-top: 4px;
       }
     }
   }
 
-  /* ================= MENU CON SCROLL ================= */
+  /* ================= MENU ================= */
   .sidebar-menu {
     flex: 1;
-    padding: 0 0.75rem;
+    padding: 0 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
     overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: rgba($color-dorado, 0.2) transparent;
-    
-    &::-webkit-scrollbar { width: 4px; }
-    &::-webkit-scrollbar-thumb {
-      background: rgba($color-dorado, 0.2);
-      border-radius: 10px;
+    padding-bottom: 2rem;
+
+    &::-webkit-scrollbar {
+      width: 0;
     }
   }
 
+  .menu-item {
+
+    // === SEPARADORES SOLICITADOS ===
+    // 1: Inicio -> Separador después
+    // 2: Asegurados -> Separador después
+    &:nth-child(1),
+    &:nth-child(2) {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+    }
+
+    // Separadores para los siguientes grupos (Pólizas en adelante) para consistencia
+    // 4: Pólizas, 5: Pedidos, 6: Siniestros, 7: Facturacion
+    &:nth-child(4),
+    &:nth-child(5),
+    &:nth-child(6),
+    &:nth-child(7) {
+      border-top: 1px solid rgba(255, 255, 255, 0.05); // Línea más fina
+      margin-top: 4px;
+      padding-top: 4px;
+    }
+  }
+
+  /* ================= ITEM PRINCIPAL ================= */
   .menu-main {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 0.9rem 1.2rem;
+    gap: 16px;
+    padding: 13px 18px;
     border-radius: 12px;
     cursor: pointer;
-    transition: 0.3s;
-    color: rgba($texto-claro, 0.7);
+    transition: all 0.2s ease-out;
+    color: rgba(255, 255, 255, 0.85); // Blanco casi puro
+    font-weight: 600;
+    position: relative;
 
-    .icon { font-size: 20px; }
-    .label { flex: 1; font-size: 0.95rem; font-family: $font-work-sans; font-weight: 500; }
-    .arrow { font-size: 16px; opacity: 0.5; }
-
-    &:hover {
-      background: rgba($color-dorado, 0.05);
-      color: $color-dorado;
+    .icon {
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.9;
     }
 
+    .label {
+      flex: 1;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
+    }
+
+    .arrow {
+      font-size: 18px;
+      opacity: 0.5;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    // === ESTADO ACTIVO (Solid White Background) ===
     &.active {
-      background: rgba($color-dorado, 0.1);
-      color: $color-dorado;
-      .icon { color: $color-azul-celeste; }
+      background: #ffffff;
+      color: $riskless-blue; // Color azul oscuro
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+      .icon {
+        color: $riskless-blue;
+        opacity: 1;
+      }
+
+      .arrow {
+        color: $riskless-blue;
+        opacity: 1;
+      }
     }
   }
 
   /* ================= SUBMENU ================= */
   .submenu {
-    margin-left: 2.2rem;
-    margin-top: 0.2rem;
-    padding-bottom: 0.5rem;
-    border-left: 1.5px dashed rgba($color-dorado, 0.3);
+    margin-left: 1rem;
+    padding-left: 1rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    margin-top: 4px;
+    margin-bottom: 4px;
   }
 
   .submenu-item {
     display: flex;
     align-items: center;
-    padding: 0.7rem 1.5rem;
-    font-size: 0.9rem;
-    font-family: $font-work-sans;
-    color: rgba($texto-claro, 0.6);
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     transition: 0.2s;
-    position: relative;
+    gap: 10px;
+    border-radius: 8px;
+
+    &:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
 
     &.active {
-      color: $color-dorado;
-      background: rgba($color-dorado, 0.05);
-      border-radius: 8px;
-      margin-right: 0.5rem;
-
-      &::before {
-        content: '';
-        position: absolute;
-        left: -1.5px;
-        width: 6px;
-        height: 6px;
-        background: $color-dorado;
-        border-radius: 50%;
-        transform: translateX(-50%);
-      }
+      color: #fff;
+      background: rgba(255, 255, 255, 0.2);
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    &:hover { color: $color-dorado; }
   }
 
-  /* ================= FOOTER (CERRAR SESIÓN) ================= */
+  /* ================= FOOTER ================= */
   .sidebar-footer {
     flex-shrink: 0;
-    padding: 1.5rem 1rem;
-    border-top: 1px solid rgba($color-dorado, 0.1);
-    margin-top: auto;
+    padding: 1.5rem 2rem 2.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 
     .logout-item {
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 12px;
-      padding: 0.75rem 1.5rem;
-      border-radius: 999px;
-      color: rgba($texto-claro, 0.8);
+      padding: 12px 0;
+      color: rgba(255, 255, 255, 0.7);
       cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      font-family: $font-poppins;
-      font-size: 0.9rem;
       font-weight: 600;
-      background: rgba($color-dorado, 0.05);
-
-      .icon-logout { font-size: 20px; }
+      font-size: 0.95rem;
+      transition: all 0.2s;
 
       &:hover {
-        color: $texto-claro;
-        background: $rojo-600; // Uso de rojo alerta Riskless
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba($fondo-oscuro, 0.4);
-
-        .icon-logout { transform: rotate(-15deg) translateX(3px); }
+        color: #fff;
+        transform: translateX(4px);
       }
     }
   }
 
   /* ================= RESPONSIVIDAD ================= */
-  
   // Tablet
   @media (max-width: 1024px) {
     width: 80px;
-    
+
     .sidebar-header {
-      padding: 1rem 0;
-      justify-content: center;
-      &::after, span { display: none; } // Oculta textos
+      align-items: center;
+      padding: 1.5rem 0;
+
+      .brand-text {
+        display: none;
+      }
+
+      .logo-box {
+        margin: 0 auto;
+      }
     }
 
     .menu-main {
-      padding: 1rem;
       justify-content: center;
-      .label, .arrow { display: none; }
+      padding: 16px 0;
+
+      .label,
+      .arrow {
+        display: none;
+      }
     }
-    
-    .submenu, .sidebar-footer span { display: none; }
-    .sidebar-footer .logout-item { padding: 0.75rem; width: 45px; height: 45px; }
+
+    .submenu {
+      display: none;
+    }
+
+    .sidebar-footer .logout-item {
+      justify-content: center;
+
+      span {
+        display: none;
+      }
+    }
   }
 
-  // Móvil (Menú Hamburguesa)
+  // Móvil
   @media (max-width: 768px) {
     width: 100%;
     height: auto;
@@ -232,46 +295,57 @@ $sidebar-mobile-height: 70px;
     align-items: center;
     justify-content: space-between;
     padding: 0 1rem;
-    
+
     &.mobile-active {
       max-height: 100vh;
       flex-direction: column;
       align-items: stretch;
-      justify-content: flex-start;
-      
-      .sidebar-menu, .sidebar-footer { display: flex; }
+
+      .sidebar-menu,
+      .sidebar-footer {
+        display: flex;
+      }
     }
 
     .sidebar-header {
       padding: 0.8rem 0;
-      
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
       .mobile-toggle {
         display: block;
       }
-      
-      .sidebar-title {
-        &::after, span { display: block; } // Re-mostrar en modo expandido móvil
+
+      .brand-container {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .logo-box {
+        width: 36px;
+        height: 36px;
+
+        mat-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .company-name {
+        font-size: 1.2rem;
+      }
+
+      .company-tagline {
+        display: none;
       }
     }
 
-    .sidebar-menu, .sidebar-footer {
-      display: none; // Oculto hasta que se active el botón hamburguesa
-    }
-    
-    // Cuando el menú está activo en móvil, mostrar textos
-    &.mobile-active {
-      .menu-main {
-        .label, .arrow { display: block; } // Mostrar textos en móvil activo
-        justify-content: flex-start;
-      }
-      
-      .submenu {
-        display: block; // Mostrar submenús
-      }
-      
-      .sidebar-footer {
-        span { display: block; } // Mostrar texto del logout
-      }
+    .sidebar-menu,
+    .sidebar-footer {
+      display: none;
     }
   }
 }

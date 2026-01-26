@@ -1,35 +1,25 @@
 @use '../../../../shared/styles/colores' as *;
 @use '../../../../shared/styles/tipografia' as *;
 
-// Variables locales para facilitar ajustes rápidos
-$card-radius: 16px;
-$card-bg: #ffffff;
-$shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-$shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-$transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+// Variables locales
+$card-radius: 20px;
+$transition-base: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
 /* ===============================
    CONTENEDOR PRINCIPAL
 =============================== */
 .dashboard-asesor {
-  // Layout fluido pero controlado
-  height: calc(100vh - 140px);
-  overflow-y: auto;
-  padding: 2rem;
-  
-  // Fondo más limpio y moderno (gris muy suave)
-  background-color: #F8FAFC; 
-  background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
-  background-size: 24px 24px; // Patrón de puntos sutil estilo técnico
+  // Layout fluido
+  height: 100%; // Ajuste para ocupar espacio del router-outlet
+  padding: 0.5rem 3rem 2rem 3rem;
+
+  // Fondo base (ya está en global, pero nos aseguramos)
+  background-color: transparent;
 
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  font-family: $font-work-sans;
-
-  // Ocultar scrollbar pero permitir scroll
-  scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
+  gap: 2.5rem;
+  font-family: 'Outfit', sans-serif;
 }
 
 /* ===============================
@@ -37,149 +27,247 @@ $transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 =============================== */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, 1fr); // 4 columnas fijas si hay espacio
   gap: 1.5rem;
+
+  // Responsive: si baja el ancho, se adapta
+  @media(max-width: 1400px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media(max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .kpi-card {
   position: relative;
-  background: $card-bg;
   border-radius: $card-radius;
-  padding: 1.5rem;
-  border: 1px solid rgba(0,0,0,0.03);
-  box-shadow: $shadow-sm;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
   transition: $transition-base;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 120px;
+  min-height: 160px; // Más alto para estilo visual
+  color: #fff; // Texto blanco por defecto
+  border: none;
 
-  // Decoración lateral moderna (Pill shape)
-  &::before {
+  // Decoración de fondo (Formas abstractas)
+  &::after {
     content: '';
     position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 60%;
-    border-radius: 0 4px 4px 0;
-    background: $color-azul-celeste;
-    transition: $transition-base;
+    bottom: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    z-index: 0;
   }
 
-  // Hover effect: Levantar y expandir borde
+  // Hover effect
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: $shadow-md;
-    &::before { height: 80%; width: 6px; }
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
   }
 
-  .kpi-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: $texto-secundario; // Color gris medio
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.5rem;
-  }
-
+  // Contenido encima del decorative
+  .kpi-label,
   .kpi-value {
-    font-family: $font-poppins;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: $color-azul-oscuro;
-    margin: 0;
-    line-height: 1;
-    letter-spacing: -1px; // Hace los números más compactos y modernos
+    position: relative;
+    z-index: 1;
   }
 
-  // Variantes de color (Borde lateral y texto sutil)
-  &.primary { 
-    &::before { background: $color-azul-celeste; }
-    .kpi-value { color: $color-azul-oscuro; }
-  }
-  &.success { 
-    &::before { background: $verde-600; }
-    .kpi-value { color: $verde-600; }
-  }
-  &.warning { 
-    &::before { background: $amarillo-600; }
-    .kpi-value { color: darken($amarillo-600, 10%); }
-  }
-  &.gold { 
-    &::before { background: $color-dorado; }
-    .kpi-value { color: darken($color-dorado, 10%); }
-  }
-}
-
-/* ===============================
-   CHARTS GRID (Faltaba en tu CSS anterior)
-=============================== */
-.charts-grid {
-  display: grid;
-  // Grid de columnas flexibles. Idealmente 2 o 3 columnas
-  grid-template-columns: repeat(12, 1fr); 
-  gap: 1.5rem;
-  padding-bottom: 2rem; // Espacio extra al final del scroll
-}
-
-.chart-card {
-  background: $card-bg;
-  border-radius: $card-radius;
-  padding: 1.75rem;
-  box-shadow: $shadow-sm;
-  border: 1px solid rgba(0,0,0,0.03);
-  display: flex;
-  flex-direction: column;
-  
-  // Por defecto ocupan 4 columnas (3 gráficos por fila) o 6 (2 por fila)
-  grid-column: span 4; 
-  min-height: 350px; // Altura mínima para que el gráfico no se aplaste
-
-  // Título del gráfico
-  h4 {
-    font-family: $font-poppins;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: $color-azul-oscuro;
-    margin: 0 0 1.5rem 0;
+  // Icono superior izquierdo (simulado con font)
+  .kpi-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
 
-    // Pequeño punto decorativo antes del título
+    // Icono simulado
     &::before {
-      content: '';
-      display: block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: $color-dorado;
+      content: '★';
+      font-size: 1.2rem;
     }
   }
 
-  // Contenedor del canvas para Chart.js
-  canvas {
-    width: 100% !important;
-    height: 100% !important;
-    max-height: 300px; // Límite de altura visual
-    object-fit: contain;
+  .kpi-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.25rem;
   }
 
-  // === MODIFICADOR LARGE ===
-  // Hace que el primer gráfico ocupe más espacio
-  &.large {
-    grid-column: span 8; // Ocupa 2/3 del ancho
+  .kpi-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1;
+    letter-spacing: -1.5px;
+  }
+
+  // Badge de tendencia (simulado)
+  .badge-trend {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  // === VARIANTES DE COLOR (GRADIENTES VIBRANTES) ===
+
+  // 1. Azul (Total Asegurados)
+  &.primary {
+    background: $gradiente-card-blue; // #2563eb -> #1d4ed8
+
+    .kpi-icon-wrapper::before {
+      content: '👥';
+    }
+
+    // Icono Usuarios
+    .badge-trend::after {
+      content: '↗ +12.5%';
+    }
+  }
+
+  // 2. Cyan/Teal (Pólizas)
+  &.success {
+    background: $gradiente-card-cyan; // #06b6d4 -> #0891b2
+
+    .kpi-icon-wrapper::before {
+      content: '🛡';
+    }
+
+    // Icono Escudo
+    .badge-trend::after {
+      content: '↗ +8.2%';
+    }
+  }
+
+  // 3. Púrpura (Ingresos / Pedidos)
+  &.gold {
+    background: $gradiente-card-purple; // #7c3aed -> #6d28d9
+
+    .kpi-icon-wrapper::before {
+      content: '📊';
+    }
+
+    // Icono Gráfico
+    .badge-trend::after {
+      content: '↗ +24%';
+    }
+  }
+
+  // 4. Oscuro/Negro (Siniestros)
+  &.warning {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); // Slate Dark
+
+    .kpi-icon-wrapper::before {
+      content: '⚠️';
+    }
+
+    // Icono Alerta
+    .badge-trend {
+      background: rgba(220, 38, 38, 0.2);
+      color: #fca5a5;
+    }
+
+    .badge-trend::after {
+      content: '↘ -3.1%';
+    }
   }
 }
 
 /* ===============================
-   LOADING STATE
+   CHARTS GRID
+=============================== */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem;
+  padding-bottom: 2rem;
+}
+
+.chart-card {
+  background: #fff;
+  border-radius: 24px; // Bordes muy redondeados
+  padding: 2rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03); // Sombra super suave
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  // Grid Sizing
+  grid-column: span 6; // Por defecto mitad
+  min-height: 400px;
+
+  h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: $texto-principal;
+    margin: 0 0 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .btn-detalles {
+      font-size: 0.8rem;
+      color: $color-azul-celeste;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: 4px 8px;
+      border-radius: 6px;
+
+      &:hover {
+        background: rgba($color-azul-celeste, 0.08);
+        text-decoration: underline;
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 320px;
+    object-fit: contain;
+  }
+
+  // Gráfico principal ancho
+  &.large {
+    grid-column: span 8;
+  }
+
+  // Gráfico lateral (Dona)
+  &:nth-child(2) {
+    grid-column: span 4;
+  }
+}
+
+/* ===============================
+   LOADING
 =============================== */
 .dashboard-loading {
-  height: 100%;
+  height: 50vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -190,60 +278,64 @@ $transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   .spinner {
     width: 50px;
     height: 50px;
-    border: 3px solid rgba($color-azul-celeste, 0.2);
+    border: 4px solid rgba($color-azul-celeste, 0.1);
     border-top-color: $color-azul-celeste;
     border-radius: 50%;
-    animation: spin 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
-  }
-  
-  p {
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-    animation: pulse 1.5s infinite ease-in-out;
+    animation: spin 0.8s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
   }
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 /* ===============================
    RESPONSIVE
 =============================== */
 @media (max-width: 1200px) {
   .chart-card {
-    grid-column: span 6; // En pantallas medianas, 2 gráficos por fila
-    &.large { grid-column: span 12; } // El grande ocupa todo el ancho
-  }
-}
-
-@media (max-width: 900px) {
-  .chart-card {
-    grid-column: span 12 !important; // En tablets, todos ocupan todo el ancho
+    grid-column: span 12 !important; // Stacking vertical en laptops pequeñas
   }
 }
 
 @media (max-width: 768px) {
   .dashboard-asesor {
-    padding: 1rem;
-    height: calc(100vh - 80px); // Ajuste para móviles
+    padding: 1.5rem;
+
+    &::before {
+      font-size: 1.5rem;
+      margin-bottom: 0;
+    }
   }
-  
-  .kpi-grid {
-    grid-template-columns: 1fr; // Tarjetas apiladas
-  }
-  
+
   .kpi-card {
-    flex-direction: row; // Layout horizontal en móvil ahorra espacio
+    flex-direction: row; // Layout horizontal en móvil
     align-items: center;
-    padding: 1rem 1.25rem;
+    padding: 1.25rem;
     min-height: auto;
-    
-    .kpi-value { font-size: 1.8rem; }
-    &::before { height: 100%; width: 4px; left: 0; border-radius: 4px 0 0 4px; top: 0; transform: none; }
+
+    .kpi-value {
+      font-size: 2rem;
+      margin-left: auto;
+    }
+
+    .badge-trend {
+      display: none;
+    }
+
+    // Ocultar en móvil si molesta
+    .kpi-icon-wrapper {
+      margin-bottom: 0;
+      margin-right: 1rem;
+      width: 36px;
+      height: 36px;
+    }
   }
 
   .chart-card {
-    padding: 1rem;
-    min-height: 300px;
+    padding: 1.5rem;
+    min-height: 350px;
   }
 }
