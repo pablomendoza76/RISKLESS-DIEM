@@ -15,7 +15,7 @@ type Mensaje = {
   imports: [
     CommonModule,
     FormsModule,
-    MarkdownModule // 👈 AQUÍ VA
+    MarkdownModule
   ],
   templateUrl: './asistente-reportes.component.html',
   styleUrl: './asistente-reportes.component.scss',
