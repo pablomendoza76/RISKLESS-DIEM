@@ -3,5 +3,5 @@ export const environment = {
 
   supabaseUrl: 'https://mjqrcgfgwbqkikzzymwl.supabase.co',
   supabaseAnonKey: 'sb_publishable_qcCUlHxa9P13ezTcMTR7QQ_W9Mb7seR',
-  geminiApiKey: 'AIzaSyCZ3W4wrO0hjX5tyy7i7GbkyFlHu6g4HUA'
+  geminiApiKey: '1'
 };

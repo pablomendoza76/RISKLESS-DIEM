@@ -1,22 +1,31 @@
 <div class="home-layout">
 
-  <!-- COLUMNA IZQUIERDA -->
+  <!-- ================= SIDEBAR ================= -->
   <aside class="sidebar-area">
-    <app-sidebar [title]="sidebarTitle" [items]="sidebarItems" (logout)="cerrarSesion()">
-    </app-sidebar>
+    <app-sidebar
+      [title]="sidebarTitle"
+      [items]="sidebarItems"
+      (logout)="cerrarSesion()"
+    ></app-sidebar>
   </aside>
 
-  <!-- COLUMNA DERECHA -->
+  <!-- ================= MAIN ================= -->
   <main class="main-area">
 
-    <!-- FILA SUPERIOR -->
+    <!-- ===== TOPBAR ===== -->
     <header class="topbar-area">
-      <app-admin-topbar mensaje="BIENVENIDO AL PANEL DE GESTIÓN" [nombre]="nombreUsuario" [rol]="rolUsuario"
-        [iniciales]="inicialesUsuario" [subtitulo]="subtituloFecha" (logout)="cerrarSesion()">
-      </app-admin-topbar>
+      <app-admin-topbar
+        mensaje="BIENVENIDO AL PANEL DE GESTIÓN"
+        [nombre]="nombreUsuario"
+        [rol]="rolUsuario"
+        [iniciales]="inicialesUsuario"
+        [subtitulo]="subtituloFecha"
+        (logout)="cerrarSesion()"
+      ></app-admin-topbar>
     </header>
 
-    <!-- FILA INFERIOR (DINÁMICA) -->
+    <!-- ===== CONTENIDO DINÁMICO ===== -->
+    <!-- IMPORTANTE: este contenedor es el ÚNICO que puede hacer scroll -->
     <section class="content-area">
       <router-outlet></router-outlet>
     </section>
