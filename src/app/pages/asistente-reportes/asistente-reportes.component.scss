@@ -1,259 +1,374 @@
 @use '../../shared/styles/colores' as *;
 @use '../../shared/styles/tipografia' as *;
 
-/* =========================================
-   VARIABLES LOCALES (Riskless Blue Theme)
-========================================= */
-// Usamos tus variables de la paleta Midnight
-$azul-riskless-bg: $color-azul-oscuro; // #0f172a (Dark Navy)
-$dorado-brand: $color-dorado;          // #38bdf8 (Cyan Brillante)
+// --- LOCAL VARIABLES ---
+$bg-light: #f8fafc; // Very light gray background
+$header-navy: #1e293b; // Dark navy for the header card
+$white: #ffffff;
+$bot-bubble-bg: #ffffff;
+$bot-bubble-border: #e2e8f0;
+$user-bubble-bg: #0ea5e9; // Bright sky blue
+$user-bubble-gradient: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+$text-muted: #94a3b8;
+$error-red: #ef4444;
 
-/* =========================================
-   LAYOUT PRINCIPAL
-========================================= */
-.chat-page {
-  display: flex;
-  flex-direction: column;
-  height: 85vh;       
+:host {
+  display: block;
+  height: 100%;
   width: 100%;
-  background: $fondo-gris-suave; 
-  font-family: 'Inter', sans-serif;
-  overflow: hidden;    
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* =========================================
-   HEADER (AZUL OSCURO)
-========================================= */
-.chat-header {
-  // Fondo Azul Oscuro Sólido
-  background: $azul-riskless-bg;
-  padding: 1.25rem 2.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1); // Línea sutil
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); // Sombra para separar del cuerpo
-  z-index: 10;
-  flex-shrink: 0;
-
-  h2 {
-    margin: 0;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #ffffff; // Letra Blanca
-    letter-spacing: -0.02em;
-  }
-
-  p {
-    margin: 0.35rem 0 0;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7); // Blanco con opacidad
-  }
+   CONTAINER & LAYOUT
+   ========================================= */
+.chat-wrapper {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  /* Fixed Header, Flexible Body, Fixed Footer */
+  height: 100%;
+  width: 100%;
+  background: $bg-light;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+  /* Important: prevents the wrapper itself from scrolling */
 }
 
 /* =========================================
-   BODY (CONTENEDOR FLEXIBLE)
-========================================= */
-.chat-body {
-  flex: 1;                 
-  overflow: hidden;        
-  position: relative;   
-  background: $fondo-gris-suave; // Fondo general claro
+   HEADER: Dark Navy Card
+   ========================================= */
+.chat-header-card {
+  grid-row: 1;
+  background: $header-navy;
+  margin: 0 1rem 1rem 1rem;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
   display: flex;
-  flex-direction: column;
-}
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  color: white;
 
-/* 🔥 ÁREA DE SCROLL DE MENSAJES 🔥 */
-.messages-scroll-area {
-  height: 100%;         
-  overflow-y: auto;     
-  padding: 2.5rem;    
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
+  .header-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 
-  // Scrollbar personalizado
-  &::-webkit-scrollbar { width: 6px; }
-  &::-webkit-scrollbar-thumb { 
-    background-color: rgba(15, 23, 42, 0.2); 
-    border-radius: 10px; 
+    .header-logo {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0.75rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-text {
+      h1 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+
+      p {
+        margin: 2px 0 0;
+        font-size: 0.75rem;
+        opacity: 0.7;
+      }
+    }
   }
 
-  @media (max-width: 768px) {
-    padding: 1.5rem 1rem;
+  .btn-icon {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
   }
-}
 
-/* =========================================
-   MENSAJES
-========================================= */
-.message {
-  max-width: 75%;
-  display: flex;
-  flex-direction: column;
-  animation: fadeUp 0.3s ease-out both;
-
-  .author {
+  .header-info p {
     font-size: 0.75rem;
-    font-weight: 600;
-    margin-bottom: 0.4rem;
-    margin-left: 0.5rem;
+  }
+}
+
+/* =========================================
+   CHAT BODY: Scrollable
+   ========================================= */
+.chat-body {
+  grid-row: 2;
+  overflow-y: auto;
+  min-height: 0;
+  /* THE SECRET FOR SCROLLING IN GRID */
+  padding: 0 1.5rem;
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 6px;
   }
 
-  /* --- BOT (ASISTENTE) → GRIS SUAVITO --- */
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0 1rem;
+  }
+}
+
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* =========================================
+   MESSAGE BLOCKS & BUBBLES
+   ========================================= */
+.message-block {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  animation: slideUp 0.3s ease-out;
+
+  .message-sender {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: $text-muted;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .message-bubble {
+    padding: 1rem 1.25rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    position: relative;
+
+    .bubble-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+
+      p {
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      ::ng-deep markdown {
+        p {
+          margin-bottom: 0.5rem;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+
+        ul,
+        ol {
+          padding-left: 1.25rem;
+          margin: 0.5rem 0;
+        }
+
+        code {
+          background: #f1f5f9;
+          padding: 2px 4px;
+          border-radius: 4px;
+          font-size: 0.9em;
+        }
+      }
+    }
+  }
+
+  // --- BOT STYLE ---
   &.bot {
     align-self: flex-start;
 
-    .author { color: $azul-riskless-bg; } // Nombre en azul oscuro
+    .message-sender {
+      margin-left: 4px;
+    }
 
-    .text {
-      background: #ffffff; // Blanco puro o Gris muy suave ($fondo-claro)
-      color: $texto-principal;
-      padding: 1.25rem;
-      border-radius: 18px 18px 18px 4px; 
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04); // Sombra muy sutil
-      border: 1px solid $gris-200;
-
-      /* Markdown interno */
-      ::ng-deep {
-        h2, h3 { color: $azul-riskless-bg; margin-top: 0.5rem; font-weight: 700;}
-        strong { color: $azul-riskless-bg; }
-        ul { padding-left: 1.2rem; }
-      }
+    .message-bubble {
+      background: $bot-bubble-bg;
+      border: 1px solid $bot-bubble-border;
+      border-bottom-left-radius: 4px;
+      color: #334155;
     }
   }
 
-  /* --- USUARIO (TÚ) → DORADITO (CYAN/GOLD) --- */
+  // --- USER STYLE ---
   &.user {
     align-self: flex-end;
+    align-items: flex-end;
 
-    .author { 
-      text-align: right; 
-      margin-right: 0.5rem; 
-      color: $gris-500; 
+    .message-sender {
+      margin-right: 4px;
     }
 
-    .text {
-      // Usamos tu variable $dorado-brand (#38bdf8)
-      background: linear-gradient(135deg, $dorado-brand 0%, darken($dorado-brand, 10%) 100%);
-      color: #ffffff; // Texto blanco para contraste
-      padding: 1rem 1.25rem;
-      border-radius: 18px 18px 4px 18px;
-      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); // Sombra brillante a juego
-      font-weight: 500;
+    .message-bubble {
+      background: $user-bubble-gradient;
+      color: white;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.2);
     }
+  }
+
+  // --- ERROR STYLE ---
+  .error-bubble {
+    border-left: 4px solid $error-red !important;
+
+    .error-icon {
+      color: $error-red;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    max-width: 90%;
   }
 }
 
 /* =========================================
-   INPUT FOOTER (AZUL OSCURO + HALO)
-========================================= */
-.chat-input {
-  // Fondo Azul Oscuro (Igual que el Header)
-  background: $azul-riskless-bg; 
-  padding: 1.5rem 2.5rem;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  position: relative;
-  z-index: 20;
-  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15); // Sombra hacia arriba
+   FOOTER: Input & System Note
+   ========================================= */
+.chat-footer {
+  grid-row: 3;
+  padding: 1rem 1.5rem;
+  background: $bg-light;
+  border-top: 1px solid $bot-bubble-border;
+  z-index: 10;
 
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
+  .input-container {
+    display: flex;
+    gap: 12px;
+    background: $white;
+    padding: 8px 10px 8px 1.5rem;
+    border-radius: 99px;
+    border: 1px solid $bot-bubble-border;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.2s, box-shadow 0.2s;
 
-  // Wrapper para el efecto Halo
-  .input-wrapper {
-    flex: 1;
-    position: relative;
-    border-radius: 50px;
-    
-    // El input en sí
+    &:focus-within {
+      border-color: #0ea5e9;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
     input {
-      width: 100%;
-      padding: 1rem 1.5rem;
-      border-radius: 50px;
+      flex: 1;
       border: none;
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.1); // Fondo translúcido sobre el azul oscuro
-      color: #ffffff; // Texto blanco al escribir
       outline: none;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.95rem;
+      background: transparent;
+      color: #1e293b;
 
       &::placeholder {
-        color: rgba(255, 255, 255, 0.5);
+        color: $text-muted;
+      }
+    }
+
+    .btn-send {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: #0ea5e9;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+
+      &:hover:not(:disabled) {
+        background: #0284c7;
+        transform: scale(1.05);
       }
 
-      // Efecto Focus: Borde Dorado/Cyan brillante
-      &:focus {
-        background: rgba(255, 255, 255, 0.15);
-        border-color: $dorado-brand;
-        box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); // El HALO
+      &:disabled {
+        background: #cbd5e1;
+        cursor: not-allowed;
       }
+    }
+  }
+
+  .system-note {
+    text-align: center;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-top: 1.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 640px) {
+    padding: 1rem;
+
+    .system-note {
+      margin-top: 1rem;
     }
   }
 }
 
 /* =========================================
-   BOTÓN ENVIAR (DORADO)
-========================================= */
-.btn-send {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  // Fondo Dorado/Cyan Sólido
-  background: linear-gradient(135deg, $dorado-brand 0%, $aqua-400 100%);
-  color: #fff; // Icono blanco
-  
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); // Glow propio
-  transition: transform 0.2s, box-shadow 0.2s;
-  flex-shrink: 0;
-
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-
-  &.loading {
-    filter: grayscale(1);
-    opacity: 0.7;
-    pointer-events: none;
-  }
-}
-
-/* =========================================
-   ANIMACIONES
-========================================= */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-// Dots de carga
-.dots {
+   TYPING INDICATOR
+   ========================================= */
+.typing-indicator {
   display: flex;
   gap: 4px;
+  padding: 4px 0;
+
   span {
-    width: 5px;
-    height: 5px;
-    background: white;
+    width: 6px;
+    height: 6px;
+    background: #94a3b8;
     border-radius: 50%;
     animation: bounce 1.4s infinite ease-in-out both;
-    &:nth-child(1) { animation-delay: -0.32s; }
-    &:nth-child(2) { animation-delay: -0.16s; }
+
+    &:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+
+    &:nth-child(2) {
+      animation-delay: -0.16s;
+    }
   }
 }
 
 @keyframes bounce {
-  0%, 80%, 100% { transform: scale(0); }
-  40% { transform: scale(1); }
+
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+
+  40% {
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

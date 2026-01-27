@@ -1,71 +1,87 @@
-<div class="chat-page">
+<div class="chat-wrapper">
 
-  <header class="chat-header">
-    <h2>Asistente de Reportes</h2>
-    <p>Consulta información del sistema de seguros y genera reportes</p>
-  </header>
+  <!-- HEADER CARD: Modern dark blue card -->
+  <div class="chat-header-card">
+    <div class="header-info">
+      <div class="header-logo">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 8V4H8"></path>
+          <rect x="4" y="8" width="16" height="12" rx="2"></rect>
+          <path d="M2 14h2"></path>
+          <path d="M20 14h2"></path>
+          <path d="M15 13v2"></path>
+          <path d="M9 13v2"></path>
+        </svg>
+      </div>
+      <div class="header-text">
+        <h1>Asistente de Reportes</h1>
+        <p>Consulta información del sistema de seguros</p>
+      </div>
+    </div>
+  </div>
 
-  <div class="chat-body">
-    
-    <div class="messages-scroll-area">
-      
-      <div
-        class="message"
-        *ngFor="let msg of mensajes"
-        [class.user]="msg.from === 'user'"
-        [class.bot]="msg.from === 'bot'">
+  <!-- CHAT BODY: Scrollable area for messages -->
+  <div class="chat-body" #scrollContainer>
+    <div class="messages-list">
 
-        <span class="author">
-          {{ msg.from === 'user' ? 'Tú' : 'Asistente' }}
-        </span>
+      <div *ngFor="let msg of mensajes" class="message-block" [ngClass]="msg.from">
 
-        <div class="text">
-          @if (msg.from === 'bot') {
+        <label class="message-sender">
+          {{ msg.from === 'user' ? 'TÚ' : 'ASISTENTE' }}
+        </label>
+
+        <div class="message-bubble" [class.error-bubble]="msg.text.includes('error') || msg.text.includes('No pude')">
+          <div class="bubble-content">
+            <!-- Icon for errors as seen in the screenshot -->
+            <span class="error-icon" *ngIf="msg.text.includes('error') || msg.text.includes('No pude')">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </span>
+
+            @if (msg.from === 'bot') {
             <markdown [data]="msg.text"></markdown>
-          }
-          @else {
-            <span>{{ msg.text }}</span>
-          }
+            } @else {
+            <p>{{ msg.text }}</p>
+            }
+          </div>
         </div>
 
+      </div>
+
+      <!-- Loading indicator -->
+      <div *ngIf="cargando" class="message-block bot loading-block">
+        <label class="message-sender">ASISTENTE</label>
+        <div class="message-bubble">
+          <div class="typing-indicator">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
       </div>
 
     </div>
   </div>
 
-  <form class="chat-input" (ngSubmit)="enviar()">
-
-    <div class="input-wrapper">
-      <input
-        type="text"
-        placeholder="Escribe tu consulta…"
-        [(ngModel)]="input"
-        name="mensaje"
-        autocomplete="off"
-        required
-        [disabled]="cargando"
-      />
-    </div>
-
-    <button
-      type="submit"
-      class="btn-send"
-      [class.loading]="cargando"
-      [disabled]="cargando || !input.trim()">
-      
-      <span *ngIf="!cargando" style="display: flex; align-items: center;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- CHAT FOOTER: Input area and system note -->
+  <footer class="chat-footer">
+    <form class="input-container" (ngSubmit)="enviar()">
+      <input type="text" placeholder="Escribe tu consulta..." [(ngModel)]="input" name="chatInput" [disabled]="cargando"
+        autocomplete="off">
+      <button type="submit" class="btn-send" [disabled]="!input.trim() || cargando">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
           <line x1="22" y1="2" x2="11" y2="13"></line>
           <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
         </svg>
-      </span>
+      </button>
+    </form>
 
-      <div class="dots" *ngIf="cargando">
-        <span></span>
-        <span></span>
-      </div>
-    </button>
-
-  </form>
+    <div class="system-note">
+      SISTEMA DE GESTIÓN DE RIESGOS AI
+    </div>
+  </footer>
 
 </div>
