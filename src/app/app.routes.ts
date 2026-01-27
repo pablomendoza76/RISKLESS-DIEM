@@ -12,6 +12,7 @@ import { PolizaFormComponent } from './pages/home-asesor/opciones/poliza-form/po
 import { FacturacionComponent } from './pages/home-asesor/opciones/facturacion/facturacion.component';
 import { PedidosAseguradoComponent } from './pages/pedidos-asegurado/pedidos-asegurado.component';
 import { DashboardAsesorComponent } from './pages/home-asesor/opciones/dashboard-asesor/dashboard-asesor.component';
+import { AsistenteReportesComponent } from './pages/asistente-reportes/asistente-reportes.component';
 
 export const routes: Routes = [
   // DEFAULT
@@ -34,6 +35,14 @@ export const routes: Routes = [
     data: { rol: 'Gerente' },
   },
 
+  
+  // GERENTE (Vista única del Dashboard)
+  {
+    path: 'cahtbot',
+    component: AsistenteReportesComponent, 
+  },
+
+
   // PEDIDO INDIVIDUAL
   {
     path: 'pedidoAsegurado',
@@ -47,6 +56,7 @@ export const routes: Routes = [
     data: { rol: 'Asesor' },
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'cahtbot', component: AsistenteReportesComponent },
       { path: 'dashboard', component: DashboardAsesorComponent },
       { path: 'asegurados', component: AseguradosComponent },
       { path: 'bienes', component: BienesComponent },

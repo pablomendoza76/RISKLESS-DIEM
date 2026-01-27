@@ -1,0 +1,71 @@
+<div class="chat-page">
+
+  <header class="chat-header">
+    <h2>Asistente de Reportes</h2>
+    <p>Consulta información del sistema de seguros y genera reportes</p>
+  </header>
+
+  <div class="chat-body">
+    
+    <div class="messages-scroll-area">
+      
+      <div
+        class="message"
+        *ngFor="let msg of mensajes"
+        [class.user]="msg.from === 'user'"
+        [class.bot]="msg.from === 'bot'">
+
+        <span class="author">
+          {{ msg.from === 'user' ? 'Tú' : 'Asistente' }}
+        </span>
+
+        <div class="text">
+          @if (msg.from === 'bot') {
+            <markdown [data]="msg.text"></markdown>
+          }
+          @else {
+            <span>{{ msg.text }}</span>
+          }
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <form class="chat-input" (ngSubmit)="enviar()">
+
+    <div class="input-wrapper">
+      <input
+        type="text"
+        placeholder="Escribe tu consulta…"
+        [(ngModel)]="input"
+        name="mensaje"
+        autocomplete="off"
+        required
+        [disabled]="cargando"
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="btn-send"
+      [class.loading]="cargando"
+      [disabled]="cargando || !input.trim()">
+      
+      <span *ngIf="!cargando" style="display: flex; align-items: center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </span>
+
+      <div class="dots" *ngIf="cargando">
+        <span></span>
+        <span></span>
+      </div>
+    </button>
+
+  </form>
+
+</div>

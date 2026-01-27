@@ -114,6 +114,11 @@ export class HomeAsesorComponent implements OnInit {
       label: 'Facturación',
       icon: 'attach_money',
       route: '/asesor/facturacion'
+    },
+    {
+      label: 'chatbot',
+      icon: 'smart_toy',
+      route: '/asesor/cahtbot'
     }
   ];
 

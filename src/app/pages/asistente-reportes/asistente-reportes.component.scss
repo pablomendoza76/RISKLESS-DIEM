@@ -1,0 +1,259 @@
+@use '../../shared/styles/colores' as *;
+@use '../../shared/styles/tipografia' as *;
+
+/* =========================================
+   VARIABLES LOCALES (Riskless Blue Theme)
+========================================= */
+// Usamos tus variables de la paleta Midnight
+$azul-riskless-bg: $color-azul-oscuro; // #0f172a (Dark Navy)
+$dorado-brand: $color-dorado;          // #38bdf8 (Cyan Brillante)
+
+/* =========================================
+   LAYOUT PRINCIPAL
+========================================= */
+.chat-page {
+  display: flex;
+  flex-direction: column;
+  height: 85vh;       
+  width: 100%;
+  background: $fondo-gris-suave; 
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;    
+}
+
+/* =========================================
+   HEADER (AZUL OSCURO)
+========================================= */
+.chat-header {
+  // Fondo Azul Oscuro Sólido
+  background: $azul-riskless-bg;
+  padding: 1.25rem 2.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); // Línea sutil
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); // Sombra para separar del cuerpo
+  z-index: 10;
+  flex-shrink: 0;
+
+  h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ffffff; // Letra Blanca
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    margin: 0.35rem 0 0;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7); // Blanco con opacidad
+  }
+}
+
+/* =========================================
+   BODY (CONTENEDOR FLEXIBLE)
+========================================= */
+.chat-body {
+  flex: 1;                 
+  overflow: hidden;        
+  position: relative;   
+  background: $fondo-gris-suave; // Fondo general claro
+  display: flex;
+  flex-direction: column;
+}
+
+/* 🔥 ÁREA DE SCROLL DE MENSAJES 🔥 */
+.messages-scroll-area {
+  height: 100%;         
+  overflow-y: auto;     
+  padding: 2.5rem;    
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+
+  // Scrollbar personalizado
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-thumb { 
+    background-color: rgba(15, 23, 42, 0.2); 
+    border-radius: 10px; 
+  }
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* =========================================
+   MENSAJES
+========================================= */
+.message {
+  max-width: 75%;
+  display: flex;
+  flex-direction: column;
+  animation: fadeUp 0.3s ease-out both;
+
+  .author {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    margin-left: 0.5rem;
+  }
+
+  /* --- BOT (ASISTENTE) → GRIS SUAVITO --- */
+  &.bot {
+    align-self: flex-start;
+
+    .author { color: $azul-riskless-bg; } // Nombre en azul oscuro
+
+    .text {
+      background: #ffffff; // Blanco puro o Gris muy suave ($fondo-claro)
+      color: $texto-principal;
+      padding: 1.25rem;
+      border-radius: 18px 18px 18px 4px; 
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04); // Sombra muy sutil
+      border: 1px solid $gris-200;
+
+      /* Markdown interno */
+      ::ng-deep {
+        h2, h3 { color: $azul-riskless-bg; margin-top: 0.5rem; font-weight: 700;}
+        strong { color: $azul-riskless-bg; }
+        ul { padding-left: 1.2rem; }
+      }
+    }
+  }
+
+  /* --- USUARIO (TÚ) → DORADITO (CYAN/GOLD) --- */
+  &.user {
+    align-self: flex-end;
+
+    .author { 
+      text-align: right; 
+      margin-right: 0.5rem; 
+      color: $gris-500; 
+    }
+
+    .text {
+      // Usamos tu variable $dorado-brand (#38bdf8)
+      background: linear-gradient(135deg, $dorado-brand 0%, darken($dorado-brand, 10%) 100%);
+      color: #ffffff; // Texto blanco para contraste
+      padding: 1rem 1.25rem;
+      border-radius: 18px 18px 4px 18px;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); // Sombra brillante a juego
+      font-weight: 500;
+    }
+  }
+}
+
+/* =========================================
+   INPUT FOOTER (AZUL OSCURO + HALO)
+========================================= */
+.chat-input {
+  // Fondo Azul Oscuro (Igual que el Header)
+  background: $azul-riskless-bg; 
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  position: relative;
+  z-index: 20;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15); // Sombra hacia arriba
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+
+  // Wrapper para el efecto Halo
+  .input-wrapper {
+    flex: 1;
+    position: relative;
+    border-radius: 50px;
+    
+    // El input en sí
+    input {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border-radius: 50px;
+      border: none;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.1); // Fondo translúcido sobre el azul oscuro
+      color: #ffffff; // Texto blanco al escribir
+      outline: none;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      // Efecto Focus: Borde Dorado/Cyan brillante
+      &:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: $dorado-brand;
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); // El HALO
+      }
+    }
+  }
+}
+
+/* =========================================
+   BOTÓN ENVIAR (DORADO)
+========================================= */
+.btn-send {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  // Fondo Dorado/Cyan Sólido
+  background: linear-gradient(135deg, $dorado-brand 0%, $aqua-400 100%);
+  color: #fff; // Icono blanco
+  
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); // Glow propio
+  transition: transform 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &.loading {
+    filter: grayscale(1);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+}
+
+/* =========================================
+   ANIMACIONES
+========================================= */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// Dots de carga
+.dots {
+  display: flex;
+  gap: 4px;
+  span {
+    width: 5px;
+    height: 5px;
+    background: white;
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out both;
+    &:nth-child(1) { animation-delay: -0.32s; }
+    &:nth-child(2) { animation-delay: -0.16s; }
+  }
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
